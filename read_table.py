@@ -37,7 +37,7 @@ pieces=[]
 print(allfiles)
 for file in allfiles:
 	df=pd.read_table(file,names=['Min','Ave','Max'],sep='\s+',header=0,skipfooter=1,usecols=[1,2,3],engine='python')
-	df['Frequency']=np.linspace(freq_start,freq_stop,len(series))   #frequency column added
+	df['Frequency']=np.linspace(freq_start,freq_stop,len(df))   #frequency column added
 	df['Datetime']=datetime.strptime(file[-19:-4],'%Y%m%d_%H%M%S')
 	pieces.append(df)
 	data=pd.concat(pieces,ignore_index=True)
