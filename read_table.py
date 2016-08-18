@@ -1,10 +1,10 @@
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
-import matplotlib.dates as pltd
-import sys
-from datetime import datetime, timedelta
-import time
+# import sys
+# import matplotlib.dates as pltd
+# from datetime import datetime, timedelta
+# import time
 
 
 # __パラメータ読み込み__________________________
@@ -22,7 +22,7 @@ def onefile(fullpath):
 	# fullpath='20160101_081243.txt'
 	df=pd.read_table(fullpath,names=['Min','Ave','Max'],sep='\s+',header=0,skipfooter=1,usecols=[1,2,3],engine='python')
 	df['Frequency']=np.linspace(freq_start,freq_stop,len(df))   #frequency column added
-	df['Datetime']=datetime.strptime(fullpath[-19:-4],'%Y%m%d_%H%M%S')
+	df['Datetime']=pd.to_datetime(fullpath[-19:-4],format='%Y%m%d_%H%M%S')
 	return df
 
 
@@ -30,9 +30,8 @@ def onefile(fullpath):
 
 
 
-def manyfile(start,stop):
-	'''複数ファイルの読み込み
-	'''
+def manyfile(start=None,stop):
+	'''複数ファイルの読み込み'''
 	import glob as g
 	allfiles=g.glob(path+'*.txt')[start:stop]
 	pieces=[]
@@ -43,4 +42,6 @@ def manyfile(start,stop):
 
 
 # print(onefile(path+'20160101_081243.txt'))
-print(manyfile(None,10))
+# print(manyfile(None,10))
+
+
