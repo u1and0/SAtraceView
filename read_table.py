@@ -58,12 +58,15 @@ def spectrum(fullpath):
 	'''
 	use={'Min':1,'Ave':2,'Max':3}
 	columns_name=pd.to_datetime(fullpath[-19:-4],format='%Y%m%d_%H%M%S')
-	df=pd.read_table(fullpath,names=[columns_name],sep='\s+',header=0,skipfooter=1,usecols=[2],engine='python')
-	df['Frequency']=np.linspace(freq_start,freq_stop,len(df))
-	# df=onefile(fullpath)[['Frequency','Ave']]
+	# au=list(np.arange(1001))
+	df=pd.read_table(fullpath,names=[columns_name],index_col=False,sep='\s+',header=0,skipfooter=1,usecols=[2],engine='python')
+	# df['Frequency']=np.linspace(freq_start,freq_stop,len(df))
 	return df
 
-print(spectrum(path+'20160818_145913.txt'))
+k=spectrum(path+'20160818_145913.txt')
+
+# kk=pd.DataFrame(k,index='Frequency',columns=0)
+print(k)
 # print(spectrum(path+'20160818_145913.txt'))
 # spectrum(path+'20160818_145913.txt').plot()
 # plt.show()
