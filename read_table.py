@@ -10,6 +10,7 @@ import matplotlib.pyplot as plt
 # __パラメータ読み込み__________________________
 import param
 param=param.param()
+
 path=param['in']
 freq_start=param['freq_start']
 freq_stop=param['freq_stop']
@@ -18,7 +19,10 @@ freq_stop=param['freq_stop']
 
 
 def onefile(fullpath):
-	'''1ファイルの読み込み'''
+	'''
+	Read single file
+	Store dataframe
+	'''
 	# fullpath='20160101_081243.txt'
 	df=pd.read_table(fullpath,names=['Min','Ave','Max'],sep='\s+',header=0,skipfooter=1,usecols=[1,2,3],engine='python')
 	df['Frequency']=np.linspace(freq_start,freq_stop,len(df))   #frequency column added
@@ -30,8 +34,11 @@ def onefile(fullpath):
 
 
 
-def manyfile(start=None,stop):
-	'''複数ファイルの読み込み'''
+def manyfile(start,stop):
+	'''
+	Read multiple files
+	Store dataframe
+	'''
 	import glob as g
 	allfiles=g.glob(path+'*.txt')[start:stop]
 	pieces=[]
@@ -44,4 +51,19 @@ def manyfile(start=None,stop):
 # print(onefile(path+'20160101_081243.txt'))
 # print(manyfile(None,10))
 
+def spectrum(fullpath):
+	'''
+	Make dataframe as ploting spectrums.
+	indexをnp.linspaceにできないかなぁ
+	'''
+	use={'Min':1,'Ave':2,'Max':3}
+	columns_name=pd.to_datetime(fullpath[-19:-4],format='%Y%m%d_%H%M%S')
+	df=pd.read_table(fullpath,names=[columns_name],sep='\s+',header=0,skipfooter=1,usecols=[2],engine='python')
+	df['Frequency']=np.linspace(freq_start,freq_stop,len(df))
+	# df=onefile(fullpath)[['Frequency','Ave']]
+	return df
 
+print(spectrum(path+'20160818_145913.txt'))
+# print(spectrum(path+'20160818_145913.txt'))
+# spectrum(path+'20160818_145913.txt').plot()
+# plt.show()
