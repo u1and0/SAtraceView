@@ -1,35 +1,74 @@
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
-import matplotlib.dates as pltd
-import sys
-from datetime import datetime, timedelta
-import time
+# import sys
+# import matplotlib.dates as pltd
+# from datetime import datetime, timedelta
+# import time
+
+
+# __パラメータ読み込み__________________________
+import param
+param=param.param()
+
+path=param['in']
+freq_start=param['freq_start']
+freq_stop=param['freq_stop']
 
 
 
-sys.path.append('../../gnuplot/SAtraceGraph/main')  #importできるディレクトリ追加
-import directoryParam as di
-path=di.in1()
+
+def onefile(fullpath):
+	'''
+	Read single file
+	Store dataframe
+	'''
+	# fullpath='20160101_081243.txt'
+	df=pd.read_table(fullpath,names=['Min','Ave','Max'],sep='\s+',header=0,skipfooter=1,usecols=[1,2,3],engine='python')
+	df['Frequency']=np.linspace(freq_start,freq_stop,len(df))   #frequency column added
+	df['Datetime']=pd.to_datetime(fullpath[-19:-4],format='%Y%m%d_%H%M%S')
+	return df
 
 
 
-# __1ファイルの読み込み__________________________
-file=path+'20160101_081243.txt'
-po201601=pd.read_table(file,names=['min','ave','max'],sep='\s+',header=0,skipfooter=1,usecols=[0,1,2],engine='python')
 
 
 
-# __10ファイルの読み込み__________________________
-import glob as g
-allfiles=g.glob('*.txt')
-pieces=[]
-freq_start=di.freq_start()
-freq_stop=di.freq_stop()
-for file in allfiles[:10]:
-	frame=pd.read_table(path+file,names=['Min','Ave','Max'],sep='\s+',header=0,skipfooter=1,usecols=[1,2,3],engine='python')   #1ファイルの読み込み
-	frame['Freqency']=np.arange(freq_start,freq_stop)
-	frame['Datetime']=datetime.strptime(file[:-4,'%Y%m%d_%H%M%S'])
-	pirces.append(frame)
-	data=pd.concat(pieces,ignore_index=True)
-# print(data)
+def manyfile(start,stop):
+	'''
+	Read multiple files
+	Store dataframe
+	'''
+	import glob as g
+	allfiles=g.glob(path+'*.txt')[start:stop]
+	pieces=[]
+	for file in allfiles:
+		pieces.append(onefile(file))
+		data=pd.concat(pieces,ignore_index=True)
+	return data
+
+
+# print(onefile(path+'20160101_081243.txt'))
+# print(manyfile(None,10))
+
+def spectrum(fullpath):
+	'''
+	Make dataframe as ploting spectrums.
+	indexをnp.linspaceにできないかなぁ
+	'''
+	use={'Min':1,'Ave':2,'Max':3}
+	columns_name=pd.to_datetime(fullpath[-19:-4],format='%Y%m%d_%H%M%S')
+	df=pd.read_table(fullpath,names=[columns_name],sep='\s+',header=0,skipfooter=1,usecols=[2],engine='python')
+	# df['Frequency']=np.linspace(freq_start,freq_stop,len(df))
+	return df
+
+
+
+
+## __MAIN__________________________
+file='20160818_145913.txt'
+k=spectrum(path+file)
+k['Frequency']=np.linspace(22,26,1001)
+print(k)
+k.plot(x='Frequency',y=pd.Timestamp(pd.to_datetime(file[:-4],format='%Y%m%d_%H%M%S')))
+plt.show()
