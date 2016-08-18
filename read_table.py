@@ -1,6 +1,7 @@
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
+import glob
 # import sys
 # import matplotlib.dates as pltd
 # from datetime import datetime, timedelta
@@ -39,8 +40,7 @@ def manyfile(start,stop):
 	Read multiple files
 	Store dataframe
 	'''
-	import glob as g
-	allfiles=g.glob(path+'*.txt')[start:stop]
+	allfiles=glob.glob(path+'*.txt')[start:stop]
 	pieces=[]
 	for file in allfiles:
 		pieces.append(onefile(file))
@@ -58,7 +58,7 @@ def spectrum(fullpath):
 	'''
 	use={'Min':1,'Ave':2,'Max':3}
 	columns_name=pd.to_datetime(fullpath[-19:-4],format='%Y%m%d_%H%M%S')
-	df=pd.read_table(fullpath,names=[columns_name],sep='\s+',header=0,skipfooter=1,usecols=[2],engine='python')
+	df=pd.read_table(fullpath,names=[columns_name],sep='\s+',header=0,skipfooter=1,usecols=[use['Ave']],engine='python')
 	# df['Frequency']=np.linspace(freq_start,freq_stop,len(df))
 	return df
 
@@ -66,9 +66,15 @@ def spectrum(fullpath):
 
 
 ## __MAIN__________________________
-file='20160818_145913.txt'
-k=spectrum(path+file)
-k['Frequency']=np.linspace(22,26,1001)
-print(k)
-k.plot(x='Frequency',y=pd.Timestamp(pd.to_datetime(file[:-4],format='%Y%m%d_%H%M%S')))
-plt.show()
+
+# file='20160818_145913.txt'
+allfiles=glob.glob(path+'*.txt')[:10]
+num=len(spectrum(allfiles[1]))
+df=pd.DataFrame(np.linspace(freq_start,freq_stop,num),columns=['Frequency'])
+print(df)
+for file in allfiles:
+	filebasename=file[-19:-4]
+	df[pd.to_datetime(filebasename,format='%Y%m%d_%H%M%S')]=spectrum(file)
+	df.plot(x='Frequency',y=pd.Timestamp(pd.to_datetime(filebasename,format='%Y%m%d_%H%M%S')))
+print(df)
+plt.show()   #それぞれ別のウィンドウで開く
