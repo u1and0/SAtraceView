@@ -12,8 +12,8 @@ import glob
 import param
 param=param.param()
 
-# path=param['in']
-path='./DATA/'
+path=param['in']
+# path='./DATA/'
 freq_start=param['freq_start']
 freq_stop=param['freq_stop']
 
@@ -52,7 +52,7 @@ def manyfile(start,stop):
 # print(onefile(path+'20160101_081243.txt'))
 # print(manyfile(None,10))
 
-def spectrum(fullpath):
+def spectrum(fullpath,columns='Ave'):
 	'''
 	Make dataframe as ploting spectrums.
 	indexをnp.linspaceにできないかなぁ
@@ -71,11 +71,12 @@ def spectrum(fullpath):
 # file='20160818_145913.txt'
 allfiles=glob.glob(path+'*.txt')[:10]
 num=len(spectrum(allfiles[1]))
-df=pd.DataFrame(np.linspace(freq_start,freq_stop,num),columns=['Frequency'])
-print(df)
-for file in allfiles:
+frequency=pd.Series(np.linspace(freq_start,freq_stop,num))   #横軸はSeriesで定義
+df=pd.DataFrame(list(range(1001)),columns=['Temp'])   #1001要素の仮のデータフレーム作製
+for file in allfiles:   #1ファイルを1columnとしてdfに追加
 	filebasename=file[-19:-4]
 	df[pd.to_datetime(filebasename,format='%Y%m%d_%H%M%S')]=spectrum(file)
-	df.plot(x='Frequency',y=pd.Timestamp(pd.to_datetime(filebasename,format='%Y%m%d_%H%M%S')))
+	df.plot(x=frequency,y=pd.Timestamp(pd.to_datetime(filebasename,format='%Y%m%d_%H%M%S')))
+del df['Temp']
 print(df)
 plt.show()   #それぞれ別のウィンドウで開く
