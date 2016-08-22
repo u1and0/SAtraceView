@@ -67,7 +67,9 @@ def spectrum(fullpath,columns='Ave'):
 
 
 ## __MAIN__________________________
-
+'''
+Tempのcolumn作ってDataframe定義してから、全ファイル読み込み
+'''
 # file='20160818_145913.txt'
 allfiles=glob.glob(path+'*.txt')[:10]
 num=len(spectrum(allfiles[1]))
