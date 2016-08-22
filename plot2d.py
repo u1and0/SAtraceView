@@ -21,5 +21,11 @@ df.index=frequency   #インデックス(横軸)を振りなおす
 
 ## __PLOT1__________________________
 '''時間ごとに横軸index, 縦軸valuesでプロット'''
-df.plot()
-plt.show()   #それぞれ別のウィンドウで開く
+def plot_spec_val()
+	df.plot()
+	plt.show()
+
+
+## __PLOT2__________________________
+
+
