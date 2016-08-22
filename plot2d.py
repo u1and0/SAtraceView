@@ -21,11 +21,18 @@ df.index=frequency   #インデックス(横軸)を振りなおす
 
 ## __PLOT1__________________________
 '''時間ごとに横軸index, 縦軸valuesでプロット'''
-def plot_spec_val()
+def plot_spec_val(df):
 	df.plot()
 	plt.show()
 
 
 ## __PLOT2__________________________
+def plot_time_val(df):
+	trace=df.T
+	print(trace)
+	trace.plot(trace[22.000])
+	plt.show()
 
+
+plot_time_val(df)
 
