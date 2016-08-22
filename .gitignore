@@ -2,3 +2,5 @@
 /__pycache__/
 *.[0-9][0-9][0-9]*
 param.py
+SAtraceView.sublime-workspace
+SAtraceView.sublime-project
