@@ -68,8 +68,17 @@ def spectrum(fullpath,columns='Ave'):
 
 def glob_dataframe(allfiles):
 	'''
+	* 通常の使い方:
+		`glob_dataframe(dataglob())`
+		としてpathからファイル名(フルパス)を読み込む
+
+	* 自分でリスト選択
+		`glob_dataframe([path+'20160225_001023.txt',path+'20160225_000523.txt'])`
+		みたいにしてリストを与えてやっても可
+
 	* 引数:
 		* allfiles:ファイルのフルパス(リスト形式)
+
 	* 戻り値：
 		* df:allfilesから取得した(pandas.DataFrame形式)
 	'''
