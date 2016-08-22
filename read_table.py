@@ -96,16 +96,19 @@ def glob_dataframe(allfiles):
 	# plt.show()   #それぞれ別のウィンドウで開く
 
 
-def dataglob(start=0,stop=None):
+def dataglob(regex=False,start=0,stop=None):
 	'''
 	* 引数:
+		* regex:globするファイル名(正規表現)
+			* 空の入力=>コンソールからユーザにインプット施す
 		* start:ファイルリストの最初の要素
 		* stop:ファイルリストの最後の要素
 	* 戻り値:
 		* path内のファイルのリスト
 	* 空の入力=引数なしはデフォルト引数'*'が入力され、path内のすべてのファイルを拾う
 	'''
-	print('%s内のファイルを取得します。'%path)
-	print('(例)正規表現で入力してください >> 20160225_*')
-	regex=input('正規表現で入力してください >> ')
+	if not regex:
+		print('%s内のファイルを取得します。'%path)
+		print('(例)正規表現で入力してください >> 20160225_*')
+		regex=input('正規表現で入力してください >> ')
 	return glob.glob(path+regex+'.txt')[start:stop]
