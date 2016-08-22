@@ -13,7 +13,6 @@ import param
 param=param.param()
 
 path=param['in']
-# path='./DATA/'
 freq_start=param['freq_start']
 freq_stop=param['freq_stop']
 
