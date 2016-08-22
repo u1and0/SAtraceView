@@ -83,7 +83,6 @@ def glob_dataframe(allfiles):
 		* df:allfilesから取得した(pandas.DataFrame形式)
 	'''
 	num=len(spectrum(allfiles[1]))   #
-	frequency=pd.Series(np.linspace(freq_start,freq_stop,num))   #横軸はSeriesで定義
 	df=pd.DataFrame(list(range(num)),columns=['Temp'])   #1001要素の仮のデータフレーム作製
 	for file in allfiles:   #1ファイルを1columnとしてdfに追加
 		filebasename=file[-19:-4]
