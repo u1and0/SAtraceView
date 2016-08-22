@@ -35,8 +35,25 @@
 
 # read_table.py
 
+メインとなる関数
+
 ```
-glob_dataframe(dataglob())
+def glob_dataframe(allfiles):
+	'''
+	* 通常の使い方:
+		`glob_dataframe(dataglob())`
+		としてpathからファイル名(フルパス)を読み込む
+
+	* 自分でリスト選択
+		`glob_dataframe([path+'20160225_001023.txt',path+'20160225_000523.txt'])`
+		みたいにしてリストを与えてやっても可
+
+	* 引数:
+		* allfiles:ファイルのフルパス(リスト形式)
+
+	* 戻り値：
+		* df:allfilesから取得した(pandas.DataFrame形式)
+	'''
 ```
 
 データフレームを返す
@@ -52,4 +69,8 @@ dataglob()によってglobするファイル名をユーザーに入力を施す
 20161225_1[12]*   #2016年12月25日11時か12時のデータ
 20161225_1?5*   #2016年12月25日10,11,12時50分台のデータ
 ```
+
+
+
+
 
