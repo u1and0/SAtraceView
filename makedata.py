@@ -65,8 +65,8 @@ def makefile(fullpath):
 
 
 
-start_dt=datetime(2016,2,25,0,0,23)
-stop_dt=datetime(2016,2,25,23,59,23)
+start_dt=datetime(2016,1,1,0,0,23)
+stop_dt=datetime(2016,3,31,23,59,23)
 step_dt=timedelta(minutes=5)
 for filename in pltd.drange(start_dt,stop_dt,step_dt):
 	filename='../../../../Documents/SAtraceView/DATA/'+pltd.num2date(filename).strftime('%Y%m%d_%H%M%S')+'.txt'

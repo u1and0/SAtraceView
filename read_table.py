@@ -65,17 +65,38 @@ def spectrum(fullpath,columns='Ave'):
 
 
 
-## __MAIN__________________________
 
-# file='20160818_145913.txt'
-allfiles=glob.glob(path+'*.txt')[:10]
-num=len(spectrum(allfiles[1]))
-frequency=pd.Series(np.linspace(freq_start,freq_stop,num))   #横軸はSeriesで定義
-df=pd.DataFrame(list(range(1001)),columns=['Temp'])   #1001要素の仮のデータフレーム作製
-for file in allfiles:   #1ファイルを1columnとしてdfに追加
-	filebasename=file[-19:-4]
-	df[pd.to_datetime(filebasename,format='%Y%m%d_%H%M%S')]=spectrum(file)
-	df.plot(x=frequency,y=pd.Timestamp(pd.to_datetime(filebasename,format='%Y%m%d_%H%M%S')))
-del df['Temp']
-print(df)
-plt.show()   #それぞれ別のウィンドウで開く
+def glob_dataframe(allfiles):
+	'''
+	* 引数:
+		* allfiles:ファイルのフルパス(リスト形式)
+	* 戻り値：
+		* df:allfilesから取得した(pandas.DataFrame形式)
+	'''
+	num=len(spectrum(allfiles[1]))   #
+	frequency=pd.Series(np.linspace(freq_start,freq_stop,num))   #横軸はSeriesで定義
+	df=pd.DataFrame(list(range(num)),columns=['Temp'])   #1001要素の仮のデータフレーム作製
+	for file in allfiles:   #1ファイルを1columnとしてdfに追加
+		filebasename=file[-19:-4]
+		df[pd.to_datetime(filebasename,format='%Y%m%d_%H%M%S')]=spectrum(file)
+		# df.plot(x=frequency,y=pd.Timestamp(pd.to_datetime(filebasename,format='%Y%m%d_%H%M%S')))
+	del df['Temp']   #仮で作ったデータは消す
+	print('Loading pandas DataFrame...\n\n',df)
+	print('\n\n...Loading END.')
+	return df
+	# plt.show()   #それぞれ別のウィンドウで開く
+
+
+def dataglob(start=0,stop=None):
+	'''
+	* 引数:
+		* start:ファイルリストの最初の要素
+		* stop:ファイルリストの最後の要素
+	* 戻り値:
+		* path内のファイルのリスト
+	* 空の入力=引数なしはデフォルト引数'*'が入力され、path内のすべてのファイルを拾う
+	'''
+	print('%s内のファイルを取得します。'%path)
+	print('(例)正規表現で入力してください >> 20160225_*')
+	regex=input('正規表現で入力してください >> ')
+	return glob.glob(path+regex+'.txt')[start:stop]
