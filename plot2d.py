@@ -63,7 +63,6 @@ def plt_setting(plot_element):
 	plt.xlabel(param['xlabel'])
 	plt.ylabel(param['ylabel'])
 	plt.grid(True)
-	plt.ylim(ymin=param['ylim'][0],ymax=param['ylim'][1])
 	if plot_element<=12:   #データ12こ(1時間分)までなら凡例表示
 		plt.legend(bbox_to_anchor=(0.5, -0.25), loc='center', borderaxespad=0,fontsize='small',ncol=3)
 		plt.subplots_adjust(bottom=0.25)
