@@ -39,7 +39,7 @@ num=param['number_of_rows']
 outpath=param['out']
 
 ## __DATA__________________________
-fullpath=[None,'20160225_12*']   #fullpathが空のときはdataglob()によって入力が施される
+fullpath=[None,'2016022[5-9]_*']   #fullpathが空のときはdataglob()によって入力が施される
 
 ## __Make DataFrame__________________________
 frequency=pd.Series(np.linspace(freq_start,freq_stop,num))   #横軸はSeriesで定義
@@ -49,26 +49,44 @@ df.index=frequency   #インデックス(横軸)を振りなおす
 
 
 
-'''
-開発中
-def plot_time_val(df):
-	時間軸で特定周波数観察
-	trace=df.T
-	print(trace)
-	trace.plot(trace[22.000])
-	plt.show()
-'''
 
 
-def plot_setting(df):
+
+def plt_setting(plot_element):
+	'''
+	引数:
+		plot_element:プロットする要素数(value)
+		グラフ中に入りそうなら凡例表示
+		そうでないなら表示しない
+	'''
 	# __PLOT SETTING__________________________
 	plt.xlabel(param['xlabel'])
 	plt.ylabel(param['ylabel'])
-	if len(df.columns)<=12:   #データ12こ(1時間分)までなら凡例表示
+	plt.grid(True)
+	plt.ylim(ymin=param['ylim'][0],ymax=param['ylim'][1])
+	if plot_element<=12:   #データ12こ(1時間分)までなら凡例表示
 		plt.legend(bbox_to_anchor=(0.5, -0.25), loc='center', borderaxespad=0,fontsize='small',ncol=3)
 		plt.subplots_adjust(bottom=0.25)
+	else:
+		plt.legend(False)
 	plt.show()
-	# plt.close()
+
+
+
+
+
+def timepower(df,columns):
+	'''時間軸で特定周波数観察'''
+	df.T.plot(y=columns)
+	plt_setting(len(columns))
+
+'''timepower() TEST
+'''
+columns=[22,23]
+timepower(df,columns)
+
+
+
 
 def oneplot(df,columns):
 	'''
@@ -82,13 +100,13 @@ def oneplot(df,columns):
 	oneframe=pd.DataFrame([stats.scoreatpercentile(df[col],100/4) for i in frequency],index=frequency,columns=['NoiseFloor'])	#NoiseFloor is 1/4 median.
 	df.plot(y=col,grid=True,ylim=param['ylim'])
 	oneframe['NoiseFloor'].plot(color='k')
-	plot_setting(df)
+	plt_setting(df)
 '''
 oneplot() TEST
-'''
 columns=[pd.Timestamp('2016-02-25 12:00:02'),pd.Timestamp('2016-02-25 12:45:02')]
 for col in columns:
 	oneplot(df,columns)
+'''
 
 
 def allplot(df):
@@ -101,7 +119,7 @@ def allplot(df):
 	print('\n[グラフ化したデータ一覧]\n',df.columns)
 	##____________________________
 	df.plot(grid=True,ylim=param['ylim'],legend=False)
-	plot_setting(df)
+	plt_setting(df)
 
 # allplot(df)
 '''allplot() TEST
