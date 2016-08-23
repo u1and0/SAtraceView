@@ -28,26 +28,11 @@ import seaborn as sns
 import read_table as rt
 import param
 
-
-## __READ PARAMETER__________________________
 param=param.param()
 
-path=param['in']
-freq_start=param['freq_start']
-freq_stop=param['freq_stop']
-num=param['number_of_rows']
-outpath=param['out']
-
 ## __DATA__________________________
-fullpath=[None,'2016022[5-9]_*']   #fullpathが空のときはdataglob()によって入力が施される
-
-## __Make DataFrame__________________________
-frequency=pd.Series(np.linspace(freq_start,freq_stop,num))   #横軸はSeriesで定義
-df=rt.glob_dataframe(rt.dataglob(fullpath[1]))   #データフレーム;テストのときはfullpath[1], リリースのときはfullpath[0]
-df.index=frequency   #インデックス(横軸)を振りなおす
-
-
-
+fullpath=[None,'20160225_*']   #fullpathが空のときはdataglob()によって入力が施される
+df=rt.dataframe(fullpath[1])
 
 
 

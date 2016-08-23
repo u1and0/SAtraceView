@@ -1,3 +1,4 @@
+## __BUILT-IN MODULES_________________________ 
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
@@ -6,17 +7,18 @@ import glob
 # import matplotlib.dates as pltd
 # from datetime import datetime, timedelta
 # import time
-
-
-# __パラメータ読み込み__________________________
+## __USER MODULES__________________________ 
 import param
+
+
+## __READ PARAMETER__________________________
 param=param.param()
 
 path=param['in']
 freq_start=param['freq_start']
 freq_stop=param['freq_stop']
-
-
+num=param['number_of_rows']
+outpath=param['out']
 
 
 def onefile(fullpath):
@@ -131,3 +133,20 @@ ____________________________
 		print('%s内のファイルを取得します。'%path)
 		regex=input('正規表現で入力してください >> ')
 	return glob.glob(path+regex+'*.txt')[start:stop]
+
+
+
+
+
+def dataframe(regex):
+	'''
+	正規表現を元にデータフレーム返す関数
+	引数:
+		rergex:正規表現(str形式)
+	戻り値:
+		df:データフレーム(pd.DataFrame形式)
+	'''
+	frequency=pd.Series(np.linspace(freq_start,freq_stop,num))   #横軸はSeriesで定義
+	df=glob_dataframe(dataglob(regex))   #データフレーム;テストのときはfullpath[1], リリースのときはfullpath[0]
+	df.index=frequency   #インデックス(横軸)を振りなおす
+	return df
