@@ -35,7 +35,8 @@ param=param.param()
 path=param['in']
 freq_start=param['freq_start']
 freq_stop=param['freq_stop']
-num=1001
+num=param['number_of_rows']
+outpath=param['out']
 
 ## __Make DataFrame__________________________
 frequency=pd.Series(np.linspace(freq_start,freq_stop,num))   #横軸はSeriesで定義
@@ -69,7 +70,7 @@ def plot_time_val(df):
 
 print('\n[グラフ化したデータ一覧]\n',df.columns)
 ##__時間ごとに横軸index, 縦軸valuesでプロット__________________________
-df.plot(grid=True,ylim=(-120,0),legend=False)
+df.plot(grid=True,ylim=param['ylim'],legend=False)
 # __PLOT SETTING__________________________
 plt.xlabel(param['xlabel'])
 plt.ylabel(param['ylabel'])
