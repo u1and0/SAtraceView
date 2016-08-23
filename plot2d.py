@@ -71,6 +71,8 @@ def plot_setting(df):
 
 def oneplot(df,*columns):
 	'''
+	dfのcolumnsの数だけプロット
+	plt.show()だと消すの大変だからplt.savefigにしようかな。
 	引数:
 		df:データフレーム
 		columns:行の名前(タイムスタンプ形式)
