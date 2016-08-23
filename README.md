@@ -48,7 +48,7 @@ SAtraceで収集したデータの分析
 
 
 
-# #read_table.py
+## read_table.py
 
 データの読み込みを行う
 
@@ -91,7 +91,7 @@ dataglob()によってglobするファイル名をユーザーに入力を施す
 
 
 
-# plot2d.py
+## plot2d.py
 
 データ選択してグラフ化するするモジュール
 
