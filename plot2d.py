@@ -39,11 +39,11 @@ num=param['number_of_rows']
 outpath=param['out']
 
 ## __DATA__________________________
-fullpath=[None,'20160225_*']   #fullpathが空のときはdataglob()によって入力が施される
+fullpath=[None,'20160225_12*']   #fullpathが空のときはdataglob()によって入力が施される
 
 ## __Make DataFrame__________________________
 frequency=pd.Series(np.linspace(freq_start,freq_stop,num))   #横軸はSeriesで定義
-df=rt.glob_dataframe(rt.dataglob(fullpath[1]))   #データフレーム
+df=rt.glob_dataframe(rt.dataglob(fullpath[1]))   #データフレーム;テストのときはfullpath[1], リリースのときはfullpath[0]
 df.index=frequency   #インデックス(横軸)を振りなおす
 
 
@@ -69,13 +69,16 @@ def plot_setting(df):
 		plt.subplots_adjust(bottom=0.25)
 	plt.show()
 
-def oneplot(df,columns):
+def oneplot(df,*columns):
 	'''
 	引数:
 		df:データフレーム
 		columns:行の名前(タイムスタンプ形式)
 	'''
-	df[columns].plot()
+	print('\n[グラフ化したデータ一覧]\n',columns)
+	for i in columns:
+		plt.plot(df[i])
+		plt.show()
 
 
 def allplot(df):
@@ -92,7 +95,7 @@ def allplot(df):
 
 '''TEST
 '''
-allplot(df)
+oneplot(df,pd.Timestamp('2016-02-25 12:00:02'),pd.Timestamp('2016-02-25 12:45:02'))
 
 
 '''
