@@ -81,7 +81,7 @@ def timepower(df,columns):
 
 '''timepower() TEST
 '''
-columns=[22,23]
+columns=[22,23,25.1,25]
 timepower(df,columns)
 
 
