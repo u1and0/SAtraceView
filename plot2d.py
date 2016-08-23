@@ -68,8 +68,9 @@ def plot_setting(df):
 		plt.legend(bbox_to_anchor=(0.5, -0.25), loc='center', borderaxespad=0,fontsize='small',ncol=3)
 		plt.subplots_adjust(bottom=0.25)
 	plt.show()
+	# plt.close()
 
-def oneplot(df,*columns):
+def oneplot(df,columns):
 	'''
 	dfのcolumnsの数だけプロット
 	plt.show()だと消すの大変だからplt.savefigにしようかな。
@@ -78,9 +79,16 @@ def oneplot(df,*columns):
 		columns:行の名前(タイムスタンプ形式)
 	'''
 	print('\n[グラフ化したデータ一覧]\n',columns)
-	for i in columns:
-		plt.plot(df[i])
-		plt.show()
+	oneframe=pd.DataFrame([stats.scoreatpercentile(df[col],100/4) for i in frequency],index=frequency,columns=['NoiseFloor'])	#NoiseFloor is 1/4 median.
+	df.plot(y=col,grid=True,ylim=param['ylim'])
+	oneframe['NoiseFloor'].plot(color='k')
+	plot_setting(df)
+'''
+oneplot() TEST
+'''
+columns=[pd.Timestamp('2016-02-25 12:00:02'),pd.Timestamp('2016-02-25 12:45:02')]
+for col in columns:
+	oneplot(df,columns)
 
 
 def allplot(df):
@@ -95,10 +103,10 @@ def allplot(df):
 	df.plot(grid=True,ylim=param['ylim'],legend=False)
 	plot_setting(df)
 
-'''TEST
-'''
+# allplot(df)
+'''allplot() TEST
 oneplot(df,pd.Timestamp('2016-02-25 12:00:02'),pd.Timestamp('2016-02-25 12:45:02'))
-
+'''
 
 '''
 開発中
