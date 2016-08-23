@@ -43,17 +43,6 @@ frequency=pd.Series(np.linspace(freq_start,freq_stop,num))   #横軸はSeriesで
 df=rt.glob_dataframe(rt.dataglob())
 df.index=frequency   #インデックス(横軸)を振りなおす
 
-##__PLOT SETTING__________________________
-# def plot_setting():
-# 	## __LEGEND SETTING__________________________
-# 	# plt.legend(bbox_to_anchor=(0.5, -0.25), loc='center', borderaxespad=0,fontsize='small',ncol=3)
-# 	# plt.subplots_adjust(bottom=0.25)
-# 	## __LABEL SETTING__________________________ 
-# 	plt.xlabel(param['xlabel'])
-# 	plt.ylabel(param['ylabel'])
-# 	plt.legend(bbox_to_anchor=(1.05, 1), loc=2, borderaxespad=0.)
-
-
 
 
 
