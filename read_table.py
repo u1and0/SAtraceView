@@ -90,7 +90,7 @@ def glob_dataframe(allfiles):
 		# df.plot(x=frequency,y=pd.Timestamp(pd.to_datetime(filebasename,format='%Y%m%d_%H%M%S')))
 	del df['Temp']   #仮で作ったデータは消す
 	print('Loading pandas DataFrame...\n\n',df)
-	print('\n\n...Loading END.')
+	print('\n\n...Loading END.\n')
 	return df
 	# plt.show()   #それぞれ別のウィンドウで開く
 
