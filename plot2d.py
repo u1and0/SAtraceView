@@ -22,6 +22,7 @@ import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 from scipy import stats
+import seaborn as sns
 
 ## __USER MODULES__________________________
 import read_table as rt
@@ -38,30 +39,28 @@ num=param['number_of_rows']
 outpath=param['out']
 
 ## __DATA__________________________
-fullpath=None   #fullpathが空のときはdataglob()によって入力が施される
+fullpath=[None,'20160225_*']   #fullpathが空のときはdataglob()によって入力が施される
 
 ## __Make DataFrame__________________________
 frequency=pd.Series(np.linspace(freq_start,freq_stop,num))   #横軸はSeriesで定義
-df=rt.glob_dataframe(rt.dataglob(fullpath))   #データフレーム
+df=rt.glob_dataframe(rt.dataglob(fullpath[1]))   #データフレーム
 df.index=frequency   #インデックス(横軸)を振りなおす
 
 
 
 
+'''
+開発中
 def plot_time_val(df):
-	'''
-	開発中
 	時間軸で特定周波数観察
-	'''
 	trace=df.T
 	print(trace)
 	trace.plot(trace[22.000])
 	plt.show()
+'''
 
-def plot_freq_val(df):
-	print('\n[グラフ化したデータ一覧]\n',df.columns)
-	##__時間ごとに横軸index, 縦軸valuesでプロット__________________________
-	df.plot(grid=True,ylim=param['ylim'],legend=False)
+
+def plot_setting(df):
 	# __PLOT SETTING__________________________
 	plt.xlabel(param['xlabel'])
 	plt.ylabel(param['ylabel'])
@@ -70,8 +69,44 @@ def plot_freq_val(df):
 		plt.subplots_adjust(bottom=0.25)
 	plt.show()
 
+def oneplot(df,columns):
+	'''
+	引数:
+		df:データフレーム
+		columns:行の名前(タイムスタンプ形式)
+	'''
+	df[columns].plot()
+
+
+def allplot(df):
+	'''
+	時間ごとに横軸index, 縦軸valuesでプロット
+	データフレームのプロットを重ねて表示
+	引数:
+		df:データフレーム
+	'''
+	print('\n[グラフ化したデータ一覧]\n',df.columns)
+	##____________________________
+	df.plot(grid=True,ylim=param['ylim'],legend=False)
+	plot_setting(df)
 
 '''TEST
 '''
-plot_freq_val(df)
+allplot(df)
 
+
+'''
+開発中
+def heatmap_freq_time_val(df):
+	ax=sns.heatmap(df.T)
+	xlabels=[i if i in np.arange(22,26,0.5) else None for i in df.index]   #xラベル間引き22から26(0.5ずつ増加)以外はNoneにする
+	timegroup=pd.date_range(df.columns[0],df.columns[-1],freq='H')   #df.columns1時間後とのイテレータ
+	ylabels=[i if i in timegroup else None for i in df.columns]
+	ax.set_xtickslabels(xlabels)
+	ax.set_ytickslabels(ylabels)
+	plt.ylabel(param['ylabel'])
+	plt.show()
+'''
+
+
+# heatmap_freq_time_val(df)
