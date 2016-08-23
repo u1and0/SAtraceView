@@ -1,3 +1,22 @@
+'''
+データ選択してグラフ化するするモジュール
+
+やっていること
+
+1. パラメータを読み込む
+	`param.param()`
+2. データフレームを作成する
+	`df=rt.glob_dataframe(rt.dataglob())`
+3. df.plotでプロットする
+	`df.plot(grid=True,ylim=(-120,0),legend=False)`
+4. プロットの設定をする
+5. プロットを別ウィンドウで表示
+	`plot.show()`
+'''
+
+
+
+
 ## __MATH MODULES__________________________ 
 import numpy as np
 import pandas as pd
