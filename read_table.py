@@ -64,7 +64,7 @@ def spectrum(fullpath):
 
 
 
-
+'''TEST
 ## __MAIN__________________________
 file='20160818_145913.txt'
 k=spectrum(path+file)
@@ -72,3 +72,4 @@ k['Frequency']=np.linspace(22,26,1001)
 print(k)
 k.plot(x='Frequency',y=pd.Timestamp(pd.to_datetime(file[:-4],format='%Y%m%d_%H%M%S')))
 plt.show()
+'''
