@@ -132,7 +132,7 @@ ____________________________
 
 		print('%s内のファイルを取得します。'%path)
 		regex=input('正規表現で入力してください >> ')
-	return glob.glob(path+regex+'*.txt')[start:stop]
+	return glob.glob(path+regex)[start:stop]
 
 
 
