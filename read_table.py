@@ -193,6 +193,6 @@ def fitfile_all(path,regex):
 		df=pd.concat(pieces)
 	return df
 '''TEST fitfile_all()
-'''
 df=fitfile_all(param['out']+'CSV/','S????_??.csv')
 print(df)
+'''

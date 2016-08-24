@@ -31,12 +31,7 @@ import param
 param=param.param()
 
 ## __DATA__________________________
-path=param['in']
-regex=[None,'20160225_*']   #regexが空のときはdataglob()によって入力が施される
-df=rt.dataframe(path,regex[1])
-
-
-
+df=rt.dataframe(path=param['in'],regex='20160225_*')   #regexが空のときはdataglob()によって入力が施される
 
 def plt_setting(plot_element):
 	'''
@@ -52,8 +47,6 @@ def plt_setting(plot_element):
 	if plot_element<=12:   #データ12こ(1時間分)までなら凡例表示
 		plt.legend(bbox_to_anchor=(0.5, -0.25), loc='center', borderaxespad=0,fontsize='small',ncol=3)
 		plt.subplots_adjust(bottom=0.25)
-	else:
-		plt.legend(False)
 	plt.show()
 
 
@@ -66,9 +59,9 @@ def timepower(df,columns):
 	plt_setting(len(columns))
 
 '''timepower() TEST
-'''
 columns=[22,23,25.1,25]
 timepower(df,columns)
+'''
 
 
 
@@ -85,12 +78,13 @@ def oneplot(df,columns):
 	oneframe=pd.DataFrame([stats.scoreatpercentile(df[col],100/4) for i in frequency],index=frequency,columns=['NoiseFloor'])	#NoiseFloor is 1/4 median.
 	df.plot(y=col,grid=True,ylim=param['ylim'])
 	oneframe['NoiseFloor'].plot(color='k')
-	plt_setting(df)
+	plt_setting(len(df.columns))
 '''
 oneplot() TEST
 columns=[pd.Timestamp('2016-02-25 12:00:02'),pd.Timestamp('2016-02-25 12:45:02')]
 for col in columns:
 	oneplot(df,columns)
+oneplot(df,pd.Timestamp('2016-02-25 12:00:02'),pd.Timestamp('2016-02-25 12:45:02'))
 '''
 
 
@@ -104,11 +98,10 @@ def allplot(df):
 	print('\n[グラフ化したデータ一覧]\n',df.columns)
 	##____________________________
 	df.plot(grid=True,ylim=param['ylim'],legend=False)
-	plt_setting(df)
+	plt_setting(len(df.columns))
 
-# allplot(df)
 '''allplot() TEST
-oneplot(df,pd.Timestamp('2016-02-25 12:00:02'),pd.Timestamp('2016-02-25 12:45:02'))
+allplot(df)
 '''
 
 '''
