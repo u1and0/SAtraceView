@@ -31,8 +31,9 @@ import param
 param=param.param()
 
 ## __DATA__________________________
-fullpath=[None,'20160225_*']   #fullpathが空のときはdataglob()によって入力が施される
-df=rt.dataframe(fullpath[1])
+path=param['in']
+regex=[None,'20160225_*']   #regexが空のときはdataglob()によって入力が施される
+df=rt.dataframe(path,regex[1])
 
 
 

@@ -18,7 +18,6 @@ path=param['in']
 freq_start=param['freq_start']
 freq_stop=param['freq_stop']
 num=param['number_of_rows']
-outpath=param['out']
 
 
 def onefile(fullpath):
@@ -75,7 +74,7 @@ def spectrum(fullpath,columns='Ave'):
 
 
 
-def dataglob(regex=False,start=0,stop=None):
+def dataglob(path,regex=False,start=0,stop=None):
 	'''
 	* 引数:
 		* regex:globするファイル名(正規表現)
@@ -144,8 +143,10 @@ def glob_dataframe(allfiles):
 	# plt.show()   #それぞれ別のウィンドウで開く
 
 
-def dataframe(regex):
+def dataframe(path,regex):
 	'''
+	glob_dataframe()からcolumn:ファイル名、index:周波数のdataframeをもらう
+	dataglob()から読み取るデータのフルパスが格納されたリストを受け取る
 	正規表現を元にデータフレーム返す関数
 	引数:
 		rergex:正規表現(str形式)
@@ -153,11 +154,45 @@ def dataframe(regex):
 		df:データフレーム(pd.DataFrame形式)
 	'''
 	frequency=pd.Series(np.linspace(freq_start,freq_stop,num))   #横軸はSeriesで定義
-	df=glob_dataframe(dataglob(regex))   #データフレーム;テストのときはfullpath[1], リリースのときはfullpath[0]
+	df=glob_dataframe(dataglob(path,regex))   #データフレーム;テストのときはfullpath[1], リリースのときはfullpath[0]
 	df.index=frequency   #インデックス(横軸)を振りなおす
 	return df
 
 
 
-def dataframe_fit():
-	pass
+
+
+
+def fitfile(fullpath):
+	'''fitされた1ファイルをデータフレームとして出力'''
+	df=pd.read_csv(fullpath,header=0,index_col='DateTime')
+			   #1行目(0行目？)をヘッダー(=columns name)とし
+			   # 'DateTime'と名前のついたcolumnをindexとする
+	return df
+'''TEST read_fitfile()
+fullpath=param['out']+'CSV/P2015_12.csv'
+print(fitfile(fullpath))
+'''
+
+
+def fitfile_all(path,regex):
+	'''
+	fitされたすべてのファイル(dataglob()で取得)を行方向に追加してデータフレームを返す
+
+	引数:
+		path:ファイルの詰まったパス
+		regex:ファイル名(正規表現)
+
+	戻り値:
+		df:path+regexで指定したすべてのファイルを行方向に連結したデータフレーム(pd.DataFrame形式)
+	'''
+	allfiles=dataglob(path,regex)
+	pieces=[]
+	for file in allfiles:
+		pieces.append(fitfile(file))
+		df=pd.concat(pieces)
+	return df
+'''TEST fitfile_all()
+'''
+df=fitfile_all(param['out']+'CSV/','S????_??.csv')
+print(df)
