@@ -14,3 +14,6 @@ param=param.param()
 ## __DATA__________________________
 df=rt.fitfile_all(param['out']+'CSV/','S????_??.csv')
 print(df)
+columns=df.columns
+prop=df[columns].count/len(df[columns[0]])
+.plot
