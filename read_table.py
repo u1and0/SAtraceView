@@ -53,6 +53,12 @@ def manyfile(start,stop):
 # print(onefile(path+'20160101_081243.txt'))
 # print(manyfile(None,10))
 
+
+
+
+
+
+
 def spectrum(fullpath,columns='Ave'):
 	'''
 	Make dataframe as ploting spectrums.
@@ -67,34 +73,6 @@ def spectrum(fullpath,columns='Ave'):
 
 
 
-
-def glob_dataframe(allfiles):
-	'''
-	* 通常の使い方:
-		`glob_dataframe(dataglob())`
-		としてpathからファイル名(フルパス)を読み込む
-
-	* 自分でリスト選択
-		`glob_dataframe([path+'20160225_001023.txt',path+'20160225_000523.txt'])`
-		みたいにしてリストを与えてやっても可
-
-	* 引数:
-		* allfiles:ファイルのフルパス(リスト形式)
-
-	* 戻り値：
-		* df:allfilesから取得した(pandas.DataFrame形式)
-	'''
-	num=len(spectrum(allfiles[1]))   #
-	df=pd.DataFrame(list(range(num)),columns=['Temp'])   #1001要素の仮のデータフレーム作製
-	for file in allfiles:   #1ファイルを1columnとしてdfに追加
-		filebasename=file[-19:-4]
-		df[pd.to_datetime(filebasename,format='%Y%m%d_%H%M%S')]=spectrum(file)
-		# df.plot(x=frequency,y=pd.Timestamp(pd.to_datetime(filebasename,format='%Y%m%d_%H%M%S')))
-	del df['Temp']   #仮で作ったデータは消す
-	print('Loading pandas DataFrame...\n\n',df)
-	print('\n\n...Loading END.\n')
-	return df
-	# plt.show()   #それぞれ別のウィンドウで開く
 
 
 def dataglob(regex=False,start=0,stop=None):
@@ -137,6 +115,34 @@ ____________________________
 
 
 
+def glob_dataframe(allfiles):
+	'''
+	* 通常の使い方:
+		`glob_dataframe(dataglob())`
+		としてpathからファイル名(フルパス)を読み込む
+
+	* 自分でリスト選択
+		`glob_dataframe([path+'20160225_001023.txt',path+'20160225_000523.txt'])`
+		みたいにしてリストを与えてやっても可
+
+	* 引数:
+		* allfiles:ファイルのフルパス(リスト形式)
+
+	* 戻り値：
+		* df:allfilesから取得した(pandas.DataFrame形式)
+	'''
+	num=len(spectrum(allfiles[1]))   #
+	df=pd.DataFrame(list(range(num)),columns=['Temp'])   #1001要素の仮のデータフレーム作製
+	for file in allfiles:   #1ファイルを1columnとしてdfに追加
+		filebasename=file[-19:-4]
+		df[pd.to_datetime(filebasename,format='%Y%m%d_%H%M%S')]=spectrum(file)
+		# df.plot(x=frequency,y=pd.Timestamp(pd.to_datetime(filebasename,format='%Y%m%d_%H%M%S')))
+	del df['Temp']   #仮で作ったデータは消す
+	print('Loading pandas DataFrame...\n\n',df)
+	print('\n\n...Loading END.\n')
+	return df
+	# plt.show()   #それぞれ別のウィンドウで開く
+
 
 def dataframe(regex):
 	'''
@@ -150,3 +156,8 @@ def dataframe(regex):
 	df=glob_dataframe(dataglob(regex))   #データフレーム;テストのときはfullpath[1], リリースのときはfullpath[0]
 	df.index=frequency   #インデックス(横軸)を振りなおす
 	return df
+
+
+
+def dataframe_fit():
+	pass
