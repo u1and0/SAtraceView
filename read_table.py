@@ -7,7 +7,6 @@ import glob
 import sys
 from datetime import datetime, timedelta
 import time
-import drange   #user定義のdrange(pltdのも使いたいけど、datetime表記にする方法忘れた)
 
 # __パラメータ読み込み__________________________
 import param
