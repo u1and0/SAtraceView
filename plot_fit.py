@@ -19,4 +19,4 @@ count_foo=codf.foo.sum()   #fooの集計
 print(count_foo)
 
 
-# count=pd.DataFrame([codf[codf.columns]],col=df.columns)
+print(df.foo.count)   #こうすれば"np.where"で1,0にしなくていい
