@@ -29,3 +29,5 @@ print('_'*20+'\n')
 key=lambda x:x.date
 dfd=df.groupby(key).sum()   #日ごとに集計
 print(dfd)
+print('_'*20+'\n')
+

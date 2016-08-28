@@ -122,8 +122,8 @@ def make_dummy_dataframe():
 	colは適当な名前
 	'''
 	col=['foo','bar','hoge','foobar','hogehoge']
-	per=30
-	ind=pd.date_range(pd.Timestamp('20160101'),periods=per,freq='H')
+	per=24*10
+	ind=pd.date_range(pd.Timestamp('20160101'),periods=per,freq='H')   #2016/1/1から1時間ごとに10日分イテレート
 	ra=randn(per*len(col)).reshape(per,len(col))*100   #11行3列の-100~100の乱数
 	ra=np.where(ra>0,ra,None)   #raの値が0以上であればそのままraの値、0以下であればNoneを返す
 	df=pd.DataFrame(ra,columns=col,index=ind)
