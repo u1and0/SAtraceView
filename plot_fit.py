@@ -11,15 +11,12 @@ import makedata
 
 
 df=makedata.make_dummy_dataframe()
-codf=pd.DataFrame(np.where(df,1,0),index=df.index,columns=df.columns)
-print(codf)
-
-
-count_foo=codf.foo.sum()   #fooの集計
-print(count_foo)
-
-
-print(df.foo.count())   #こうすれば"np.where"で1,0にしなくていい
+print(df)
 
 
 print(df.count())   #全columnを集計
+
+prop=df.count()/len(df)   #全dfに対して、いくつ値が入っているかの比率
+print(prop)
+prop.plot.bar()
+plt.show()
