@@ -28,29 +28,10 @@ import seaborn as sns
 import read_table as rt
 import param
 
-
-## __READ PARAMETER__________________________
 param=param.param()
 
-path=param['in']
-freq_start=param['freq_start']
-freq_stop=param['freq_stop']
-num=param['number_of_rows']
-outpath=param['out']
-
 ## __DATA__________________________
-fullpath=[None,'2016022[5-9]_*']   #fullpathが空のときはdataglob()によって入力が施される
-
-## __Make DataFrame__________________________
-frequency=pd.Series(np.linspace(freq_start,freq_stop,num))   #横軸はSeriesで定義
-df=rt.glob_dataframe(rt.dataglob(fullpath[1]))   #データフレーム;テストのときはfullpath[1], リリースのときはfullpath[0]
-df.index=frequency   #インデックス(横軸)を振りなおす
-
-
-
-
-
-
+df=rt.dataframe(path=param['in'],regex='20160225_*')   #regexが空のときはdataglob()によって入力が施される
 
 def plt_setting(plot_element):
 	'''
@@ -66,8 +47,6 @@ def plt_setting(plot_element):
 	if plot_element<=12:   #データ12こ(1時間分)までなら凡例表示
 		plt.legend(bbox_to_anchor=(0.5, -0.25), loc='center', borderaxespad=0,fontsize='small',ncol=3)
 		plt.subplots_adjust(bottom=0.25)
-	else:
-		plt.legend(False)
 	plt.show()
 
 
@@ -80,9 +59,9 @@ def timepower(df,columns):
 	plt_setting(len(columns))
 
 '''timepower() TEST
-'''
 columns=[22,23,25.1,25]
 timepower(df,columns)
+'''
 
 
 
@@ -99,12 +78,13 @@ def oneplot(df,columns):
 	oneframe=pd.DataFrame([stats.scoreatpercentile(df[col],100/4) for i in frequency],index=frequency,columns=['NoiseFloor'])	#NoiseFloor is 1/4 median.
 	df.plot(y=col,grid=True,ylim=param['ylim'])
 	oneframe['NoiseFloor'].plot(color='k')
-	plt_setting(df)
+	plt_setting(len(df.columns))
 '''
 oneplot() TEST
 columns=[pd.Timestamp('2016-02-25 12:00:02'),pd.Timestamp('2016-02-25 12:45:02')]
 for col in columns:
 	oneplot(df,columns)
+oneplot(df,pd.Timestamp('2016-02-25 12:00:02'),pd.Timestamp('2016-02-25 12:45:02'))
 '''
 
 
@@ -118,11 +98,10 @@ def allplot(df):
 	print('\n[グラフ化したデータ一覧]\n',df.columns)
 	##____________________________
 	df.plot(grid=True,ylim=param['ylim'],legend=False)
-	plt_setting(df)
+	plt_setting(len(df.columns))
 
-# allplot(df)
 '''allplot() TEST
-oneplot(df,pd.Timestamp('2016-02-25 12:00:02'),pd.Timestamp('2016-02-25 12:45:02'))
+allplot(df)
 '''
 
 '''
