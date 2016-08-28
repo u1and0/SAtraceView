@@ -26,8 +26,15 @@ print('_'*20+'\n')
 # plt.show()
 
 
+
+codf=pd.DataFrame(np.where(df,1,0),index=df.index,columns=df.columns)
+
+
+
 key=lambda x:x.date
-dfd=df.groupby(key).sum()   #日ごとに集計
+dfd=codf.groupby(key).sum()   #日ごとに集計
 print(dfd)
 print('_'*20+'\n')
 
+dfd.plot.bar()
+plt.show()
