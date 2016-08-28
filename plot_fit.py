@@ -22,5 +22,10 @@ prop=df.count()/len(df)   #全dfに対して、いくつ値が入っているか
 print(prop)
 print('_'*20+'\n')
 
-prop.plot.bar()
-plt.show()
+# prop.plot.bar()
+# plt.show()
+
+
+key=lambda x:x.date
+dfd=df.groupby(key).sum()   #日ごとに集計
+print(dfd)
