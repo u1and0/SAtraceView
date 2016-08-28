@@ -43,20 +43,15 @@ def gaussian(x,a=1,mu=500,sigma=50,shift=0):
 	# print(df)
 	# df.plot(y=alllist);plt.show()
 
-def makefile1():
-	# with open(fullpath,mode='w') as f:
-	# 	c='# <This is DUMMY DATA made by %s>\n'% os.path.basename(os.getcwd())   #ファイルベースネームを書き込む
-	names=['hoge','hoo','bar']
-	df=pd.DataFrame(range(1001),columns=['index'])
-	for column in range(3):
-		[mu,sigma,shift]=[gaussian_param(column)['mu'], gaussian_param(column)['sigma'], gaussian_param(column)['shift']]
-		df[column]=[gaussian(indexes,mu=mu,sigma=sigma,shift=shift) for indexes in range(1001)]
-		print(df)
-		# 	c+='\n'
-		# c+='# <eof>\n'
-		# f.write(c)
-'''TEST makefile1
-makefile1()
+def gaussian_dataframe():
+	df=pd.DataFrame([gaussian(i) for i in range(1001)])
+	# for column in range(3):
+	# 	[mu,sigma,shift]=[gaussian_param(column)['mu'], gaussian_param(column)['sigma'], gaussian_param(column)['shift']]
+	# 	df[column]=[gaussian(indexes,mu=mu,sigma=sigma,shift=shift) for indexes in range(1001)]
+	return df
+'''TEST gaussian_dataframe
+df=gaussian_dataframe()
+print(df)
 '''
 
 
