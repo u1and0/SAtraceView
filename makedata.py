@@ -121,9 +121,10 @@ def make_dummy_dataframe():
 	indexは時間
 	colは適当な名前
 	'''
-	col=['foo','bar','hoge']
-	ind=pd.date_range(pd.Timestamp('20160101'),periods=11)
-	ra=randn(33).reshape(11,3)*100   #11行3列の-100~100の乱数
+	col=['foo','bar','hoge','foobar','hogehoge']
+	per=30
+	ind=pd.date_range(pd.Timestamp('20160101'),periods=per,freq='H')
+	ra=randn(per*len(col)).reshape(per,len(col))*100   #11行3列の-100~100の乱数
 	ra=np.where(ra>0,ra,None)   #raの値が0以上であればそのままraの値、0以下であればNoneを返す
 	df=pd.DataFrame(ra,columns=col,index=ind)
 	return df

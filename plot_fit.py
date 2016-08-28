@@ -12,11 +12,15 @@ import makedata
 
 df=makedata.make_dummy_dataframe()
 print(df)
+print('_'*20+'\n')
 
 
 print(df.count())   #全columnを集計
+print('_'*20+'\n')
 
 prop=df.count()/len(df)   #全dfに対して、いくつ値が入っているかの比率
 print(prop)
+print('_'*20+'\n')
+
 prop.plot.bar()
 plt.show()
