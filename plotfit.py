@@ -12,31 +12,48 @@ import param
 param=param.param()
 
 # df=makedata.make_dummy_dataframe()
+csv_files=['S2015_11',
+	'S2015_11',
+	'S2016_01',
+	'S2016_02',
+	'S2016_03',
+	'S2016_04',
+	'S2016_05',
+	'S2016_06',
+	'S2016_07',
+	'S2016_08',
+	# 'S2016_09',
+	# 'S2016_10',
+	# 'S2016_11',
+	]
 df=rt.fitfile_all(param['out']+'CSV/','S????_??.csv')
+print('df')
 print(df)
 print('_'*20+'\n')
 
 
+print('df.count()')
 print(df.count())   #全columnを集計
 print('_'*20+'\n')
 
-prop=df.count()/len(df)   #全dfに対して、いくつ値が入っているかの比率
+prop=df.count(numeric_only=True)/len(df)   #全dfに対して、いくつ値が入っているかの比率
+print('prop')
 print(prop)
 print('_'*20+'\n')
 
-# prop.plot.bar()
-# plt.show()
-
-
-
-codf=pd.DataFrame(np.where(df,1,0),index=df.index,columns=df.columns)
-
-
-
-key=lambda x:x.month
-dfd=codf.groupby(key).sum()   #日ごとに集計
-print(dfd)
-print('_'*20+'\n')
-
-dfd.plot.bar()
+prop.plot.bar()
 plt.show()
+
+
+
+# codf=pd.DataFrame(np.where(df,1,0),index=df.index,columns=df.columns)   #使えない,NaNも1にしてしまうので。
+
+
+
+# key=lambda x:x.date   #日ごとに集計
+# dfd=codf.groupby(key).sum()
+# print(dfd)
+# print('_'*20+'\n')
+
+# dfd.plot.bar()
+# plt.show()
