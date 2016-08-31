@@ -167,8 +167,8 @@ def dataframe(path,regex):
 def fitfile(fullpath):
 	'''fitされた1ファイルをデータフレームとして出力'''
 	df=pd.read_csv(fullpath,header=0,index_col='DateTime')
-			   #1行目(0行目？)をヘッダー(=columns name)とし
-			   # 'DateTime'と名前のついたcolumnをindexとする
+				 #1行目(0行目？)をヘッダー(=columns name)とし
+				 # 'DateTime'と名前のついたcolumnをindexとする
 	return df
 '''TEST read_fitfile()
 fullpath=param['out']+'CSV/P2015_12.csv'
@@ -197,3 +197,29 @@ def fitfile_all(path,regex):
 df=fitfile_all(param['out']+'CSV/','S????_??.csv')
 print(df)
 '''
+
+
+import codecs
+import re
+code=[]
+with codecs.open('./filelist.txt','r','utf-8') as f:
+		code+=f.readlines()
+
+# ここらへんで#含む行は無効にしたい
+# for i in code:
+# if re.match('#',code):
+# 	pop.code
+
+# code=[]
+# f=codecs.open('filelist.txt','r','utf-8')
+# for line in f.readlines():
+# 	code+=line
+# print(code)
+
+
+
+# for i in map(lamb,code):
+# 	code+=i
+
+lamb=lambda x:x.strip('\n\r\'\"')
+print([i for i in map(lamb,code)])
