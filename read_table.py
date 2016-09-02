@@ -11,7 +11,6 @@ import time
 ## __USER MODULES__________________________ 
 import param
 
-
 ## __READ PARAMETER__________________________
 param=param.param()
 
@@ -169,6 +168,7 @@ def fitfile(fullpath):
 	df=pd.read_csv(fullpath,header=0,index_col='DateTime')
 			   #1行目(0行目？)をヘッダー(=columns name)とし
 			   # 'DateTime'と名前のついたcolumnをindexとする
+	df.index=pd.to_datetime(df.index)   #インデックスを文字列からpd.Timestamp形式に変換
 	return df
 '''TEST read_fitfile()
 fullpath=param['out']+'CSV/P2015_12.csv'
