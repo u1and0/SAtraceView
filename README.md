@@ -47,6 +47,7 @@ SAtraceで収集したデータの分析
 
 
 
+# データの読み込み
 
 ## read_table.py
 
@@ -54,6 +55,18 @@ SAtraceで収集したデータの分析
 
 * 読み込んだデータをpandas.DataFrame形式にして返す関数:glob_dataframe()
 * globしたリストを返す関数:dataglob()
+
+
+
+**ユーザーが指定するデータ選択の方法**
+* 指定したディレクトリのリストから読み込む
+* なければglobする>>>ユーザーにinput施す
+	* 引数1つ
+		* glob.glob(regex)
+	* 引数2つ
+		* pd.date_range(start,end)
+	* 引数3つ
+		* pd.date_range(start,end,freq='D||H')
 
 
 
