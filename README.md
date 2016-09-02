@@ -120,3 +120,11 @@ dataglob()によってglobするファイル名をユーザーに入力を施す
 5. プロットを別ウィンドウで表示
 	`plot.show()`
 
+### plot2d TODO
+
+クラス化する
+
+* `plot2d.Plot2d.allplot()`とかで呼び出せたらな。
+* `plot2d.Plot2d.hoge()`のところをユーザーに選択させる
+* 引数はdate_range()かな
+* date_range indexを勉強しよう
