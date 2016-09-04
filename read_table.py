@@ -205,10 +205,6 @@ code=[]
 with codecs.open('./filelist.txt','r','utf-8') as f:
 		code+=f.readlines()
 
-# ここらへんで#含む行は無効にしたい
-# for i in code:
-# if re.match('#',code):
-# 	pop.code
 
 # code=[]
 # f=codecs.open('filelist.txt','r','utf-8')
@@ -220,6 +216,10 @@ with codecs.open('./filelist.txt','r','utf-8') as f:
 
 # for i in map(lamb,code):
 # 	code+=i
+a=[i.strip('\n\r\'\"') for i in code]
+print(a)   # stripにより、改行、クォーテーションの削除
 
-lamb=lambda x:x.strip('\n\r\'\"')
-print([i for i in map(lamb,code)])
+# ここらへんで#含む行は無効にしたい
+# for i in code:
+# if re.match('#',code):
+# 	pop.code
