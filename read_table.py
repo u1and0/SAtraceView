@@ -220,6 +220,6 @@ a=[i.strip('\n\r\'\"') for i in code]
 print(a)   # stripにより、改行、クォーテーションの削除
 
 # ここらへんで#含む行は無効にしたい
-# for i in code:
-# if re.match('#',code):
-# 	pop.code
+for i in a:
+if re.match('#',i):
+	a.pop.a
