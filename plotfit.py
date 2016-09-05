@@ -36,7 +36,7 @@ print('df.count()')
 print(df.count())   #全columnを集計
 print('_'*20+'\n')
 
-prop=df.count(numeric_only=True)/len(df)   #全dfに対して、いくつ値が入っているかの比率
+prop=df.count()/len(df)   #全dfに対して、いくつ値が入っているかの比率
 print('prop')
 print(prop)
 print('_'*20+'\n')
