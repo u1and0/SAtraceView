@@ -32,10 +32,8 @@ param=param.param()
 # 	]
 df=rt.fitfile_all(param['out']+'CSV/','S????_??.csv')
 
-
 # std,end='20160111','20160210'
 # df_loc=df.loc[std:end]   #std~endまでのインデックスを選択
-
 
 
 def prop_plot(df_loc):
@@ -116,7 +114,8 @@ for std,end in csvlist:
 del propdf['temp']
 print(propdf)
 
-ax=propdf.T.plot.bar(title='Monthly Reception Ratio',rot=30)
+month_ratio=propdf.T.sort_index(axis=1)
+ax=month_ratio.plot.bar(title='Monthly Reception Ratio',rot=30)
 ax.set_xlabel('Month')
 ax.set_ylabel('Ratio')
 plot_legend_setting(len(propdf.T.columns))
