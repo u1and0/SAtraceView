@@ -32,26 +32,27 @@ def onefile(fullpath):
 	return df
 
 
+'''TEST manyfile()
+print(onefile(path+'20160101_081243.txt'))
+'''
 
 
 
 
-def manyfile(start,stop):
+def manyfile(regex):
 	'''
 	Read multiple files
 	Store dataframe
 	'''
-	allfiles=glob.glob(path+'*.txt')[start:stop]
+	allfiles=glob.glob(path+regex+'*.txt')
 	pieces=[]
 	for file in allfiles:
 		pieces.append(onefile(file))
-		data=pd.concat(pieces,ignore_index=True)
-	return data
+	return pd.concat(pieces,ignore_index=True)
 
-
-# print(onefile(path+'20160101_081243.txt'))
-# print(manyfile(None,10))
-
+'''TEST manyfile()
+'''
+print(manyfile('201602'))
 
 
 

@@ -31,7 +31,7 @@ import param
 param=param.param()
 
 ## __DATA__________________________
-df=rt.dataframe(path=param['in'],regex='20160225_*')   #regexが空のときはdataglob()によって入力が施される
+df=rt.dataframe(path=param['in'],regex='201602*')   #regexが空のときはdataglob()によって入力が施される
 
 def plt_setting(plot_element):
 	'''
@@ -119,3 +119,10 @@ def heatmap_freq_time_val(df):
 
 
 # heatmap_freq_time_val(df)
+
+
+
+
+## __allmean__________________________
+'''dfを周波数ごとに平均化して、平均値のプロット'''
+
