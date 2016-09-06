@@ -27,32 +27,32 @@ csv_files=['S2015_11',
 	# 'S2016_11',
 	]
 df=rt.fitfile_all(param['out']+'CSV/','S????_??.csv')
-print('df')
-print(df)
-print('_'*20+'\n')
+
 
 std='20160101'
 end='20160131'
-df=df.loc[std:end]   #std~endまでのインデックスを選択
+dfm=df.loc[std:end]   #std~endまでのインデックスを選択
 
-def prop(df):
-	print('df.count()')
-	print(df.count())   #全columnを集計
-	print('_'*20+'\n')
 
-	prop=df.count()/len(df)   #全dfに対して、いくつ値が入っているかの比率
-	print('prop')
-	print(prop)
-	print('_'*20+'\n')
+print('dfm')
+print(dfm)
+print('_'*20+'\n')
 
-	return prop
 
-def plot_prop(df):
-	return df.plot.bar(title='%s-%s'%(std,end),layout=(0,1))
+print('全columnを集計')
+print(dfm.count())   #全columnを集計
+print('_'*20+'\n')
 
-'''TEST plot_prop()
-'''
-plt.show(plot_prop(prop(df)))
+prop=dfm.count()/len(dfm)   #全dfに対して、いくつ値が入っているかの比率
+print('値が入っている比率')
+print(prop)
+print('_'*20+'\n')
+
+prop.plot.bar(title='%s-%s'%(std,end),rot=30)
+
+
+plt.show()
+
 # codf=pd.DataFrame(np.where(df,1,0),index=df.index,columns=df.columns)   #使えない,NaNも1にしてしまうので。
 
 
