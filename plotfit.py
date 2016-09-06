@@ -31,6 +31,9 @@ print('df')
 print(df)
 print('_'*20+'\n')
 
+std='20160101'
+end='20160131'
+df=df.loc[std:end]   #std~endまでのインデックスを選択
 
 print('df.count()')
 print(df.count())   #全columnを集計
@@ -41,7 +44,7 @@ print('prop')
 print(prop)
 print('_'*20+'\n')
 
-prop.plot.bar()
+prop.plot.bar(title='%s-%s'%(std,end))
 plt.show()
 
 
