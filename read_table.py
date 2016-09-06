@@ -89,7 +89,7 @@ def dataglob(path,regex=False):
 		* path内のファイルのリスト
 	* 空の入力=引数なしはデフォルト引数'*'が入力され、path内のすべてのファイルを拾う
 	'''
-	if not regex:
+	if not regex:   #regexがなければコンソールから打ち込ませる
 		print('''
 ____________________________
 <使い方>
@@ -113,7 +113,7 @@ ____________________________
 
 		print('%s内のファイルを取得します。'%path)
 		regex=input('正規表現で入力してください >> ')
-	return glob.glob(path+regex)
+	return glob.glob(path+regex+'*')
 
 
 
@@ -134,12 +134,22 @@ def glob_dataframe(allfiles):
 	* 戻り値：
 		* df:allfilesから取得した(pandas.DataFrame形式)
 	'''
+
+	## __MAKE PSEDO DATAFRAME__________________________
 	df=pd.DataFrame(list(range(num)),columns=['Temp'])   #1001要素の仮のデータフレーム作製
+
+	## __ADD DATAFRAME__________________________ 
 	for file in allfiles:   #1ファイルを1columnとしてdfに追加
 		filebasename=file[-19:-4]
 		df[pd.to_datetime(filebasename,format='%Y%m%d_%H%M%S')]=spectrum(file)
 		# df.plot(x=frequency,y=pd.Timestamp(pd.to_datetime(filebasename,format='%Y%m%d_%H%M%S')))
+
+	## __DELETE PSEDO DATAFRAME & EDIT DATAFRAME__________________________
 	del df['Temp']   #仮で作ったデータは消す
+	frequency=pd.Series(np.linspace(freq_start,freq_stop,num))   #横軸はSeriesで定義
+	df.index=frequency   #インデックス(横軸)を振りなおす
+
+	##__INDICATE MADE DATAFRAME__________________________ 
 	print('Loading pandas DataFrame...\n\n',df)
 	print('\n\n...Loading END.\n')
 	return df
@@ -154,12 +164,9 @@ def dataframe(path,regex):
 	引数:
 		rergex:正規表現(str形式)
 	戻り値:
-		df:データフレーム(pd.DataFrame形式)
+		glob_dataframe(dataglob(path,regex)):データフレーム(pd.DataFrame形式)
 	'''
-	frequency=pd.Series(np.linspace(freq_start,freq_stop,num))   #横軸はSeriesで定義
-	df=glob_dataframe(dataglob(path,regex))
-	df.index=frequency   #インデックス(横軸)を振りなおす
-	return df
+	return glob_dataframe(dataglob(path,regex))   #pd.DataFrame形式
 
 '''TEST dataframe()
 '''
