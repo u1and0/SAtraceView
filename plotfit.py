@@ -85,9 +85,9 @@ prop_date(df_loc)
 
 
 def plot_legend_setting(plot_element):
-	'''データ12こ(1時間分)までなら凡例表示'''
+	'''データ12コまでなら凡例表示'''
 	if plot_element<=12:
-		plt.legend(bbox_to_anchor=(0.5, -0.3), loc='center', borderaxespad=0,fontsize='small',ncol=4)
+		plt.legend(bbox_to_anchor=(0.5, -0.3), loc='center', borderaxespad=0,fontsize='small',ncol=3)
 		plt.subplots_adjust(bottom=0.25)
 
 
@@ -115,6 +115,7 @@ del propdf['temp']
 print(propdf)
 
 month_ratio=propdf.T.sort_index(axis=1)
+# month_ratio.columns=param['country'][month_ratio.columns]
 ax=month_ratio.plot.bar(title='Monthly Reception Ratio',rot=30)
 ax.set_xlabel('Month')
 ax.set_ylabel('Ratio')
