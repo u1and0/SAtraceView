@@ -2,8 +2,12 @@
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
+# import matplotlib
+# font = {'family' : 'gothice'}
+# matplotlib.rc('font', **font)
 from scipy import stats
-# import seaborn as sns
+import seaborn as sns
+# sns.set(font=['IPAPGothic'])
 
 ## __USER MODULES__________________________
 import read_table as rt
@@ -82,7 +86,11 @@ prop_date(df_loc)
 
 
 
-
+def plot_legend_setting(plot_element):
+	'''データ12こ(1時間分)までなら凡例表示'''
+	if plot_element<=12:
+		plt.legend(bbox_to_anchor=(0.5, -0.3), loc='center', borderaxespad=0,fontsize='small',ncol=4)
+		plt.subplots_adjust(bottom=0.25)
 
 
 
@@ -104,8 +112,12 @@ csvlist=[
 propdf=pd.DataFrame([],columns=['temp'])
 for std,end in csvlist:
 	df_loc=df.loc[std:end]   #std~endまでのインデックスを選択
-	propdf['%s/%s'%(std[:4],std[5:6])]=prop_date(df_loc)
+	propdf['%s/%s'%(std[:4],std[4:6])]=prop_date(df_loc)
 del propdf['temp']
 print(propdf)
-propdf.T.plot.bar(title='比率',rot=30)
-plt.show()
+
+ax=propdf.T.plot.bar(title='Monthly Reception Ratio',rot=30)
+ax.set_xlabel('Month')
+ax.set_ylabel('Ratio')
+plot_legend_setting(len(propdf.T.columns))
+plt.show(ax)
