@@ -60,17 +60,20 @@ plt.show(prop_plot(df_loc))
 
 
 
-
-key=lambda x:x.date
-df_cnt=df_loc.groupby(key).count()   #日ごとに集計
-print(df_cnt)
-print('_'*20+'\n')
-
-
-print(df_cnt.sum())   #周波数ごとに合計する
-print('_'*20+'\n')
+def prop_date(df_loc):
+	key=lambda x:x.date
+	df_cnt=df_loc.groupby(key).count()   #日ごとに集計
+	print(df_cnt)
+	print('_'*20+'\n')
 
 
-prop=df_cnt.sum()/len(df_loc)   #月ごとの比率はdf_locで割り算
-print(prop)
-print('_'*20+'\n')
+	print(df_cnt.sum())   #周波数ごとに合計する
+	print('_'*20+'\n')
+
+
+	prop=df_cnt.sum()/len(df_loc)   #月ごとの比率はdf_locで割り算
+	print(prop)
+	print('_'*20+'\n')
+	return prop
+
+prop_date(df_loc)
