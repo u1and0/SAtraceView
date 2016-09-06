@@ -29,8 +29,8 @@ param=param.param()
 df=rt.fitfile_all(param['out']+'CSV/','S????_??.csv')
 
 
-std,end='20160111','20160210'
-df_loc=df.loc[std:end]   #std~endまでのインデックスを選択
+# std,end='20160111','20160210'
+# df_loc=df.loc[std:end]   #std~endまでのインデックスを選択
 
 
 
@@ -76,4 +76,36 @@ def prop_date(df_loc):
 	print('_'*20+'\n')
 	return prop
 
+'''TEST
 prop_date(df_loc)
+'''
+
+
+
+
+
+
+
+
+
+
+
+csvlist=[
+('20151111','20151210'),
+('20151211','20160110'),
+('20160111','20160210'),
+('20160211','20160310'),
+('20160311','20160410'),
+('20160411','20160510'),
+('20160511','20160610'),
+('20160611','20160710'),
+('20160711','20160810')
+]
+propdf=pd.DataFrame([],columns=['temp'])
+for std,end in csvlist:
+	df_loc=df.loc[std:end]   #std~endまでのインデックスを選択
+	propdf['%s/%s'%(std[:4],std[5:6])]=prop_date(df_loc)
+del propdf['temp']
+print(propdf)
+propdf.T.plot.bar(title='比率',rot=30)
+plt.show()
