@@ -43,6 +43,9 @@ def manyfile(regex):
 	'''
 	Read multiple files
 	Store dataframe
+	上からつなげて表示する
+	indexが80000行とかなるから読み込み時間長い
+	今使っていない
 	'''
 	allfiles=glob.glob(path+regex+'*.txt')
 	pieces=[]
@@ -51,8 +54,8 @@ def manyfile(regex):
 	return pd.concat(pieces,ignore_index=True)
 
 '''TEST manyfile()
-'''
 print(manyfile('201602'))
+'''
 
 
 
@@ -75,7 +78,7 @@ def spectrum(fullpath,columns='Ave'):
 
 
 
-def dataglob(path,regex=False,start=0,stop=None):
+def dataglob(path,regex=False):
 	'''
 	* 引数:
 		* regex:globするファイル名(正規表現)
@@ -110,7 +113,7 @@ ____________________________
 
 		print('%s内のファイルを取得します。'%path)
 		regex=input('正規表現で入力してください >> ')
-	return glob.glob(path+regex)[start:stop]
+	return glob.glob(path+regex)
 
 
 
@@ -131,7 +134,6 @@ def glob_dataframe(allfiles):
 	* 戻り値：
 		* df:allfilesから取得した(pandas.DataFrame形式)
 	'''
-	num=len(spectrum(allfiles[1]))   #
 	df=pd.DataFrame(list(range(num)),columns=['Temp'])   #1001要素の仮のデータフレーム作製
 	for file in allfiles:   #1ファイルを1columnとしてdfに追加
 		filebasename=file[-19:-4]
@@ -155,9 +157,13 @@ def dataframe(path,regex):
 		df:データフレーム(pd.DataFrame形式)
 	'''
 	frequency=pd.Series(np.linspace(freq_start,freq_stop,num))   #横軸はSeriesで定義
-	df=glob_dataframe(dataglob(path,regex))   #データフレーム;テストのときはfullpath[1], リリースのときはfullpath[0]
+	df=glob_dataframe(dataglob(path,regex))
 	df.index=frequency   #インデックス(横軸)を振りなおす
 	return df
+
+'''TEST dataframe()
+'''
+print(dataframe(path,'20160101*'))
 
 
 
