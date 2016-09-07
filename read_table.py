@@ -203,23 +203,8 @@ import codecs
 import re
 code=[]
 with codecs.open('./filelist.txt','r','utf-8') as f:
-		code+=f.readlines()
-
-
-# code=[]
-# f=codecs.open('filelist.txt','r','utf-8')
-# for line in f.readlines():
-# 	code+=line
-# print(code)
-
-
-
-# for i in map(lamb,code):
-# 	code+=i
-a=[i.strip('\n\r\'\"') for i in code]
-print(a)   # stripにより、改行、クォーテーションの削除
-
-# ここらへんで#含む行は無効にしたい
-for i in a:
-if re.match('#',i):
-	a.pop.a
+		code+=f.readlines()   #filelist.txtから1行ずつ読み込み、リストに格納
+regex=re.compile('^#')   #regex.compileで取り除きたい要素の文字を指定
+print([i.strip('\n\r\'\"') for i in code if not regex.search(i)])
+	   # stripにより、改行、クォーテーションの削除
+	   # re.searchでマッチするリストの要素は内法表記で返さない
