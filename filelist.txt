@@ -1,6 +1,6 @@
 # シャープのあとには注釈
 # ここは読み込むとき無視されたい
-間に#あるときは無視されない
+# 間に#あるときは無視されない
 "E:\Users\U1and0\Documents\SAtraceView\DATA\20160101_000023.txt"
 "E:\Users\U1and0\Documents\SAtraceView\DATA\20160101_000523.txt"
 "E:\Users\U1and0\Documents\SAtraceView\DATA\20160101_001023.txt"

@@ -143,7 +143,13 @@ ____________________________
 		else:
 			return glob.glob(path+regex)[start:stop]
 
-
+'''TEST dataglob()
+'''
+code=[]
+for i in dataglob(path):
+	with open(i,'r') as f:
+			code+=f.readlines()   #filelist.txtから1行ずつ読み込み、リストに格納
+print(code)
 
 
 def glob_dataframe(allfiles):
