@@ -81,6 +81,15 @@ def spectrum(fullpath,columns='Ave'):
 
 
 def read_filelist(filelist_path):
+	'''
+	引数:ファイルパスが書かれたリストのフルパス。ファイル名は`filelist.txt`でなくてもよい。
+	戻り値:filelistの中身。ただし行頭に#がついた行は飛ばす。
+
+	filelist.txtから1行ずつ読み込み、リストに格納
+	regex.compileで取り除きたい要素の文字を指定
+	stripにより、改行、クォーテーションの削除
+	re.searchでマッチするリストの要素は内法表記で返さない
+	'''
 	code=[]
 	with codecs.open(filelist_path,'r','utf-8') as f:
 			code+=f.readlines()   #filelist.txtから1行ずつ読み込み、リストに格納
