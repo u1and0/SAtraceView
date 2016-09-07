@@ -3,6 +3,7 @@ import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 from numpy.random import *
+from scipy import stats
 # import matplotlib.dates as pltd
 import glob
 import sys
@@ -62,7 +63,7 @@ print(manyfile('201602'))
 
 
 
-def spectrum(fullpath,columns='Ave'):
+def spectrum(fullpath,columns='Ave',SNmode=False):
 	'''
 	Make dataframe as ploting spectrums.
 	indexをnp.linspaceにできないかなぁ
@@ -71,10 +72,15 @@ def spectrum(fullpath,columns='Ave'):
 	columns_name=pd.to_datetime(fullpath[-19:-4],format='%Y%m%d_%H%M%S')
 	df=pd.read_table(fullpath,names=[columns_name],sep='\s+',header=0,skipfooter=1,usecols=[use['Ave']],engine='python')
 	# df['Frequency']=np.linspace(freq_start,freq_stop,len(df))
+	if SNmode:
+		df-=stats.scoreatpercentile(df, 25)	#fix at 1/4median
 	return df
-
-
-
+'''TEST spectrum()
+print(spectrum(path+'20160906_051925.txt'))
+print(spectrum(path+'20160906_051925.txt',SNmode=True))
+dft=spectrum(path+'20160906_051925.txt').append(spectrum(path+'20160906_051925.txt',SNmode=True))
+dft.plot(subplots=True);plt.show()   #Powerの上にSNplotされる
+'''
 
 
 
