@@ -128,6 +128,37 @@ globするときの手順
 
 
 
+
+
+### fitfile(fullpath)
+fitされた1ファイルをデータフレームとして出力
+
+
+
+### fitfile_all(path,regex)
+fitされたすべてのファイル(dataglob()で取得)を行方向に追加してデータフレームを返す
+
+引数:
+	path:ファイルの詰まったパス
+	regex:ファイル名(正規表現)
+
+戻り値:
+	df:path+regexで指定したすべてのファイルを行方向に連結したデータフレーム(pd.DataFrame形式)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 ## plot2d.py
 
 データ選択してグラフ化するするモジュール
@@ -152,3 +183,28 @@ globするときの手順
 * `plot2d.Plot2d.hoge()`のところをユーザーに選択させる
 * 引数はdate_range()かな
 * date_range indexを勉強しよう
+
+
+
+
+
+
+
+
+
+
+
+## plotfit.py
+filefile_allによってcsvをインポート、pd.DataFrameとして
+dfm=df.loc[std,end]でdfを区切る
+stdはttttmmdd形式
+
+
+月ごとに集計(カウント)
+groupbyを使う
+
+```
+dfm=df.loc[std:end]
+key=lambda x:x.date   #日ごとに集計
+dfd=dfm.groupby(key).count()
+```

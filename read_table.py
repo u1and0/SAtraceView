@@ -170,13 +170,18 @@ def dataframe(path,regex):
 
 def fitfile(fullpath):
 	'''fitされた1ファイルをデータフレームとして出力'''
-	df=pd.read_csv(fullpath,header=0,index_col='DateTime')
-	df.index=pd.to_datetime(df.index)   #インデックスを文字列からpd.Timestamp形式に変換
+	parse=lambda x: datetime.strptime(x, '%Y-%m-%d %H:%M:%S')   #インデックスを文字列からpd.Timestamp形式に変換
+	df=pd.read_csv(fullpath,header=0,index_col='DateTime',date_parser=parse)
+			   #1行目(0行目？)をヘッダー(=columns name)とし
+			   # 'DateTime'と名前のついたcolumnをindexとする
 	return df
 '''TEST read_fitfile()
 fullpath=param['out']+'CSV/P2015_12.csv'
-print(fitfile(fullpath))
+df=fitfile(fullpath)
+print(df)
+print(df.index)
 '''
+
 
 
 def fitfile_all(path,regex):
