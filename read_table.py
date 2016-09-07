@@ -79,6 +79,21 @@ def spectrum(fullpath,columns='Ave'):
 
 
 
+
+def read_filelist(filelist_path):
+	code=[]
+	with codecs.open(filelist_path,'r','utf-8') as f:
+			code+=f.readlines()   #filelist.txtから1行ずつ読み込み、リストに格納
+	regex=re.compile('^#')   #regex.compileで取り除きたい要素の文字を指定
+	return [i.strip('\n\r\'\"') for i in code if not regex.search(i)]
+		   # stripにより、改行、クォーテーションの削除
+		   # re.searchでマッチするリストの要素は内法表記で返さない
+
+
+
+
+
+
 def dataglob(path,regex=False,start=0,stop=None):
 	'''
 	* 引数:
@@ -114,7 +129,10 @@ ____________________________
 
 		print('%s内のファイルを取得します。'%path)
 		regex=input('正規表現で入力してください >> ')
-	return glob.glob(path+regex)[start:stop]
+		if not regex:
+			return read_filelist('./filelist.txt')   #引数:読み込ませたいファイルのフルパス
+		else:
+			return glob.glob(path+regex)[start:stop]
 
 
 
@@ -205,12 +223,3 @@ def fitfile_all(path,regex):
 df=fitfile_all(param['out']+'CSV/','S????_??.csv')
 print(df)
 '''
-
-
-code=[]
-with codecs.open('./filelist.txt','r','utf-8') as f:
-		code+=f.readlines()   #filelist.txtから1行ずつ読み込み、リストに格納
-regex=re.compile('^#')   #regex.compileで取り除きたい要素の文字を指定
-print([i.strip('\n\r\'\"') for i in code if not regex.search(i)])
-	   # stripにより、改行、クォーテーションの削除
-	   # re.searchでマッチするリストの要素は内法表記で返さない
