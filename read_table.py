@@ -169,8 +169,8 @@ def dataframe(path,regex):
 	return glob_dataframe(dataglob(path,regex))   #pd.DataFrame形式
 
 '''TEST dataframe()
-'''
 print(dataframe(path,'20160101*'))
+'''
 
 
 
