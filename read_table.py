@@ -1,13 +1,18 @@
 ## __BUILT-IN MODULES_________________________ 
+###__SCIENCE__________________________
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 from numpy.random import *
 # import matplotlib.dates as pltd
-import glob
-import sys
+### __DATETIME__________________________
 from datetime import datetime, timedelta
 import time
+###__STRING__________________________
+import sys
+import glob
+import codecs
+import re
 ## __USER MODULES__________________________ 
 import param
 
@@ -166,8 +171,6 @@ def dataframe(path,regex):
 def fitfile(fullpath):
 	'''fitされた1ファイルをデータフレームとして出力'''
 	df=pd.read_csv(fullpath,header=0,index_col='DateTime')
-			   #1行目(0行目？)をヘッダー(=columns name)とし
-			   # 'DateTime'と名前のついたcolumnをindexとする
 	df.index=pd.to_datetime(df.index)   #インデックスを文字列からpd.Timestamp形式に変換
 	return df
 '''TEST read_fitfile()
@@ -197,3 +200,12 @@ def fitfile_all(path,regex):
 df=fitfile_all(param['out']+'CSV/','S????_??.csv')
 print(df)
 '''
+
+
+code=[]
+with codecs.open('./filelist.txt','r','utf-8') as f:
+		code+=f.readlines()   #filelist.txtから1行ずつ読み込み、リストに格納
+regex=re.compile('^#')   #regex.compileで取り除きたい要素の文字を指定
+print([i.strip('\n\r\'\"') for i in code if not regex.search(i)])
+	   # stripにより、改行、クォーテーションの削除
+	   # re.searchでマッチするリストの要素は内法表記で返さない
