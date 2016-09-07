@@ -63,7 +63,7 @@ print(manyfile('201602'))
 
 
 
-def spectrum(fullpath,columns='Ave',SNmode=False):
+def spectrum(fullpath,columns='Ave',SNmode=True):
 	'''
 	Make dataframe as ploting spectrums.
 	indexをnp.linspaceにできないかなぁ
