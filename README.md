@@ -88,6 +88,30 @@ dataglob()によってglobするファイル名をユーザーに入力を施す
 
 
 
+### read_filelist()
+globするときの手順
+
+1. 引数0個
+	1.1. ユーザーに入力させる
+	1.2. `input()`
+		1.2.1. なおも0個の場合、`filelist.txt`から読み込む
+2. 引数1個
+	2.1. 正規表現として受け取り、globに渡す
+	2.2. `glob. glob()`
+3. 引数2個
+	3.1. それぞれstringとして受け取り、pd.date_range()の引数に使う
+	3.2. `pd.date_range(start,end)`
+4. 引数3個
+	4.1. それぞれstringとして受け取り、pd.date_range()の引数に使う
+	4.2. 3つめの引数はfreq(D or H)
+	4.3. `pd.date_range(start,end,freq='H')`
+5. 1.2.1以外の結果は`filelist.txt`に上書き
+	5.1. 次回に1.2.1のようにした場合、結果を再利用できる。
+	5.2. もしくは自作のリストを使用できる。
+
+
+
+
 
 
 

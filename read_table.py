@@ -1,13 +1,18 @@
 ## __BUILT-IN MODULES_________________________ 
+###__SCIENCE__________________________
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 from numpy.random import *
 # import matplotlib.dates as pltd
-import glob
-import sys
+### __DATETIME__________________________
 from datetime import datetime, timedelta
 import time
+###__STRING__________________________
+import sys
+import glob
+import codecs
+import re
 ## __USER MODULES__________________________ 
 import param
 
@@ -199,8 +204,6 @@ print(df)
 '''
 
 
-import codecs
-import re
 code=[]
 with codecs.open('./filelist.txt','r','utf-8') as f:
 		code+=f.readlines()   #filelist.txtから1行ずつ読み込み、リストに格納
