@@ -119,22 +119,3 @@ def heatmap_freq_time_val(df):
 
 
 # heatmap_freq_time_val(df)
-
-
-
-
-## __allmean__________________________
-'''dfを周波数ごとに平均化して、平均値のプロット'''
-path=param['in']
-li=['201511','201512']+[str(x) for x in range(201601,201608)]
-sub=pd.DataFrame([],columns=['Temp'])
-
-for i in li:
-	df=rt.dataframe(path,i)
-	sub[i]=df.T.mean()
-
-del sub['Temp']
-
-sub.plot(subplots=True,layout=(3,3),figsize=(6,6),sharex=False)
-plt.show()
-# plt.savefig(param['out']+'SAtraceViewResult/sub.png')
