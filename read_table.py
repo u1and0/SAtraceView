@@ -191,7 +191,8 @@ def fitfile(fullpath):
 			   # 'DateTime'と名前のついたcolumnをindexとする
 	return df
 '''TEST read_fitfile()
-fullpath=param['out']+'CSV/P2015_12.csv'
+# fullpath=param['out']+'CSV/P2015_12.csv'
+fullpath=param['view_out']+'SN201601.csv'
 df=fitfile(fullpath)
 print(df)
 print(df.index)
