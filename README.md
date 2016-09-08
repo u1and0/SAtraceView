@@ -47,6 +47,9 @@ SAtraceで収集したデータの分析
 
 
 
+
+
+____________________________
 # データの読み込み
 
 ## read_table.py
@@ -217,3 +220,60 @@ dfm=df.loc[std:end]
 key=lambda x:x.date   #日ごとに集計
 dfd=dfm.groupby(key).count()
 ```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+____________________________
+# TODO
+# groupby Timeframe 
+// * 時間軸でグループ化
+// * 月ごと、週ごと、日ごと、時間ごとで集計
+
+## 何に役立つか
+曜日はどこが多く出ているのか
+
+
+
+
+
+
+
+
+
+# noise floor 
+* nose floorをdfに加えてプロット
+* 第2軸にline plot
+
+
+## 何のため？
+noise floorの影響でSN隠れていないかの確認
+
+
+
+
+
+
+
+# heatmap plot
+* seaborn(sns)が良いのか？
+* pandasだけじゃできないか？
