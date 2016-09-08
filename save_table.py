@@ -73,12 +73,12 @@ def concat_table(sourcepath,regex,read_csvpath):
 	dft=make_table(sourcepath,regex)   #追加するdf
 	dft.columns=np.linspace(param['freq_start'],param['freq_stop'],param['number_of_rows'])
 
-	df_concat=pd.concat([dfcsv,dft])   #dfの縦つなぎ
+	df_concat=pd.concat([dfcsv,dft]).sort_index()   #dfの縦つなぎ
 	print('\n__Concat DataFrame')
 	print(df_concat)
 	print('\n__Concat END...')
 	return df_concat
 '''TEST concat_table
 '''
-df=concat_table(path,'20160101_02*',param['view_out']+'SN201601.csv')
-save_table(df,param['view_out']+'SN201601.csv')
+df=concat_table(path,'2016*',param['view_out']+'average_SN.csv')
+save_table(df,param['view_out']+'average_SN.csv')

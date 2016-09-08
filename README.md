@@ -140,7 +140,7 @@ fitされたすべてのファイル(dataglob()で取得)を行方向に追加�
 
 
 # データの書き込み
-## savetable
+## save_table
 
 pd.DataFrameをcsvで保存する
 データはまだ収集され続けるので、addできる形にする
@@ -160,7 +160,8 @@ read_frame:以前に作られたcsvファイルから読み込むcsv
 write_frameこれから作るdataframe(read_table利用する)
 
 
-
+### TODO
+indexの重複はpass
 
 
 
