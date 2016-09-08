@@ -9,13 +9,16 @@ import seaborn as sns
 import read_table as rt
 import param
 param=param.param()
+path=param['in']
 
 def aggregate(path):
-	'''dfを周波数ごとに集計
+	'''
+	dfを周波数ごとに集計
+	DataSource上のtxtデータから読む場合
 	引数:
 		path:Data Source
-		functuion:How to aggregete'''
-	li=['201511','201512']+[str(x) for x in range(201601,201608)]
+	'''
+	li=['201511','201512']+[str(x) for x in range(201601,201609)]
 	sub=pd.DataFrame([],columns=['Temp'])
 
 	for i in li:
@@ -25,9 +28,52 @@ def aggregate(path):
 	del sub['Temp']
 	return sub
 
-
-path=param['in']
+'''TEST aggregate()
 df=aggregate(path)
-df.plot(subplots=True,layout=(3,3),figsize=(6,6),sharex=False)
-plt.show()
+'''
+
+def subplot(df):
+	df.plot(subplots=True,layout=(3,3),figsize=(6,6),sharex=False)
 # plt.savefig(param['out']+'SAtraceViewResult/sub.png')
+
+# subplot(df);plt.show()
+
+
+
+def aggregate_csv(csv_fullpath,*list_of_taple):
+	'''
+	dfを周波数ごとに集計
+	データフレームに取り出しやすいcsvデータから読み込む場合
+	引数:
+		path:Data Source
+	'''
+	sub=pd.DataFrame([],columns=['Temp'])
+
+	df=rt.fitfile(csv_fullpath)
+	for std,end in csvlist:
+		sub[std+'_'+end]=df.loc[std:end].max()
+
+	del sub['Temp']
+	return sub
+
+
+
+## __MAIN__________________________
+csvlist=[
+	('20151111','20151210'),
+	('20151211','20160110'),
+	('20160111','20160210'),
+	('20160211','20160310'),
+	('20160311','20160410'),
+	('20160411','20160510'),
+	('20160511','20160610'),
+	('20160611','20160710'),
+	('20160711','20160810'),
+	]
+
+csv_fullpath=param['view_out']+'average_SN.csv'
+df=aggregate_csv(csv_fullpath,csvlist)
+for title in df.columns:
+	df[title].plot()
+	plt.savefig(param['view_out']+'SNmax%s.png'%title)
+	plt.close()
