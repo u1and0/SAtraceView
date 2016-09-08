@@ -214,8 +214,8 @@ def fitfile_all(path,regex):
 	allfiles=dataglob(path,regex)
 	pieces=[]
 	for file in allfiles:
-		pieces.append(fitfile(file))
-		df=pd.concat(pieces)
+		pieces.append(fitfile(file))   #fitfile()で返されたDataFrameをpiecesリストに追加
+		df=pd.concat(pieces)   #DataFrame縦つなぎ
 	return df
 '''TEST fitfile_all()
 df=fitfile_all(param['out']+'CSV/','S????_??.csv')
