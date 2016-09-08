@@ -191,7 +191,8 @@ def fitfile(fullpath):
 			   # 'DateTime'と名前のついたcolumnをindexとする
 	return df
 '''TEST read_fitfile()
-fullpath=param['out']+'CSV/P2015_12.csv'
+# fullpath=param['out']+'CSV/P2015_12.csv'
+fullpath=param['view_out']+'SN201601.csv'
 df=fitfile(fullpath)
 print(df)
 print(df.index)
@@ -213,8 +214,8 @@ def fitfile_all(path,regex):
 	allfiles=dataglob(path,regex)
 	pieces=[]
 	for file in allfiles:
-		pieces.append(fitfile(file))
-		df=pd.concat(pieces)
+		pieces.append(fitfile(file))   #fitfile()で返されたDataFrameをpiecesリストに追加
+		df=pd.concat(pieces)   #DataFrame縦つなぎ
 	return df
 '''TEST fitfile_all()
 df=fitfile_all(param['out']+'CSV/','S????_??.csv')
