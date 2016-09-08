@@ -3,6 +3,7 @@ import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 from numpy.random import *
+from scipy import stats
 # import matplotlib.dates as pltd
 import glob
 import sys
@@ -32,33 +33,37 @@ def onefile(fullpath):
 	return df
 
 
+'''TEST manyfile()
+print(onefile(path+'20160101_081243.txt'))
+'''
 
 
 
 
-def manyfile(start,stop):
+def manyfile(regex):
 	'''
 	Read multiple files
 	Store dataframe
+	上からつなげて表示する
+	indexが80000行とかなるから読み込み時間長い
+	今使っていない
 	'''
-	allfiles=glob.glob(path+'*.txt')[start:stop]
+	allfiles=glob.glob(path+regex+'*.txt')
 	pieces=[]
 	for file in allfiles:
 		pieces.append(onefile(file))
-		data=pd.concat(pieces,ignore_index=True)
-	return data
+	return pd.concat(pieces,ignore_index=True)
 
-
-# print(onefile(path+'20160101_081243.txt'))
-# print(manyfile(None,10))
-
+'''TEST manyfile()
+print(manyfile('201602'))
+'''
 
 
 
 
 
 
-def spectrum(fullpath,columns='Ave'):
+def spectrum(fullpath,columns='Ave',SNmode=True):
 	'''
 	Make dataframe as ploting spectrums.
 	indexをnp.linspaceにできないかなぁ
@@ -67,14 +72,19 @@ def spectrum(fullpath,columns='Ave'):
 	columns_name=pd.to_datetime(fullpath[-19:-4],format='%Y%m%d_%H%M%S')
 	df=pd.read_table(fullpath,names=[columns_name],sep='\s+',header=0,skipfooter=1,usecols=[use['Ave']],engine='python')
 	# df['Frequency']=np.linspace(freq_start,freq_stop,len(df))
+	if SNmode:
+		df-=stats.scoreatpercentile(df, 25)	#fix at 1/4median
 	return df
+'''TEST spectrum()
+print(spectrum(path+'20160906_051925.txt'))
+print(spectrum(path+'20160906_051925.txt',SNmode=True))
+dft=spectrum(path+'20160906_051925.txt').append(spectrum(path+'20160906_051925.txt',SNmode=True))
+dft.plot(subplots=True);plt.show()   #Powerの上にSNplotされる
+'''
 
 
 
-
-
-
-def dataglob(path,regex=False,start=0,stop=None):
+def dataglob(path,regex=False):
 	'''
 	* 引数:
 		* regex:globするファイル名(正規表現)
@@ -85,7 +95,7 @@ def dataglob(path,regex=False,start=0,stop=None):
 		* path内のファイルのリスト
 	* 空の入力=引数なしはデフォルト引数'*'が入力され、path内のすべてのファイルを拾う
 	'''
-	if not regex:
+	if not regex:   #regexがなければコンソールから打ち込ませる
 		print('''
 ____________________________
 <使い方>
@@ -109,7 +119,7 @@ ____________________________
 
 		print('%s内のファイルを取得します。'%path)
 		regex=input('正規表現で入力してください >> ')
-	return glob.glob(path+regex)[start:stop]
+	return glob.glob(path+regex+'*')
 
 
 
@@ -130,13 +140,22 @@ def glob_dataframe(allfiles):
 	* 戻り値：
 		* df:allfilesから取得した(pandas.DataFrame形式)
 	'''
-	num=len(spectrum(allfiles[1]))   #
+
+	## __MAKE PSEDO DATAFRAME__________________________
 	df=pd.DataFrame(list(range(num)),columns=['Temp'])   #1001要素の仮のデータフレーム作製
+
+	## __ADD DATAFRAME__________________________ 
 	for file in allfiles:   #1ファイルを1columnとしてdfに追加
 		filebasename=file[-19:-4]
 		df[pd.to_datetime(filebasename,format='%Y%m%d_%H%M%S')]=spectrum(file)
 		# df.plot(x=frequency,y=pd.Timestamp(pd.to_datetime(filebasename,format='%Y%m%d_%H%M%S')))
+
+	## __DELETE PSEDO DATAFRAME & EDIT DATAFRAME__________________________
 	del df['Temp']   #仮で作ったデータは消す
+	frequency=pd.Series(np.linspace(freq_start,freq_stop,num))   #横軸はSeriesで定義
+	df.index=frequency   #インデックス(横軸)を振りなおす
+
+	##__INDICATE MADE DATAFRAME__________________________ 
 	print('Loading pandas DataFrame...\n\n',df)
 	print('\n\n...Loading END.\n')
 	return df
@@ -151,12 +170,13 @@ def dataframe(path,regex):
 	引数:
 		rergex:正規表現(str形式)
 	戻り値:
-		df:データフレーム(pd.DataFrame形式)
+		glob_dataframe(dataglob(path,regex)):データフレーム(pd.DataFrame形式)
 	'''
-	frequency=pd.Series(np.linspace(freq_start,freq_stop,num))   #横軸はSeriesで定義
-	df=glob_dataframe(dataglob(path,regex))   #データフレーム;テストのときはfullpath[1], リリースのときはfullpath[0]
-	df.index=frequency   #インデックス(横軸)を振りなおす
-	return df
+	return glob_dataframe(dataglob(path,regex))   #pd.DataFrame形式
+
+'''TEST dataframe()
+print(dataframe(path,'20160101*'))
+'''
 
 
 
