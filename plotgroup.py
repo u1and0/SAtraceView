@@ -78,7 +78,7 @@ csv_fullpath=param['view_out']+'average_SN.csv'
 df=aggregate_csv(csv_fullpath,csvlist)   #columnごとに集計を行う(max,meanなど)
 df_mark=pd.DataFrame(df,index=freq_list)   #freq_listのindexだけ抜き出し
 for title in df.columns:
-	df[title].plot()
-	df_mark[title].plot(linestyle='',marker='D',markeredgewidth=1,fillstyle='none')
+	plt.plot(df[title])
+	plt.plot(df_mark[title],linestyle='',marker='D',markeredgewidth=1,fillstyle='none')
 	plt.savefig(param['view_out']+'SNmax%s.png'%title)
 	plt.close()
