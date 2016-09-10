@@ -96,7 +96,8 @@ ax1.plot(df_mark.index, df_mark, linestyle='',marker='D',markeredgewidth=1,fills
 
 # for dic in df_mark.columns:
 # 	ax1.plot(df_mark.index, df_mark[dic],linestyle='',marker='rD',markeredgewidth=1,fillstyle='none')
-plt.legend(loc='best')
+plt.legend(bbox_to_anchor=(0.5, -0.25), loc='center', borderaxespad=0,fontsize='small',ncol=3)
+plt.subplots_adjust(bottom=0.25)
 plt.show()
 # plt.savefig(param['view_out']+'SNmax%s.png'%title,size=(5.12,2.56))
 # plt.close()
