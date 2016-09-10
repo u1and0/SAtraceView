@@ -64,6 +64,13 @@ def aggregate_csv(csv_fullpath,*list_of_taple):
 
 
 ## __MAIN__________________________
+'''
+matplotlib.pyplot.subplots()を使って、スペクトラムは黒線、注目周波数は色つきマーカーでplotする
+
+csvlist: csvから抜き出す日付(始りの日、終わりの日)yyyymmdd形式
+freq_list: 注目周波数、param.pyに記載
+freq_index: 周波数
+'''
 csvlist=[
 	('20151111','20151210'),
 	# ('20151211','20160110'),
@@ -79,24 +86,19 @@ csvlist=[
 country_keys=list(param['country'].keys())   #注目周波数
 freq_list=sorted([i for i in country_keys])   #注目周波数をタイトルに使えるようにkHz抜いた
 
-csv_fullpath=param['view_out']+'average_SN.csv'
+csv_fullpath=param['view_out']+'average_SN.csv'   # データソース
 df=aggregate_csv(csv_fullpath,csvlist)   #columnごとに集計を行う(max,meanなど)
 
-
-
-freq_index=np.linspace(freq_start,freq_stop,freq_num)
+freq_index=np.linspace(freq_start,freq_stop,freq_num)   # 周波数範囲
 title='%s_%s'%(csvlist[0][0],csvlist[0][1])
 
 fig, ax1=plt.subplots()
-ax1.plot(df.index, df[title], color='gray',linewidth=0.5)
+ax1.plot(df.index, df[title], color='gray',linewidth=0.5)   # spectrum plot
+for freq in freq_list:
+	df_mark= pd.Series(np.where(df[title].index==freq,df[title].ix[freq],np.nan), index= freq_index, name=param['country'][freq])   # 特定の周波数だけ値、他はNaNを返すpd.Series
+	ax1.plot(df_mark.index, df_mark, linestyle='',marker='D',markeredgewidth=1,fillstyle='none')   # 注目周波数plot as marker
 
-freq=freq_list[0]
-df_mark= pd.Series(np.where(df[title].index==freq,df[title].ix[freq],np.nan), index= freq_index, name=param['country'][freq])   # 特定の周波数だけ値、他はNaNを返すpd.Series
-ax1.plot(df_mark.index, df_mark, linestyle='',marker='D',markeredgewidth=1,fillstyle='none')
-
-# for dic in df_mark.columns:
-# 	ax1.plot(df_mark.index, df_mark[dic],linestyle='',marker='rD',markeredgewidth=1,fillstyle='none')
-plt.legend(bbox_to_anchor=(0.5, -0.25), loc='center', borderaxespad=0,fontsize='small',ncol=3)
+plt.legend(bbox_to_anchor=(0.5, -0.25), loc='center', borderaxespad=0,fontsize='small',ncol=3)   # 別枠にラベルを書く
 plt.subplots_adjust(bottom=0.25)
 plt.show()
 # plt.savefig(param['view_out']+'SNmax%s.png'%title,size=(5.12,2.56))
