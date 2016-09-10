@@ -17,12 +17,16 @@ freq_index=np.linspace(freq_start,freq_stop,freq_num)   # 周波数範囲
 
 
 def aggregate(path):
-	'''
-	dfを周波数ごとに集計
-	DataSource上のtxtデータから読む場合
-	引数:
-		path:Data Source
-	'''
+'''
+DataSource上のtxtデータから読み込んで周波数ごとに集計してpd.DataFrameで返す
+
+**save_table.pyでcsvを作ってあるなら、aggregate_csvから読み込むほうが早い**
+
+引数:
+ path: Data Source(string型)
+戻り値:
+ sub: (pd.DataFrame型)
+'''
 	li=['201511','201512']+[str(x) for x in range(201601,201609)]
 	sub=pd.DataFrame([],columns=['Temp'])
 
@@ -46,18 +50,18 @@ df=aggregate(path)
 
 
 def aggregate_csv(csv_fullpath,list_of_tuple):
-	'''
-	dfを周波数ごとに集計
-	集計範囲はlist_of_tupleに記載
-	データフレームに取り出しやすいcsvデータから読み込む場合
+'''
+dfを周波数ごとに集計
+集計範囲はlist_of_tupleに記載
+データフレームに取り出しやすいcsvデータから読み込む場合
 
-	引数:
-		path: Data Source
-		list_of_tuple: 集計の日付(yyyymmddの値が二つ入ったタプル形式のリスト)
-	戻り値:
-		sub: 値は集計値(pd.DataFrame形式)
+引数:
+ path: Data Source
+ list_of_tuple: 集計の日付(yyyymmddの値が二つ入ったタプル形式のリスト)
+戻り値:
+ sub: 値は集計値(pd.DataFrame形式)
 
-	'''
+'''
 	sub=pd.DataFrame([],columns=['Temp'])
 
 	df=rt.fitfile(csv_fullpath)
@@ -73,7 +77,7 @@ def aggregate_csv(csv_fullpath,list_of_tuple):
 
 
 def eachplot(series, freq_list):
-	'''
+'''
 plt.subplots()を使用してline plotとmarker plotを共存させる
 
 1. pd.DataFrameから切り出したpd.Seriesなどを引数にする。
@@ -87,7 +91,7 @@ plt.subplots()を使用してline plotとmarker plotを共存させる
  freq_list:注目周波数のリスト
 
 戻り値:なし
-	'''
+'''
 	fig, ax1=plt.subplots()
 	ax1.plot(series.index, series, color='gray',linewidth=0.5)   # spectrum plot
 	for freq in freq_list:
