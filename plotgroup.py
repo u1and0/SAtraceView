@@ -37,11 +37,11 @@ def aggregate(path):
 df=aggregate(path)
 '''
 
-def subplot(df):
-	df.plot(subplots=True,layout=(3,3),figsize=(6,6),sharex=False)
+
+
+# df.plot(subplots=True,layout=(3,3),figsize=(6,6),sharex=False);plot.show()
 # plt.savefig(param['out']+'SAtraceViewResult/sub.png')
 
-# subplot(df);plt.show()
 
 
 
@@ -74,6 +74,14 @@ def aggregate_csv(csv_fullpath,list_of_tuple):
 
 def eachplot(series, freq_list):
 	'''
+plt.subplots()を使用してline plotとmarker plotを共存させる
+
+1. pd.DataFrameから切り出したpd.Seriesなどを引数にする。
+2. np.whereで特定のindexだけ値、それ以外はNanのpd.Seriesを作る。
+3. subplots()で切り出したpd.Seriesをline plot
+4. subplots()で作ったNan入りpd.Seriesをmarker plot
+5. label, title limitの設定
+
 引数:
  series:
  freq_list:注目周波数のリスト
@@ -86,12 +94,13 @@ def eachplot(series, freq_list):
 		se_mark= pd.Series(np.where(series.index==freq,series.ix[freq],np.nan), index= freq_index, name=param['country'][freq])   # 特定の周波数だけ値、他はNaNを返すpd.Series
 		ax1.plot(se_mark.index, se_mark, linestyle='',marker='D',markeredgewidth=1,fillstyle='none')   # 注目周波数plot as marker
 
+	# __MAKE LABEL, TITLE, LIMIT__________________________
 	plt.legend(bbox_to_anchor=(0.5, -0.25), loc='center', borderaxespad=0,fontsize='small',ncol=3)   # 別枠にラベルを書く
 	plt.subplots_adjust(bottom=0.25)
-	# __MAKE LABEL__________________________
 	k=lambda x: pd.to_datetime(x,format='%Y%m%d').isoformat()[:10]   # yyyymmddの文字列に直してくれる
-	plt.title('SN Max in 1month from %s to %s'%(k(start),k(end)))
-	plt.ylabel('SN[dBm]')
+	plt.title('S/N ratio Max in 1month from %s to %s'%(k(start),k(end)))
+	plt.ylabel('S/N ratio [dBm]')
+	plt.ylim(param['ylim_max'])
 
 
 ## __MAIN__________________________
