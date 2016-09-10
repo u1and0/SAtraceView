@@ -58,6 +58,7 @@ ____________________________
 
 * 読み込んだデータをpandas.DataFrame形式にして返す関数:glob_dataframe()
 * globしたリストを返す関数:dataglob()
++ globに時間がかかるので、イテレータを返すiglobにしようか
 
 
 
