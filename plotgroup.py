@@ -88,14 +88,15 @@ freq_index=np.linspace(freq_start,freq_stop,freq_num)
 title='%s_%s'%(csvlist[0][0],csvlist[0][1])
 
 fig, ax1=plt.subplots()
-ax1.plot(df.index, df[title], 'k-')
+ax1.plot(df.index, df[title], color='gray',linewidth=0.5)
 
 freq=freq_list[0]
 df_mark= pd.Series(np.where(df[title].index==freq,df[title].ix[freq],np.nan), index= freq_index, name=param['country'][freq])   # 特定の周波数だけ値、他はNaNを返すpd.Series
-ax1.plot(df_mark.index, df_mark, linestyle='',marker='D',markeredgewidth=1,fillstyle='none', label=df_mark.name)
+ax1.plot(df_mark.index, df_mark, linestyle='',marker='D',markeredgewidth=1,fillstyle='none')
 
 # for dic in df_mark.columns:
 # 	ax1.plot(df_mark.index, df_mark[dic],linestyle='',marker='rD',markeredgewidth=1,fillstyle='none')
+plt.legend(loc='best')
 plt.show()
 # plt.savefig(param['view_out']+'SNmax%s.png'%title,size=(5.12,2.56))
 # plt.close()
