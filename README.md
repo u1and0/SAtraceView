@@ -161,7 +161,8 @@ read_frame:以前に作られたcsvファイルから読み込むcsv
 write_frameこれから作るdataframe(read_table利用する)
 
 
-### TODO
+### save_table TODO
+
 indexの重複はpass
 
 
@@ -225,6 +226,75 @@ dfd=dfm.groupby(key).count()
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+## plotgroup.py
+
+### aggregate(path)
+
+DataSource上のtxtデータから読み込んで周波数ごとに集計してpd.DataFrameで返す
+
+**save_table.pyでcsvを作ってあるなら、aggregate_csvから読み込むほうが早い**
+
+* 引数:
+ * path: Data Source(string型)
+* 戻り値:
+ * sub: (pd.DataFrame型)
+
+
+
+
+
+
+
+
+
+### aggregate_cdv(csv_fullpath, list_of_tuple)
+
+dfを周波数ごとに集計
+集計範囲はlist_of_tupleに記載
+データフレームに取り出しやすいcsvデータから読み込む場合
+
+* 引数:
+ * path: Data Source
+ * list_of_tuple: 集計の日付(yyyymmddの値が二つ入ったタプル形式のリスト)
+* 戻り値:
+ * sub: 値は集計値(pd.DataFrame形式)
+
+
+
+
+
+
+
+
+
+### eachplot(series, freq_list)
+
+plt.subplots()を使用してline plotとmarker plotを共存させる
+
+1. pd.DataFrameから切り出したpd.Seriesなどを引数にする。
+2. np.whereで特定のindexだけ値、それ以外はNanのpd.Seriesを作る。
+3. subplots()で切り出したpd.Seriesをline plot
+4. subplots()で作ったNan入りpd.Seriesをmarker plot
+5. label, title limitの設定
+
+* 引数:
+ * series:
+ * freq_list:注目周波数のリスト
+* 戻り値:なし
 
 
 
