@@ -13,6 +13,7 @@ path=param['in']
 freq_start=param['freq_start']
 freq_stop=param['freq_stop']
 freq_num=param['number_of_rows']
+freq_index=np.linspace(freq_start,freq_stop,freq_num)   # 周波数範囲
 
 
 def aggregate(path):
@@ -71,16 +72,26 @@ def aggregate_csv(csv_fullpath,list_of_tuple):
 
 
 
-def eachplot(se, freq_list):
+def eachplot(series, freq_list):
+	'''
+引数:
+ series:
+ freq_list:注目周波数のリスト
+
+戻り値:なし
+	'''
 	fig, ax1=plt.subplots()
-	ax1.plot(se.index, se, color='gray',linewidth=0.5)   # spectrum plot
+	ax1.plot(series.index, series, color='gray',linewidth=0.5)   # spectrum plot
 	for freq in freq_list:
-		se_mark= pd.Series(np.where(se.index==freq,se.ix[freq],np.nan), index= freq_index, name=param['country'][freq])   # 特定の周波数だけ値、他はNaNを返すpd.Series
+		se_mark= pd.Series(np.where(series.index==freq,series.ix[freq],np.nan), index= freq_index, name=param['country'][freq])   # 特定の周波数だけ値、他はNaNを返すpd.Series
 		ax1.plot(se_mark.index, se_mark, linestyle='',marker='D',markeredgewidth=1,fillstyle='none')   # 注目周波数plot as marker
 
 	plt.legend(bbox_to_anchor=(0.5, -0.25), loc='center', borderaxespad=0,fontsize='small',ncol=3)   # 別枠にラベルを書く
 	plt.subplots_adjust(bottom=0.25)
-	plt.title('SN Max in 1month %s-%s'%(column_name[:8],column_name[8:]))
+	# __MAKE LABEL__________________________
+	k=lambda x: pd.to_datetime(x,format='%Y%m%d').isoformat()[:10]   # yyyymmddの文字列に直してくれる
+	plt.title('SN Max in 1month from %s to %s'%(k(start),k(end)))
+	plt.ylabel('SN[dBm]')
 
 
 ## __MAIN__________________________
@@ -108,9 +119,10 @@ freq_list=sorted([i for i in country_keys])   #注目周波数をタイトルに
 
 csv_fullpath=param['view_out']+'average_SN.csv'   # データソースを整理して収めたcsvファイルの場所(save_table参照)
 df=aggregate_csv(csv_fullpath,datelist)   #"csvfullpath"の中のファイルに対して、datelist(tuple of list形式)で区切って集計を行う(max,meanなど)
+for start, end in datelist:
+	column_name='%s_%s'%(start,end)   # dataframeのcolumn nameになる("yyyymmdd_yyyymmdd"の形のstring型)
 
-freq_index=np.linspace(freq_start,freq_stop,freq_num)   # 周波数範囲
-column_name='%s_%s'%(datelist[0][0],datelist[0][1])   # dataframeのcolumn nameになる("yyyymmdd_yyyymmdd"の形のstring型)
-
-eachplot(df[column_name],freq_list)
-plt.show()
+	eachplot(df[column_name],freq_list)
+	# plt.show()
+	plt.savefig(param['view_out']+'SNmax%s.png'%column_name,size=(5.12,2.56))
+	plt.close()
