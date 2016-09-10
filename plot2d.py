@@ -15,65 +15,96 @@
 '''
 
 
-
-
-## __MATH MODULES__________________________ 
+# __MATH MODULES__________________________
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 from scipy import stats
+import seaborn as sns
 
-
-## __USER MODULES__________________________
+# __USER MODULES__________________________
 import read_table as rt
 import param
 
-
-## __READ PARAMETER__________________________
-param=param.param()
-
-path=param['in']
-freq_start=param['freq_start']
-freq_stop=param['freq_stop']
-num=1001
-
-## __Make DataFrame__________________________
-frequency=pd.Series(np.linspace(freq_start,freq_stop,num))   #横軸はSeriesで定義
-df=rt.glob_dataframe(rt.dataglob())
-df.index=frequency   #インデックス(横軸)を振りなおす
-
-##__PLOT SETTING__________________________
-# def plot_setting():
-# 	## __LEGEND SETTING__________________________
-# 	# plt.legend(bbox_to_anchor=(0.5, -0.25), loc='center', borderaxespad=0,fontsize='small',ncol=3)
-# 	# plt.subplots_adjust(bottom=0.25)
-# 	## __LABEL SETTING__________________________ 
-# 	plt.xlabel(param['xlabel'])
-# 	plt.ylabel(param['ylabel'])
-# 	plt.legend(bbox_to_anchor=(1.05, 1), loc=2, borderaxespad=0.)
+param = param.param()
+path = param['in']
+freq_start = param['freq_start']
+freq_stop = param['freq_stop']
+freq_num = param['number_of_rows']
+freq_index = np.linspace(freq_start, freq_stop, freq_num)   # 周波数範囲
 
 
+# __DATA__________________________
+df = rt.dataframe(path, regex='20160201_00')  # regexが空のときはdataglob()によって入力が施される
 
 
-
-def plot_time_val(df):
+def plt_setting(plot_element):
 	'''
-	開発中
-	時間軸で特定周波数観察
+	引数:
+		plot_element:プロットする要素数(value)
+		グラフ中に入りそうなら凡例表示
+		そうでないなら表示しない
 	'''
-	trace=df.T
-	print(trace)
-	trace.plot(trace[22.000])
+	# __PLOT SETTING__________________________
+	plt.xlabel(param['xlabel'])
+	plt.ylabel(param['ylabel'])
+	plt.grid(True)
+	if plot_element <= 12:  # データ12こ(1時間分)までなら凡例表示
+		plt.legend(bbox_to_anchor=(0.5, -0.25), loc='center', borderaxespad=0, fontsize='small', ncol=3)
+		plt.subplots_adjust(bottom=0.25)
 	plt.show()
 
 
-print('\n[グラフ化したデータ一覧]\n',df.columns)
-##__時間ごとに横軸index, 縦軸valuesでプロット__________________________
-df.plot(grid=True,ylim=(-120,0),legend=False)
-# __PLOT SETTING__________________________
-plt.xlabel(param['xlabel'])
-plt.ylabel(param['ylabel'])
-if len(df.columns)<=12:   #データ12こ(1時間分)までなら凡例表示
-	plt.legend(bbox_to_anchor=(0.5, -0.25), loc='center', borderaxespad=0,fontsize='small',ncol=3)
-	plt.subplots_adjust(bottom=0.25)
-plt.show()
+def timepower(df, columns):
+	'''時間軸で特定周波数観察'''
+	df.T.plot(y=columns)
+	plt_setting(len(columns))
+
+'''timepower() TEST
+columns = [22, 23, 25.1, 25]
+timepower(df, columns)
+'''
+
+
+def oneplot(df, col):
+	'''
+	dfのcolの数だけプロット
+	plt.show()だと消すの大変だからplt.savefigにしようかな。
+	引数:
+		df:データフレーム
+		col:行の名前(タイムスタンプ形式)
+	'''
+	print('\n[グラフ化したデータ一覧]\n', col)
+	# NoiseFloor is 1/4 median.
+	oneframe = pd.DataFrame([stats.scoreatpercentile(df[col], 100 / 4)
+                          for i in freq_index], index=freq_index, columns=['NoiseFloor'])
+	df.plot(y=col, grid=True, ylim=param['ylim'])
+	oneframe['NoiseFloor'].plot(color='k')
+	plt_setting(len(df.columns))
+'''
+oneplot() TEST
+# read_table.spectrum()のSNmodeがココから触れないからグラフ表示されるけどSN表示
+df = rt.dataframe(path, regex='20160225_')  # regexが空のときはdataglob()によって入力が施される
+columns = [pd.Timestamp('2016-02-25 12:00:02'), pd.Timestamp('2016-02-25 12:45:02')]
+for col in columns:
+	oneplot(df, columns)
+oneplot(df, pd.Timestamp('2016-02-25 12:00:02'), pd.Timestamp('2016-02-25 12:45:02'))
+'''
+
+
+def allplot(df):
+	'''
+	時間ごとに横軸index, 縦軸valuesでプロット
+	データフレームのプロットを重ねて表示
+	引数:
+		df:データフレーム
+	'''
+	print('\n[グラフ化したデータ一覧]\n', df.columns)
+	# ____________________________
+	df.plot(grid=True, ylim=param['ylim'], legend=False)
+	plt_setting(len(df.columns))
+
+'''allplot() TEST
+# read_table.spectrum()のSNmodeがココから触れないからグラフ表示されるけどSN表示
+allplot(df)
+'''
