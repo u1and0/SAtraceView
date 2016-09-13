@@ -62,15 +62,21 @@ def aggregate_csv(csv_fullpath, list_of_tuple):
 	戻り値:
 	 sub: 値は集計値(pd.DataFrame形式)
 	'''
+	print('Now loading from %s...' % csv_fullpath)
 	sub = pd.DataFrame([], columns=['Temp'])
 
 	df = rt.fitfile(csv_fullpath)
 	for std, end in list_of_tuple:
+		print('Date aggregation from %s to %s.' % (std, end))
 		sub[std + '_' + end] = df.loc[std:end].max()
 
 	del sub['Temp']
 	sub.index = np.linspace(freq_start, freq_stop, freq_num)
 	return sub
+
+
+def dateiso(x):
+	return pd.to_datetime(x, format='%Y%m%d').isoformat()[:10]   # yyyymmddの文字列に直してくれる
 
 
 def eachplot(series, freq_list):
@@ -89,24 +95,23 @@ def eachplot(series, freq_list):
 
 	戻り値:なし
 	'''
+	print('plot %s' % series.name)
 	fig, ax1 = plt.subplots()
 	ax1.plot(series.index, series, color='gray', linewidth=0.5)   # spectrum plot
 	for freq in freq_list:
-		se_mark = pd.Series(np.where(series.index == freq, series.ix[freq], np.nan),
-                      index=freq_index,
-                      name=param['country'][freq]
-                      )   # 特定の周波数だけ値、他はNaNを返すpd.Series
-		ax1.plot(se_mark.index, se_mark, linestyle='', marker='D',
-		         markeredgewidth=1, fillstyle='none')   # 注目周波数plot as marker
+		ax1.plot(freq, series.ix[freq],
+                    linestyle='',
+                    marker='D',
+                    markeredgewidth=1,
+                    fillstyle='none',
+                    label=param['country'][freq])   # 注目周波数plot as marker
 
 	# __MAKE LABEL, TITLE, LIMIT__________________________
 	plt.legend(bbox_to_anchor=(0.5, -0.25), loc='center',
 	           borderaxespad=0, fontsize='small', ncol=3)   # 別枠にラベルを書く
 	plt.subplots_adjust(bottom=0.25)
 
-	def k(x):
-		return pd.to_datetime(x, format='%Y%m%d').isoformat()[:10]   # yyyymmddの文字列に直してくれる
-	plt.title('S/N ratio Max in 1month from %s to %s' % (k(start), k(end)))
+	plt.title('S/N ratio Max in 1month from %s to %s' % (dateiso(start), dateiso(end)))
 	plt.ylabel('S/N ratio [dBm]')
 	plt.ylim(param['ylim_max'])
 
