@@ -92,17 +92,105 @@ print(read_filelist('./filelist.txt'))
 '''
 
 
+def filelist_header():
+	'''
+	fililist.txtの説明文を返す
+	'''
+	string=r'''#############################################################
+#
+# このファイル内にあるファイルのフルパスがグラフ化に使われます。
+#
+# このファイルは入力によっては中身が書き換えられます。
+# 必ずバックアップを取っておいてください。
+#
+# 行頭に#がついている行は入力において無視されますが、
+# 中身が書き変わらないわけではありません。
+#
+#
+# <使い方>
+#
+# 以下の例に従ったフルパスを記述すること
+# (例)"C:\Users\hoge\Documents\SAtraceView\DATA\20160101_000023.txt"
+#
+# 改行で区切り
+# 左右のダブルクォートつけてもつけなくてもOK
+# スラッシュとバックスラッシュの区別なし
+# windowsマシンなら次に説明する`forfiles`コマンドを使うと楽
+# (linuxマシンならglob)
+#
+#
+# <forfilesの説明>
+#
+# dir の代わりpowershellコマンド"forfiles"
+# フルパスを出力する
+# globみたいに使える
+# 以下のforfilesスクリプトを使うと
+# 実行ディレクトリ下にあるファイルのフルパスが
+# fililist.txtに書き込まれる
+# 書き込まれるファイル名は頭に'20160101_00'とついたファイル
+#
+#
+#############################################################
+#
+# forfiles /M 20160101_23* /c "cmd /c echo @path" >> filelist.txt
+#
+#############################################################
+#
+#
+# ____________________________
+# /M "<オプション>"
+# 検索マスクを設定してファイルを検索する。
+# デフォルトの検索マスクは'*'。
+#
+# /c "<オプション>"
+# @file 	ファイル名（拡張子も含む）を返す
+# @fname 	拡張子無しの基本ファイル名部分
+# @ext 	拡張子
+# @path 	ファイルのフルパス名を返す
+# @relpath 	開始フォルダーからのファイルの相対パス名を返す
+# @isdir 	フォルダー名ならTRUE、ファイル名ならFALSE。
+# if内部コマンドと組み合わせ、「/C "cmd /c if @isdir==FALSE notepad.exe @file"」などのように利用する
+# @fsize 	ファイルサイズ（bytes単位）
+# @fdate 	ファイルの更新日
+# @ftime 	ファイルの更新時間
+#
+#############################################################
+'''
+	return string
+
+'''TEST filelist_header
+print(filelist_header())
+'''
+
+
 def dataglob(path, regex=False):
 	'''
-	* 引数:
-		path:
-		* regex: globするファイル名(正規表現)
-			* 空の入力=>コンソールからユーザにインプット施す
-		* start: ファイルリストの最初の要素
-		* stop: ファイルリストの最後の要素
-	* 戻り値:
-		* path内のファイルのフルパス
-	* 空の入力=引数なしはデフォルト引数'*'が入力され、path内のすべてのファイルを拾う
+* 引数:
+	* path:データソースのディレクトリ
+	* regex: ファイル名の正規表現
+		* 空の入力=>コンソールからユーザにインプット施す
+* 戻り値:
+	* path内のファイルのフルパス
+* 内容:
+	* 指定したディレクトリ(path)から正規表現(regex)をもとにglobして、ファイルのフルパスを返す
+	* regexがない(False, Noneなどの空の入力)とき、ユーザーにinput求める
+		* input 0個(求められたinputが尚も空, Noneの時)
+			* fililist.txtに登録されたファイルのフルパスを返す
+		* input 1個(path内の正規表現を入力する)
+			* glob.glob(regex)で返されたフルパスをfilelistに書き込み
+			* fililist.txtに登録されたファイルのフルパスを返す
+まだここまでしかできていない
+_________________________
+		* input 2個(pandas.date_rangeの引数を入力する'start','end')
+			* pd.date_range(start,end)
+			* ↑で生成された値を正規表現としてglobし、
+			* 結果をfilelistに書き込み
+			* fililist.txtに登録されたファイルのフルパスを返す
+		* input 3個(pandas.date_rangeの引数を入力する'start','end','D' or 'H')
+			* pd.date_range(start,end,freq='D||H')
+			* ↑で生成された値を正規表現としてglobし、
+			* 結果をfilelistに書き込み
+			* fililist.txtに登録されたファイルのフルパスを返す
 	'''
 	if not regex:
 		print('''
@@ -128,16 +216,27 @@ ____________________________
 
 		print('%s内のファイルを取得します。' % path)
 		regex = input('正規表現で入力してください >> ')
-		if not regex:
-			return read_filelist('./filelist.txt')  # 引数:読み込ませたいファイルのフルパス
-		else:
-			return glob.glob(path + regex)
+		filelisttxt='filelist.txt'  # 引数:読み込ませたいファイルのフルパス
+		try:
+			if regex:
+				with codecs.open(filelisttxt, 'w', 'utf-8') as f:
+					f.write(filelist_header())
+					for i in glob.glob(path + regex):
+						f.write(i+'\n')
+		except :
+			pass
+		finally:
+			return read_filelist(filelisttxt)
+		# if not regex:
+		# 	return read_filelist('./filelist.txt')
+		# else:
+		# 	return glob.glob(path + regex)
 
 
 '''TEST dataglob
+'''
 path = '../../../../Documents/SAtraceView/DATA/'
 print(dataglob(path))
-'''
 
 
 def glob_dataframe(allfiles):
