@@ -8,6 +8,11 @@ from scipy import stats
 # __DATETIME__________________________
 # from datetime import datetime, timedelta
 # import time
+# __STRING__________________________
+# import sys
+import glob
+import codecs
+import re
 # __USER MODULES__________________________
 import param
 
@@ -52,6 +57,7 @@ def manyfile(regex):
 		pieces.append(onefile(file))
 	return pd.concat(pieces, ignore_index=True)
 
+
 '''TEST manyfile()
 print(manyfile('201602'))
 '''
@@ -70,6 +76,8 @@ def spectrum(fullpath, columns='Ave', SNmode=True):
 	if SNmode:
 		df -= stats.scoreatpercentile(df, 25)  # fix at 1/4median
 	return df
+
+
 '''TEST spectrum()
 print(spectrum(path+'20160906_051925.txt'))
 print(spectrum(path+'20160906_051925.txt',SNmode=True))
@@ -78,16 +86,130 @@ dft.plot(subplots=True);plt.show()   #Powerの上にSNplotされる
 '''
 
 
+def read_filelist(filelist_path):
+	'''
+	引数:ファイルパスが書かれたリストのフルパス。ファイル名は`filelist.txt`でなくてもよい。
+	戻り値:filelistの中身。ただし行頭に#がついた行は飛ばす。
+
+	filelist.txtから1行ずつ読み込み、リストに格納
+	regex.compileで取り除きたい要素の文字を指定
+	stripにより、改行、クォーテーションの削除
+	re.searchでマッチするリスト(行頭に#がつく行)の要素は内法表記で返さない
+	'''
+	code = []
+	with codecs.open(filelist_path, 'r', 'utf-8') as f:
+			code += f.readlines()  # filelist.txtから1行ずつ読み込み、リストに格納
+	regex = re.compile('^#')  # regex.compileで取り除きたい要素の文字を指定
+	return [i.strip('\n\r\'\"') for i in code if not regex.search(i)]
+	# stripにより、改行、クォーテーションの削除
+	# re.searchでマッチするリストの要素は内法表記で返さない
+
+
+'''TEST read_filelist
+print(read_filelist('./filelist.txt'))
+'''
+
+
+def filelist_header():
+	'''
+	fililist.txtの説明文を返す
+	'''
+	string = r'''#############################################################
+#
+# このファイル内にあるファイルのフルパスがグラフ化に使われます。
+#
+# このファイルは入力によっては中身が書き換えられます。
+# 必ずバックアップを取っておいてください。
+#
+# 行頭に#がついている行は入力において無視されますが、
+# 中身が書き変わらないわけではありません。
+#
+#
+# <使い方>
+#
+# 以下の例に従ったフルパスを記述すること
+# (例)"C:\Users\hoge\Documents\SAtraceView\DATA\20160101_000023.txt"
+#
+# 改行で区切り
+# 左右のダブルクォートつけてもつけなくてもOK
+# スラッシュとバックスラッシュの区別なし
+# windowsマシンなら次に説明する`forfiles`コマンドを使うと楽
+# (linuxマシンならglob)
+#
+#
+# <forfilesの説明>
+#
+# dir の代わりpowershellコマンド"forfiles"
+# フルパスを出力する
+# globみたいに使える
+# 以下のforfilesスクリプトを使うと
+# 実行ディレクトリ下にあるファイルのフルパスが
+# fililist.txtに書き込まれる
+# 書き込まれるファイル名は頭に'20160101_00'とついたファイル
+#
+#
+#############################################################
+#
+# forfiles /M 20160101_23* /c "cmd /c echo @path" >> filelist.txt
+#
+#############################################################
+#
+#
+# ____________________________
+# /M "<オプション>"
+# 検索マスクを設定してファイルを検索する。
+# デフォルトの検索マスクは'*'。
+#
+# /c "<オプション>"
+# @file 	ファイル名（拡張子も含む）を返す
+# @fname 	拡張子無しの基本ファイル名部分
+# @ext 	拡張子
+# @path 	ファイルのフルパス名を返す
+# @relpath 	開始フォルダーからのファイルの相対パス名を返す
+# @isdir 	フォルダー名ならTRUE、ファイル名ならFALSE。
+# if内部コマンドと組み合わせ、「/C "cmd /c if @isdir==FALSE notepad.exe @file"」などのように利用する
+# @fsize 	ファイルサイズ（bytes単位）
+# @fdate 	ファイルの更新日
+# @ftime 	ファイルの更新時間
+#
+#############################################################
+'''
+	return string
+
+
+'''TEST filelist_header
+print(filelist_header())
+'''
+
+
 def dataglob(path, regex=False):
 	'''
-	* 引数:
-		* regex:globするファイル名(正規表現)
-			* 空の入力=>コンソールからユーザにインプット施す
-		* start:ファイルリストの最初の要素
-		* stop:ファイルリストの最後の要素
-	* 戻り値:
-		* path内のファイルのリスト
-	* 空の入力=引数なしはデフォルト引数'*'が入力され、path内のすべてのファイルを拾う
+* 引数:
+	* path:データソースのディレクトリ
+	* regex: ファイル名の正規表現
+		* 空の入力=>コンソールからユーザにインプット施す
+* 戻り値:
+	* path内のファイルのフルパス
+* 内容:
+	* 指定したディレクトリ(path)から正規表現(regex)をもとにglobして、ファイルのフルパスを返す
+	* regexがない(False, Noneなどの空の入力)とき、ユーザーにinput求める
+		* input 0個(求められたinputが尚も空, Noneの時)
+			* fililist.txtに登録されたファイルのフルパスを返す
+		* input 1個(path内の正規表現を入力する)
+			* glob.glob(regex)で返されたフルパスをfilelistに書き込み
+			* fililist.txtに登録されたファイルのフルパスを返す
+まだここまでしかできていない
+_________________________
+		* input 2個(pandas.date_rangeの引数を入力する'start','end')
+			* pd.date_range(start,end)
+			* ↑で生成された値を正規表現としてglobし、
+			* 結果をfilelistに書き込み
+			* fililist.txtに登録されたファイルのフルパスを返す
+		* input 3個(pandas.date_rangeの引数を入力する'start','end','D' or 'H')
+			* pd.date_range(start,end,freq='D||H')
+			* ↑で生成された値を正規表現としてglobし、
+			* 結果をfilelistに書き込み
+			* fililist.txtに登録されたファイルのフルパスを返す
 	'''
 	if not regex:  # regexがなければコンソールから打ち込ませる
 		print('''
@@ -113,7 +235,23 @@ ____________________________
 
 		print('%s内のファイルを取得します。' % path)
 		regex = input('正規表現で入力してください >> ')
-	return glob.glob(path + regex + '*')
+		filelisttxt = 'filelist.txt'  # 引数:読み込ませたいファイルのフルパス
+		try:
+			if regex:
+				with codecs.open(filelisttxt, 'w', 'utf-8') as f:
+					f.write(filelist_header())
+					for i in glob.glob(path + regex):
+						f.write(i + '\n')
+		except:
+			pass
+		finally:
+			return read_filelist(filelisttxt)
+
+
+'''TEST dataglob
+path = '../../../../Documents/SAtraceView/DATA/'
+print(dataglob(path))
+'''
 
 
 def glob_dataframe(allfiles):
@@ -132,7 +270,6 @@ def glob_dataframe(allfiles):
 	* 戻り値：
 		* df:allfilesから取得した(pandas.DataFrame形式)
 	'''
-
 	# __MAKE PSEDO DATAFRAME__________________________
 	df = pd.DataFrame(list(range(num)), columns=['Temp'])  # 1001要素の仮のデータフレーム作製
 
@@ -167,6 +304,7 @@ def dataframe(path, regex):
 	'''
 	return glob_dataframe(dataglob(path, regex))  # pd.DataFrame形式
 
+
 '''TEST dataframe()
 print(dataframe(path, '20160101*'))
 '''
@@ -184,6 +322,7 @@ def fitfile(fullpath):
                     index_col='DateTime',
                     date_parser=lambda x: datetime.strptime(x, '%Y-%m-%d %H:%M:%S')
                     )
+
 
 '''TEST read_fitfile()
 # fullpath=param['out']+'CSV/P2015_12.csv'
@@ -211,16 +350,9 @@ def fitfile_all(path, regex):
 		pieces.append(fitfile(file))  # fitfile()で返されたDataFrameをpiecesリストに追加
 		df = pd.concat(pieces)  # DataFrame縦つなぎ
 	return df
+
+
 '''TEST fitfile_all()
 df=fitfile_all(param['out']+'CSV/','S????_??.csv')
 print(df)
 '''
-
-
-code=[]
-with codecs.open('./filelist.txt','r','utf-8') as f:
-		code+=f.readlines()   #filelist.txtから1行ずつ読み込み、リストに格納
-regex=re.compile('^#')   #regex.compileで取り除きたい要素の文字を指定
-print([i.strip('\n\r\'\"') for i in code if not regex.search(i)])
-	# stripにより、改行、クォーテーションの削除
-	# re.searchでマッチするリストの要素は内法表記で返さない
