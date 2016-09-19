@@ -59,14 +59,24 @@ SAtraceで収集したデータの分析
 
 
 **ユーザーが指定するデータ選択の方法**
-* 指定したディレクトリのリストから読み込む
-* なければglobする>>>ユーザーにinput施す
-	* 引数1つ
-		* glob.glob(regex)
-	* 引数2つ
+* 引数
+* 指定したディレクトリ(path)から正規表現(regex)をもとにglobして、ファイルのフルパスを返す
+* regexがなければユーザーにinput求める
+	* input 0個(求められたinputが尚も空, Noneの時)
+		* fililist.txtに登録されたファイルのフルパスを返す
+	* input 1個(path内の正規表現と入力する)
+		* glob.glob(regex)で返されたフルパスをfilelistに書き込み
+		* fililist.txtに登録されたファイルのフルパスを返す
+	* input 2個(pandas.date_rangeの引数を入力する'start','end')
 		* pd.date_range(start,end)
-	* 引数3つ
+		* ↑で生成された値を正規表現としてglobし、
+		* 結果をfilelistに書き込み
+		* fililist.txtに登録されたファイルのフルパスを返す
+	* input 3個(pandas.date_rangeの引数を入力する'start','end','D' or 'H')
 		* pd.date_range(start,end,freq='D||H')
+		* ↑で生成された値を正規表現としてglobし、
+		* 結果をfilelistに書き込み
+		* fililist.txtに登録されたファイルのフルパスを返す
 
 
 

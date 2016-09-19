@@ -76,7 +76,7 @@ def read_filelist(filelist_path):
 	filelist.txtから1行ずつ読み込み、リストに格納
 	regex.compileで取り除きたい要素の文字を指定
 	stripにより、改行、クォーテーションの削除
-	re.searchでマッチするリストの要素は内法表記で返さない
+	re.searchでマッチするリスト(行頭に#がつく行)の要素は内法表記で返さない
 	'''
 	code = []
 	with codecs.open(filelist_path, 'r', 'utf-8') as f:
@@ -87,15 +87,21 @@ def read_filelist(filelist_path):
 	# re.searchでマッチするリストの要素は内法表記で返さない
 
 
-def dataglob(path, regex=False, start=0, stop=None):
+'''TEST read_filelist
+print(read_filelist('./filelist.txt'))
+'''
+
+
+def dataglob(path, regex=False):
 	'''
 	* 引数:
-		* regex:globするファイル名(正規表現)
+		path:
+		* regex: globするファイル名(正規表現)
 			* 空の入力=>コンソールからユーザにインプット施す
-		* start:ファイルリストの最初の要素
-		* stop:ファイルリストの最後の要素
+		* start: ファイルリストの最初の要素
+		* stop: ファイルリストの最後の要素
 	* 戻り値:
-		* path内のファイルのリスト
+		* path内のファイルのフルパス
 	* 空の入力=引数なしはデフォルト引数'*'が入力され、path内のすべてのファイルを拾う
 	'''
 	if not regex:
@@ -125,16 +131,13 @@ ____________________________
 		if not regex:
 			return read_filelist('./filelist.txt')  # 引数:読み込ませたいファイルのフルパス
 		else:
-			return glob.glob(path + regex)[start:stop]
+			return glob.glob(path + regex)
 
 
 '''TEST dataglob
+path = '../../../../Documents/SAtraceView/DATA/'
+print(dataglob(path))
 '''
-code = []
-for i in dataglob(path):
-	with open(i, 'r') as f:
-			code += f.readlines()  # filelist.txtから1行ずつ読み込み、リストに格納
-print(code)
 
 
 def glob_dataframe(allfiles):
