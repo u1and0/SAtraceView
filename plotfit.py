@@ -34,6 +34,7 @@ def prop_plot(df_loc):
 
 	return prop.plot.bar(title='%s-%s' % (std, end), rot=30)
 
+
 '''TEST prop_plot()
 plt.show(prop_plot(df_loc))
 '''
@@ -51,6 +52,7 @@ def prop_date(df_loc):
 	print(prop)
 	print('_' * 20 + '\n')
 	return prop
+
 
 '''TEST
 prop_date(df_loc)

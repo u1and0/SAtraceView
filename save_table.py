@@ -57,6 +57,7 @@ save_table(df,param['view_out']+'SN201601.csv')
 def concat_table(sourcepath, regex, read_csvpath):
 	'''
 	csvに保存されているdfと新たに追加するdfをpd.concatで縦につなげる
+	既にcsvに取り込まれている時刻は飛ばす(dftにいれない)
 
 	引数:
 		sourcepath:Data source、ファイルの入ったパス(string)
@@ -65,18 +66,21 @@ def concat_table(sourcepath, regex, read_csvpath):
 	戻り値:
 		df_concat:csvから読み込まれたdfと追加するために読み込んだdfを縦につなげた(concat)df
 	'''
-	dfcsv = rt.fitfile(read_csvpath)  # 追加されるdf
+	# 追加されるdf
+	dfcsv = rt.fitfile(read_csvpath)
 	dfcsv.columns = np.linspace(param['freq_start'], param['freq_stop'], param['number_of_rows'])
 
-	dft = make_table(sourcepath, regex)  # 追加するdf
+	# 追加するdf
+	dft = make_table(sourcepath, regex)
 	dft.columns = np.linspace(param['freq_start'], param['freq_stop'], param['number_of_rows'])
 
-	df_concat = pd.concat([dfcsv, dft]).sort_index()  # dfの縦つなぎ
+	# dfの縦つなぎ
+	df_concat = pd.concat([dfcsv, dft]).sort_index()
 	print('\n__Concat DataFrame')
 	print(df_concat)
 	print('\n__Concat END...')
 	return df_concat
 '''TEST concat_table
+dfc = concat_table(path, '2016*', param['view_out'] + 'average_SN.csv')
+save_table(dfc, param['view_out'] + 'average_SN.csv')
 '''
-df = concat_table(path, '2016*', param['view_out'] + 'average_SN.csv')
-save_table(df, param['view_out'] + 'average_SN.csv')
