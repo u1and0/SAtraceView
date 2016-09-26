@@ -3,6 +3,7 @@ fittingされて出てきたCSVの解析、可視化
 集計方法はcountからのパーセンテージ
 '''
 # __MATH MODULES__________________________
+import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
@@ -11,9 +12,9 @@ import seaborn as sns
 import read_table as rt
 import json
 with open('parameter.json', 'r') as f:
-	param=json.load(f)
+	param = json.load(f)
 
-df = rt.fitfile(param['out'] + 'CSV/'+'SN20151211_20160110.csv')
+df = rt.fitfile(param['out'] + 'CSV/' + 'SN20151211_20160110.csv')
 # df = rt.fitfile_all(param['out'] + 'CSV/', 'S????_??.csv')
 
 # std,end='20160111','20160210'
@@ -65,11 +66,21 @@ def plot_legend_setting(plot_element):
 		plt.subplots_adjust(bottom=0.25)
 
 
-def propdf(df):
-	std, end= '20151211', '20160110'
-	propdf=pd.DataFrame([])
-	propdf['%s/%s' % (std[:4], std[4:6])] = prop_date(df)
+def propdf(df, name):
+	propdf = pd.DataFrame([])
+	propdf[name] = prop_date(df)
 	return propdf
+
+
+def plot_propdf(propdf):
+	month_ratio = propdf.sort_index(axis=1)
+	month_ratio_index = [float(i[:-3]) for i in month_ratio.index]
+	month_ratio.index = np.linspace(month_ratio_index[0], month_ratio_index[-1], 37)
+	ax = month_ratio.plot.bar(title='Monthly Reception Ratio')
+	ax.set_xlabel('Frequency')
+	ax.set_ylabel('Ratio')
+	plot_legend_setting(len(propdf.T.columns))
+	return ax
 
 
 def propdf_all(df):
@@ -89,25 +100,24 @@ def propdf_all(df):
 		df_loc = df.loc[std:end]  # std~endまでのインデックスを選択
 		propdf['%s/%s' % (std[:4], std[4:6])] = prop_date(df_loc)
 	del propdf['temp']
-	return propdf
+	print(propdf)
 
-
-
-
-
-
+	month_ratio = propdf.T.sort_index(axis=1)
+	# month_ratio.columns=param['country'][month_ratio.columns]
+	ax = month_ratio.plot.bar(title='Monthly Reception Ratio', rot=30)
+	ax.set_xlabel('Month')
+	ax.set_ylabel('Ratio')
+	plot_legend_setting(len(propdf.T.columns))
+	# plt.show(ax)
+	plt.savefig(param['view_out'] + 'allratio%s_%s.png' % (std, end))
 
 
 # __MAIN__________________________
 
-propdf=propdf(df)
+propdf = propdf(df, '2015/12/11-2016/01/10')
 print(propdf)
 
-month_ratio = propdf.T.sort_index(axis=1)
-# month_ratio.columns=param['country'][month_ratio.columns]
-ax = month_ratio.plot.bar(title='Monthly Reception Ratio', rot=30)
-ax.set_xlabel('Month')
-ax.set_ylabel('Ratio')
-plot_legend_setting(len(propdf.T.columns))
+
+ax = plot_propdf(propdf)
 # plt.show(ax)
-plt.savefig(param['view_out']+'allratio20151211_20160110.png')
+plt.savefig(param['view_out'] + 'allratio20151211_20160110.png')

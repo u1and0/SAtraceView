@@ -6,7 +6,7 @@ from numpy.random import *
 from scipy import stats
 # import matplotlib.dates as pltd
 # __DATETIME__________________________
-from datetime import datetime, timedelta
+from datetime import datetime
 # import time
 # __STRING__________________________
 # import sys
