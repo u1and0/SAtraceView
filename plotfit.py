@@ -75,7 +75,7 @@ def propdf(df, name):
 def plot_propdf(propdf):
 	month_ratio = propdf.sort_index(axis=1)
 	month_ratio_index = [float(i[:-3]) for i in month_ratio.index]
-	month_ratio.index = np.linspace(month_ratio_index[0], month_ratio_index[-1], 37)
+	month_ratio.index = np.linspace(month_ratio_index[0], month_ratio_index[-1], len(month_ratio_index))
 	ax = month_ratio.plot.bar(title='Monthly Reception Ratio')
 	ax.set_xlabel('Frequency')
 	ax.set_ylabel('Ratio')
@@ -119,5 +119,5 @@ print(propdf)
 
 
 ax = plot_propdf(propdf)
-# plt.show(ax)
-plt.savefig(param['view_out'] + 'allratio20151211_20160110.png')
+plt.show(ax)
+# plt.savefig(param['view_out'] + 'allratio20151211_20160110.png')
