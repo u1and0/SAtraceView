@@ -16,8 +16,8 @@ with open('parameter.json', 'r') as f:
 
 
 def prop_plot(df):
-	std,end='20160111','20160210'
-	df_loc=df.loc[std:end]   #std~endまでのインデックスを選択
+	std, end = '20160111', '20160210'
+	df_loc = df.loc[std:end]  # std~endまでのインデックスを選択
 
 	print('sliceしたデータフレーム')
 	print(df_loc)
@@ -72,9 +72,9 @@ def plot_propdf(propdf):
 	month_ratio = propdf.sort_index(axis=1)
 	month_ratio_index = [float(i[:-3]) for i in month_ratio.index]
 	month_ratio.index = np.linspace(
-									month_ratio_index[0],
-									month_ratio_index[-1],
-									len(month_ratio_index))
+            month_ratio_index[0],
+            month_ratio_index[-1],
+            len(month_ratio_index))
 	ax = month_ratio.plot.bar(title='Monthly Reception Ratio')
 	ax.set_xlabel('Frequency')
 	ax.set_ylabel('Ratio')
@@ -130,7 +130,7 @@ def plot_timepower(df):
 df = rt.fitfile(param['view_out'] + 'average_SN.csv')
 
 # data slice
-start= pd.Timestamp('20160101')  # indexの選択
+start = pd.Timestamp('20160101')  # indexの選択
 end = pd.Timestamp('20160114')
 freq = param['freq_choice']  # columnsの選択
 df_slice = df.ix[start:end, freq]
@@ -140,7 +140,6 @@ print(df_slice)
 plot_timepower(df_slice)
 
 # df = rt.fitfile_all(param['out'] + 'CSV/', 'S????_??.csv')
-
 
 
 # 周波数ごとのカウント・比率のbar plot
