@@ -112,13 +112,15 @@ def propdf_all(df):
 
 
 def plot_timepower(df):
-	# data slice
-	start, end = pd.Timestamp('20160101'), pd.Timestamp('20160114')  # indexの選択
-	freq = param['freq_choice']  # columnsの選択
-	df_slice = df.ix[start:end, freq]
-	print(df_slice)
-
-	df_slice.plot(subplots=True)
+	'''
+	引数:
+		df: read from average data saved in csv(pandasデータフレーム型)
+			index: datetime
+			columns: frequency
+	SNの平均値を時間変化でプロット
+	読み込まれたdfのスライシングを行う
+	'''
+	df.plot(subplots=True)
 	plt.show()
 
 
@@ -127,8 +129,15 @@ def plot_timepower(df):
 # data source
 df = rt.fitfile(param['view_out'] + 'average_SN.csv')
 
+# data slice
+start= pd.Timestamp('20160101')  # indexの選択
+end = pd.Timestamp('20160114')
+freq = param['freq_choice']  # columnsの選択
+df_slice = df.ix[start:end, freq]
+print(df_slice)
+
 # SNの時間変化
-plot_timepower(df)
+plot_timepower(df_slice)
 
 # df = rt.fitfile_all(param['out'] + 'CSV/', 'S????_??.csv')
 
