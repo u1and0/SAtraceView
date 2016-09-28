@@ -5,3 +5,4 @@ param*.*
 SAtraceView.sublime-workspace
 SAtraceView.sublime-project
 ipython_log*
+*ipynb*

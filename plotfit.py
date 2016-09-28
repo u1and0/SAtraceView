@@ -14,15 +14,12 @@ import json
 with open('parameter.json', 'r') as f:
 	param = json.load(f)
 
-df = rt.fitfile(param['out'] + 'CSV/' + 'SN20151211_20160110.csv')
-# df = rt.fitfile_all(param['out'] + 'CSV/', 'S????_??.csv')
 
-# std,end='20160111','20160210'
-# df_loc=df.loc[std:end]   #std~endまでのインデックスを選択
+def prop_plot(df):
+	std,end='20160111','20160210'
+	df_loc=df.loc[std:end]   #std~endまでのインデックスを選択
 
-
-def prop_plot(df_loc):
-	print('読み込んだデータフレーム')
+	print('sliceしたデータフレーム')
 	print(df_loc)
 
 	print('全columnを集計')
@@ -31,7 +28,6 @@ def prop_plot(df_loc):
 	prop = df_loc.count() / len(df_loc)  # 全dfに対して、いくつ値が入っているかの比率
 	print('値が入っている比率')
 	print(prop)
-
 	return prop.plot.bar(title='%s-%s' % (std, end), rot=30)
 
 
@@ -75,7 +71,10 @@ def propdf(df, name):
 def plot_propdf(propdf):
 	month_ratio = propdf.sort_index(axis=1)
 	month_ratio_index = [float(i[:-3]) for i in month_ratio.index]
-	month_ratio.index = np.linspace(month_ratio_index[0], month_ratio_index[-1], len(month_ratio_index))
+	month_ratio.index = np.linspace(
+									month_ratio_index[0],
+									month_ratio_index[-1],
+									len(month_ratio_index))
 	ax = month_ratio.plot.bar(title='Monthly Reception Ratio')
 	ax.set_xlabel('Frequency')
 	ax.set_ylabel('Ratio')
@@ -112,12 +111,33 @@ def propdf_all(df):
 	plt.savefig(param['view_out'] + 'allratio%s_%s.png' % (std, end))
 
 
+def plot_timepower(df):
+	# data slice
+	start, end = pd.Timestamp('20160101'), pd.Timestamp('20160114')  # indexの選択
+	freq = param['freq_choice']  # columnsの選択
+	df_slice = df.ix[start:end, freq]
+	print(df_slice)
+
+	df_slice.plot(subplots=True)
+	plt.show()
+
+
 # __MAIN__________________________
 
-propdf = propdf(df, '2015/12/11-2016/01/10')
-print(propdf)
+# data source
+df = rt.fitfile(param['view_out'] + 'average_SN.csv')
+
+# SNの時間変化
+plot_timepower(df)
+
+# df = rt.fitfile_all(param['out'] + 'CSV/', 'S????_??.csv')
 
 
-ax = plot_propdf(propdf)
-plt.show(ax)
+
+# 周波数ごとのカウント・比率のbar plot
+# df = rt.fitfile(param['out'] + 'CSV/' + 'SN20151211_20160110.csv')
+# propdf = propdf(df, '2015/12/11-2016/01/10')
+# print(propdf)
+# ax = plot_propdf(propdf)
+# plt.show(ax)
 # plt.savefig(param['view_out'] + 'allratio20151211_20160110.png')
