@@ -55,95 +55,26 @@ ____________________________
 ## read_table.py
 
 データの読み込みを行う
-主な関数
 
-* あらかじめグラフ化したいデータのフルパスを格納しておくfililistをリストとして読み込み:read_filelist(filelist_path)
-* globしたリストを返す関数:dataglob(path, regex=False)
-* 読み込んだデータをpandas.DataFrame形式にして返す関数:glob_dataframe(allfiles)
-
-**ユーザーが指定するデータ選択の方法** は関数dataglob()の説明を読むこと。
+* 読み込んだデータをpandas.DataFrame形式にして返す関数:glob_dataframe()
+* globしたリストを返す関数:dataglob()
++ globに時間がかかるので、イテレータを返すiglobにしようか
 
 
 
-### onefile(fullpath):
-Read single file
-Store dataframe
-
-
-### manyfile(start, stop):
-Read multiple files
-Store dataframe
-
-
-### spectrum(fullpath, columns='Ave'):
-Make dataframe as ploting spectrums.
-indexをnp.linspaceにできないかなぁ
+**ユーザーが指定するデータ選択の方法**
+* 指定したディレクトリのリストから読み込む
+* なければglobする>>>ユーザーにinput施す
+	* 引数1つ
+		* glob.glob(regex)
+	* 引数2つ
+		* pd.date_range(start,end)
+	* 引数3つ
+		* pd.date_range(start,end,freq='D||H')
 
 
 
-
-### python:filelist_header()
-fililist.txtの説明文を返す
-
-
-
-
-
-### read_filelist()
-globするときの手順
-
-1. 引数0個
-	1.1. ユーザーに入力させる
-	1.2. `input()`
-		1.2.1. なおも0個の場合、`filelist.txt`から読み込む
-2. 引数1個
-	2.1. 正規表現として受け取り、globに渡す
-	2.2. `glob. glob()`
-3. 引数2個
-	3.1. それぞれstringとして受け取り、pd.date_range()の引数に使う
-	3.2. `pd.date_range(start,end)`
-4. 引数3個
-	4.1. それぞれstringとして受け取り、pd.date_range()の引数に使う
-	4.2. 3つめの引数はfreq(D or H)
-	4.3. `pd.date_range(start,end,freq='H')`
-5. 1.2.1以外の結果は`filelist.txt`に上書き
-	5.1. 次回に1.2.1のようにした場合、結果を再利用できる。
-	5.2. もしくは自作のリストを使用できる。
-
-
-
-### dataglob(path, regex=False):
-* 引数:
-	* path:データソースのディレクトリ
-	* regex: ファイル名の正規表現
-		* 空の入力=>コンソールからユーザにインプット施す
-* 戻り値:
-	* path内のファイルのフルパス
-* 内容:
-	* 指定したディレクトリ(path)から正規表現(regex)をもとにglobして、ファイルのフルパスを返す
-	* regexがない(False, Noneなどの空の入力)とき、ユーザーにinput求める
-		* input 0個(求められたinputが尚も空, Noneの時)
-			* fililist.txtに登録されたファイルのフルパスを返す
-		* input 1個(path内の正規表現を入力する)
-			* glob.glob(regex)で返されたフルパスをfilelistに書き込み
-			* fililist.txtに登録されたファイルのフルパスを返す
-まだここまでしかできていない
-_________________________
-		* input 2個(pandas.date_rangeの引数を入力する'start','end')
-			* pd.date_range(start,end)
-			* ↑で生成された値を正規表現としてglobし、
-			* 結果をfilelistに書き込み
-			* fililist.txtに登録されたファイルのフルパスを返す
-		* input 3個(pandas.date_rangeの引数を入力する'start','end','D' or 'H')
-			* pd.date_range(start,end,freq='D||H')
-			* ↑で生成された値を正規表現としてglobし、
-			* 結果をfilelistに書き込み
-			* fililist.txtに登録されたファイルのフルパスを返す
-
-
-
-
-### glob_dataframe(allfiles)
+```python:gob_dataframe(allfiles)
 * 通常の使い方:
 	* `glob_dataframe(dataglob())`としてpathからファイル名(フルパス)を読み込む
 
@@ -171,6 +102,7 @@ dataglob()によってglobするファイル名をユーザーに入力を施す
 20161225_1[12]*   #2016年12月25日11時か12時のデータ
 20161225_1?5*   #2016年12月25日10,11,12時50分台のデータ
 ```
+
 
 
 
@@ -385,6 +317,13 @@ plt.subplots()を使用してline plotとmarker plotを共存させる
 
 ____________________________
 # TODO
+
+# indent to space
+できるところまでまとめてからmasterにgit flow release
+master v3.0にしてから
+`gf hotfix start indent`してindent直す
+
+
 # groupby Timeframe 
 // * 時間軸でグループ化
 // * 月ごと、週ごと、日ごと、時間ごとで集計
