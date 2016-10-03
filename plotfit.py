@@ -10,9 +10,9 @@ import seaborn as sns
 
 # __USER MODULES__________________________
 import read_table as rt
-import json
+import simplejson
 with open('parameter.json', 'r') as f:
-	param = json.load(f)
+	param = simplejson.load(f)
 
 
 def prop_plot(df):
