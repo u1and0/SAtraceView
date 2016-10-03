@@ -129,7 +129,8 @@ def plot_marker(df, datelist):
 		column_name = '%s_%s' % (start, end)   # dataframeのcolumn nameになる("yyyymmdd_yyyymmdd"の形のstring型)
 
 		eachplot(df[column_name], freq_list)
-		dateiso = lambda x: pd.to_datetime(x, format='%Y%m%d').isoformat()[:10]   # yyyymmddの文字列に直してくれる
+		def dateiso(x):
+			return pd.to_datetime(x, format='%Y%m%d').isoformat()[:10]   # yyyymmddの文字列に直してくれる
 		plt.title('S/N ratio Max in 1month from %s to %s' % (dateiso(start), dateiso(end)))
 		plt.ylabel('S/N ratio [dBm]')
 		plt.ylim(param['ylim_max'])

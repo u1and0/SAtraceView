@@ -1,20 +1,17 @@
 # __BUILT-IN MODULES_________________________
 import pandas as pd
 import numpy as np
-import matplotlib.pyplot as plt
-from numpy.random import *
 from scipy import stats
-# import matplotlib.dates as pltd
 import glob
-import sys
-from datetime import datetime, timedelta
-import time
+from datetime import datetime
+import simplejson
 # __USER MODULES__________________________
-import param
+
 
 # __READ PARAMETER__________________________
-param = param.param()
 
+with open('parameter.json') as pa:
+    param = simplejson.load(pa)
 path = param['in']
 freq_start = param['freq_start']
 freq_stop = param['freq_stop']
@@ -53,6 +50,7 @@ def manyfile(regex):
         pieces.append(onefile(file))
     return pd.concat(pieces, ignore_index=True)
 
+
 '''TEST manyfile()
 print(manyfile('201602'))
 '''
@@ -71,6 +69,8 @@ def spectrum(fullpath, columns='Ave', SNmode=True):
     if SNmode:
         df -= stats.scoreatpercentile(df, 25)  # fix at 1/4median
     return df
+
+
 '''TEST spectrum()
 print(spectrum(path+'20160906_051925.txt'))
 print(spectrum(path+'20160906_051925.txt',SNmode=True))
@@ -168,6 +168,7 @@ def dataframe(path, regex):
     '''
     return glob_dataframe(dataglob(path, regex))  # pd.DataFrame形式
 
+
 '''TEST dataframe()
 print(dataframe(path, '20160101*'))
 '''
@@ -185,6 +186,7 @@ def fitfile(fullpath):
                        index_col='DateTime',
                        date_parser=lambda x: datetime.strptime(x, '%Y-%m-%d %H:%M:%S')
                        )
+
 
 '''TEST read_fitfile()
 # fullpath=param['out']+'CSV/P2015_12.csv'
@@ -212,6 +214,8 @@ def fitfile_all(path, regex):
         pieces.append(fitfile(file))  # fitfile()で返されたDataFrameをpiecesリストに追加
         df = pd.concat(pieces)  # DataFrame縦つなぎ
     return df
+
+
 '''TEST fitfile_all()
 df=fitfile_all(param['out']+'CSV/','S????_??.csv')
 print(df)
