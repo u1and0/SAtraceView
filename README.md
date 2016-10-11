@@ -317,6 +317,10 @@ plt.subplots()を使用してline plotとmarker plotを共存させる
 
 ____________________________
 # TODO
+クラス化する
+対話形式でjupyternotebook内でグラフを作る
+
+
 
 # indent to space
 できるところまでまとめてからmasterにgit flow release
