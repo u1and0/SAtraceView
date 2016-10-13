@@ -94,8 +94,8 @@ import simplejson
 
 with open('parameter.json', 'r') as f:
     param = simplejson.load(f)
-file = param['out_csv'] + 'P20160111_20160210.csv'
-# file = param['view_out'] + 'average_SN.csv'
+# file = param['out_csv'] + 'P20160111_20160210.csv'  # テスト用
+file = param['view_out'] + 'average_SN.csv'
 print('\nLoading DataFrame takes a few minutes...\n')
 df = rt.fitfile(file)
 print(df)
