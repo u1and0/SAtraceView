@@ -91,18 +91,20 @@ class Plotfit(object):
     '''
 
     def __init__(self, df):
+        '''Plotfitの引数をインスタンス化'''
         self.df = df
+        self.title = '%s ~ %s' % (self.df.index[0], self.df.index[-1])
 
     def plot_time(self):
         '''SNの時間変化をプロット'''
         return self.df.plot()
 
     def count(self):
-        '''値のあるところをカウント '''
+        '''値のあるところをカウント'''
         return self.df.count()
 
     def plot_count(self):
-        '''カウントしたやつを棒グラフ化 '''
+        '''カウントしたやつを棒グラフ化'''
         title = '%s ~ %s' % (self.df.index[0], self.df.index[-1])
         return self.count().plot.bar(title=title, rot=30)
 
@@ -110,11 +112,28 @@ class Plotfit(object):
         '''値の出ているところの比率。母数は測定回数'''
         return self.df.count() / len(self.df)
 
-    def plot_prop(self):
-        '''比率を棒グラフ化 '''
+    def plot_prop(self):  # Plotfit(df).prop.plot.bar()とほぼ同義
+        '''比率を棒グラフ化'''
         title = '%s ~ %s' % (self.df.index[0], self.df.index[-1])
         return self.prop().plot.bar(title=title, rot=30)
 
+    def prop_agg(self, func='date'):
+        '''
+        funcに使用する関数でグループ分け
+        # 使用できるもの一覧
+
+        date : 日付
+        week : 週
+        month : 月
+        hour : 時間
+        minute : 分
+        second : 秒
+        '''
+        groupfunc = 'lambda x: x.%s' % func
+        return self.df.groupby(eval(groupfunc)).count()
+
+    def plot_prop_agg(self, func='date'):
+        return self.prop_agg(func).plot.bar(title=self.title, rot=30)
 
 # if __name__ == '__main__':
 #     doctest.testmod()
