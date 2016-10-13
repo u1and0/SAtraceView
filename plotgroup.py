@@ -40,6 +40,7 @@ def aggregate(path):
 	del sub['Temp']
 	return sub
 
+
 '''TEST aggregate()
 df=aggregate(path)
 '''
@@ -51,10 +52,12 @@ df=aggregate(path)
 
 def aggregate_csv(csv_fullpath, list_of_tuple):
 	'''
+	"csvfullpath"の中のファイルに対して、datelist(tuple of list形式)で区切って集計を行う(max,meanなど)
 	dfを周波数ごとに集計
 	集計範囲はlist_of_tupleに記載
 	データフレームに取り出しやすいcsvデータから読み込む場合
 	**集計方法(mean, maxなど)はココで変える！**
+
 
 	引数:
 	 path: Data Source
@@ -62,10 +65,12 @@ def aggregate_csv(csv_fullpath, list_of_tuple):
 	戻り値:
 	 sub: 値は集計値(pd.DataFrame形式)
 	'''
+	print('Now loading from %s...' % csv_fullpath)
 	sub = pd.DataFrame([], columns=['Temp'])
 
 	df = rt.fitfile(csv_fullpath)
 	for std, end in list_of_tuple:
+		print('Date aggregation from %s to %s.' % (std, end))
 		sub[std + '_' + end] = df.loc[std:end].max()
 
 	del sub['Temp']
@@ -89,36 +94,55 @@ def eachplot(series, freq_list):
 
 	戻り値:なし
 	'''
+	print('plot %s' % series.name)
 	fig, ax1 = plt.subplots()
 	ax1.plot(series.index, series, color='gray', linewidth=0.5)   # spectrum plot
 	for freq in freq_list:
-		se_mark = pd.Series(np.where(series.index == freq, series.ix[freq], np.nan),
-                      index=freq_index,
-                      name=param['country'][freq]
-                      )   # 特定の周波数だけ値、他はNaNを返すpd.Series
-		ax1.plot(se_mark.index, se_mark, linestyle='', marker='D',
-		         markeredgewidth=1, fillstyle='none')   # 注目周波数plot as marker
+		ax1.plot(freq, series.ix[freq],
+                    linestyle='',
+                    marker='D',
+                    markeredgewidth=1,
+                    fillstyle='none',
+                    label=param['country'][freq])   # 注目周波数plot as marker
 
 	# __MAKE LABEL, TITLE, LIMIT__________________________
 	plt.legend(bbox_to_anchor=(0.5, -0.25), loc='center',
 	           borderaxespad=0, fontsize='small', ncol=3)   # 別枠にラベルを書く
 	plt.subplots_adjust(bottom=0.25)
 
-	def k(x):
-		return pd.to_datetime(x, format='%Y%m%d').isoformat()[:10]   # yyyymmddの文字列に直してくれる
-	plt.title('S/N ratio Max in 1month from %s to %s' % (k(start), k(end)))
-	plt.ylabel('S/N ratio [dBm]')
-	plt.ylim(param['ylim_max'])
+
+def plot_marker(df, datelist):
+	'''
+	引数:
+		df: csvをdateでグループ化したものpandas dataframe
+	matplotlib.pyplot.subplots()を使って、スペクトラムは黒線、注目周波数は色つきマーカーでplotする
+		datelist: csvから抜き出す日付(始りの日、終わりの日)yyyymmdd形式
+
+	freq_list: 注目周波数、param.pyに記載
+	freq_index: 周波数
+	'''
+
+	country_keys = list(param['country'].keys())  # 注目周波数
+	freq_list = sorted([i for i in country_keys])  # 注目周波数をタイトルに使えるようにkHz抜いた
+
+	for start, end in datelist:
+		column_name = '%s_%s' % (start, end)   # dataframeのcolumn nameになる("yyyymmdd_yyyymmdd"の形のstring型)
+
+		eachplot(df[column_name], freq_list)
+		def dateiso(x):
+			return pd.to_datetime(x, format='%Y%m%d').isoformat()[:10]   # yyyymmddの文字列に直してくれる
+		plt.title('S/N ratio Max in 1month from %s to %s' % (dateiso(start), dateiso(end)))
+		plt.ylabel('S/N ratio [dBm]')
+		plt.ylim(param['ylim_max'])
+
+		# __SHOW GRAPH or SAVE GRAPH__________________________
+		plt.show()
+		# plt.savefig(param['view_out'] + 'SNmax%s.png' % column_name, size=(5.12, 2.56))
+		# plt.close()
 
 
 # __MAIN__________________________
-'''
-matplotlib.pyplot.subplots()を使って、スペクトラムは黒線、注目周波数は色つきマーカーでplotする
-
-datelist: csvから抜き出す日付(始りの日、終わりの日)yyyymmdd形式
-freq_list: 注目周波数、param.pyに記載
-freq_index: 周波数
-'''
+csv_fullpath = param['view_out'] + 'average_SN.csv'   # データソースを整理して収めたcsvファイルの場所(save_table参照)
 datelist = [
 	('20151111', '20151210'),
 	('20151211', '20160110'),
@@ -130,18 +154,4 @@ datelist = [
 	('20160611', '20160710'),
 	('20160711', '20160810'),
 ]
-
-country_keys = list(param['country'].keys())  # 注目周波数
-freq_list = sorted([i for i in country_keys])  # 注目周波数をタイトルに使えるようにkHz抜いた
-
-csv_fullpath = param['view_out'] + 'average_SN.csv'   # データソースを整理して収めたcsvファイルの場所(save_table参照)
-# "csvfullpath"の中のファイルに対して、datelist(tuple of list形式)で区切って集計を行う(max,meanなど)
-df = aggregate_csv(csv_fullpath, datelist)
-for start, end in datelist:
-	column_name = '%s_%s' % (start, end)   # dataframeのcolumn nameになる("yyyymmdd_yyyymmdd"の形のstring型)
-
-	eachplot(df[column_name], freq_list)
-	# __SHOW GRAPH or SAVE GRAPH__________________________
-	plt.show()
-	# plt.savefig(param['view_out'] + 'SNmax%s.png' % column_name, size=(5.12, 2.56))
-	# plt.close()
+plot_marker(aggregate_csv(csv_fullpath, datelist), datelist)
