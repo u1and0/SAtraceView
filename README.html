@@ -1,4 +1,6 @@
-<!DOCTYPE html><html><head><meta charset="utf-8"><style>body {
+<!DOCTYPE html>
+<html><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8"><meta charset="utf-8"><style>body {
   width: 45em;
   border: 1px solid #ddd;
   outline: 1300px solid #fff;
@@ -1015,25 +1017,88 @@ body .markdown-body
   }
 }
 </style><title>README</title></head><body><article class="markdown-body"><h1 id="satraceview"><a name="user-content-satraceview" href="#satraceview" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>SAtraceView</h1>
-<p>SAtraceで収集したデータの分析<br />
-収集したデータを化しかし、分析を容易にします。</p>
+<p>SAtraceで収集したデータの分析<br>
+収集したデータを可視化し、分析を容易にします。</p>
 <h2 id="_1"><a name="user-content-_1" href="#_1" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>使い方</h2>
-<p>方法は「バッチを使用する」か「コマンドを打つ」</p>
+<p>メインとなるファイルはSAtraceView.pyのPlotfitクラス。<br>
+これをipynb形式のファイル(SAtraceView.ipynb)で進めていく。</p>
 <ul>
+<li>起動方法は「バッチを使用する」か「コマンドを打つ」<ul>
 <li>バッチで起動<ul>
 <li>SAtraceView.batをダブルクリック</li>
 </ul>
 </li>
 <li>コマンドを打つ<ul>
 <li>好きなターミナル開く</li>
-<li><code>python plot2d.py</code>と打つ<blockquote>
+<li><code>jupyter notebook SAtraceView.ipynb</code>と打つ<blockquote>
 <p>バッチの中身はこれが書いてあるだけ</p>
 </blockquote>
 </li>
 </ul>
 </li>
 </ul>
-<h2 id="_2"><a name="user-content-_2" href="#_2" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>データ形式</h2>
+</li>
+<li>ipynbファイルに従い、Shift+Enterで進めていく</li>
+</ul>
+<h3 id="importerror"><a name="user-content-importerror" href="#importerror" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a><layer class="searchwp-term searchwp-highlight-searchwp-highlighting" highlight="term-2">ImportError</layer>が生じるとき、必要なモジュールをインポートする</h3>
+<p>以下のモジュールはanacondaに標準インストールされていない。<br>
+<code>conda install &lt;モジュール名&gt;</code>でインストールする。</p>
+<ul>
+<li>simplejson</li>
+<li>seaborn</li>
+</ul>
+<h2 id="satraceview-ver10"><a name="user-content-satraceview-ver10" href="#satraceview-ver10" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>SAtraceView ver1.0</h2>
+<p><strong>USAGE</strong></p>
+<h3 id="jupyter-notebook"><a name="user-content-jupyter-notebook" href="#jupyter-notebook" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>jupyter notebookを起動</h3>
+<p>cmdなどで<code>`jupyter notebook SAtraceView.ipynb</code>と打つ</p>
+<h3 id="_2"><a name="user-content-_2" href="#_2" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>モジュールのインポート</h3>
+<p>最初のセルに<code>%load SAtraceView</code>と打ち込む<br>
+データのロードが完了すると<br>
+ロードしたデータフレームが表示される</p>
+<h3 id="_3"><a name="user-content-_3" href="#_3" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>データの代入</h3>
+<p><code>x=Plotfit(df)</code></p>
+<h4 id="_4"><a name="user-content-_4" href="#_4" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>解説</h4>
+<ul>
+<li>データはソース内で指定したcsvから読み込まれ<code>df</code>というオブジェクトに格納されている。</li>
+<li><code>x</code>などといったオブジェクトにクラスPlotfit(* データフレーム型の引数)を代入する。</li>
+</ul>
+<h3 id="_5"><a name="user-content-_5" href="#_5" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>データの選択方法</h3>
+<pre><code>dft=df.ix['20160211':'20160310',[0,4]]  # 選択したものをdftに代入する
+x=Plotfit(dft)
+</code></pre>
+
+<ul>
+<li>2016年2月11日から2016年3月10日までの行</li>
+<li>0番目、4番目の列</li>
+<li>0,4…といった列番号ではなく、列名(‘xxxkHz’)を指定しても良い。<blockquote>
+<p>クォーテーションでくくること</p>
+</blockquote>
+</li>
+<li>xというオブジェクトに<code>dft</code>を使用したクラスを代入する</li>
+</ul>
+<p><strong>INTRODUCTION</strong></p>
+<p>プロットする</p>
+<p><strong>ACTION</strong></p>
+<h3 id="_6"><a name="user-content-_6" href="#_6" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>クラスの外側</h3>
+<ul>
+<li>モジュールをインポート</li>
+<li>パラメータをロード(param=…)</li>
+<li>使用するファイルの指定(file = …)</li>
+<li>データフレームをロード(df=…)</li>
+</ul>
+<h3 id="plotfit"><a name="user-content-plotfit" href="#plotfit" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>クラス Plotfit</h3>
+<p>self.df : 引数にしたデータフレーム<br>
+self.title : データフレームの日時の最初と最後</p>
+<p><strong>UPDATE1.0</strong></p>
+<ul>
+<li>count_agg追加</li>
+<li>README追加</li>
+</ul>
+<p><strong>UPDATE0.1</strong><br>
+First commit</p>
+<p><strong>TODO</strong><br>
+None</p>
+<h1 id="_7"><a name="user-content-_7" href="#_7" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>データ形式</h1>
 <ul>
 <li>
 <p>ファイル名</p>
@@ -1055,20 +1120,24 @@ body .markdown-body
 </ul>
 </li>
 </ul>
-<p>```ファイルの内容<br />
-&lt;ヘッダー&gt;<br />
-1       3.72665317e-06   3.91752688e-06   4.11776507e-06 <br />
-2    ...............<br />
-3<br />
-4<br />
-.<br />
-.<br />
-.<br />
-1001.......................<br />
-&lt;フッター&gt;<br />
-<pre><code>
+<p>```ファイルの内容<br>
+&lt;ヘッダー&gt;<br>
+1       3.72665317e-06   3.91752688e-06   4.11776507e-06 <br>
+2    ...............<br>
+3<br>
+4<br>
+.<br>
+.<br>
+.<br>
+1001.......................<br>
+&lt;フッター&gt;<br>
+</p><pre><code>
 
 
+
+
+____________________________
+# データの読み込み
 
 ## read_table.py
 
@@ -1076,6 +1145,19 @@ body .markdown-body
 
 * 読み込んだデータをpandas.DataFrame形式にして返す関数:glob_dataframe()
 * globしたリストを返す関数:dataglob()
++ globに時間がかかるので、イテレータを返すiglobにしようか
+
+
+
+**ユーザーが指定するデータ選択の方法**
+* 指定したディレクトリのリストから読み込む
+* なければglobする&gt;&gt;&gt;ユーザーにinput施す
+    * 引数1つ
+        * glob.glob(regex)
+    * 引数2つ
+        * pd.date_range(start,end)
+    * 引数3つ
+        * pd.date_range(start,end,freq='D||H')
 
 
 
@@ -1091,9 +1173,9 @@ body .markdown-body
 
 * 戻り値：
     * df:allfilesから取得した(pandas.DataFrame形式)
-</code></pre></p>
-<p>データフレームを返す。<br />
-dataglob()によってglobするファイル名をユーザーに入力を施す。<br />
+</code></pre><p></p>
+<p>データフレームを返す。<br>
+dataglob()によってglobするファイル名をユーザーに入力を施す。<br>
 入力する値は正規表現で入力。</p>
 <p>例えば</p>
 <pre><code>2016*   #2016年のデータ
@@ -1104,17 +1186,162 @@ dataglob()によってglobするファイル名をユーザーに入力を施す
 20161225_1?5*   #2016年12月25日10,11,12時50分台のデータ
 </code></pre>
 
-<h2 id="plot2dpy"><a name="user-content-plot2dpy" href="#plot2dpy" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>plot2d.py</h2>
-<p>データ選択してグラフ化するするモジュール</p>
-<p>やっていること</p>
+<h3 id="fitfilefullpath"><a name="user-content-fitfilefullpath" href="#fitfilefullpath" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>fitfile(fullpath)</h3>
+<p>fitされた1ファイルをデータフレームとして出力</p>
+<h3 id="fitfile_allpathregex"><a name="user-content-fitfile_allpathregex" href="#fitfile_allpathregex" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>fitfile_all(path,regex)</h3>
+<p>fitされたすべてのファイル(dataglob()で取得)を行方向に追加してデータフレームを返す</p>
+<p>引数:<br>
+    path:ファイルの詰まったパス<br>
+    regex:ファイル名(正規表現)</p>
+<p>戻り値:<br>
+    df:path+regexで指定したすべてのファイルを行方向に連結したデータフレーム(pd.DataFrame形式)</p>
+<h2 id="todo-read_table"><a name="user-content-todo-read_table" href="#todo-read_table" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>TODO read_table</h2>
+<ul>
+<li><del>glob系の関数の引数をregex一つにまとめる<code>glob(regex)</code></del> <blockquote>
+<p>regexは独立していなきゃいけない</p>
+<blockquote>
+<p>read_table.dataglob内でinput()できいてくるので。</p>
+</blockquote>
+</blockquote>
+</li>
+</ul>
+<h1 id="_8"><a name="user-content-_8" href="#_8" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>データの書き込み</h1>
+<h2 id="save_table"><a name="user-content-save_table" href="#save_table" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>save_table</h2>
+<p>pd.DataFrameをcsvで保存する<br>
+データはまだ収集され続けるので、addできる形にする<br>
+以下のような形式のCSV</p>
+<p>```dataframe.csv<br>
+2016-01-01 00:00:00,2016-01-01 00:05:00,2016-01-01 00:10:00,2016-01-01 00:15:00,<br>
+freq1,435  354,634,456,<br>
+freq2,465  283,665,488,<br>
+freq3,468  243,668,491,</p>
+<p></p><pre><code>
+
+
+read_frame:以前に作られたcsvファイルから読み込むcsv
+write_frameこれから作るdataframe(read_table利用する)
+
+
+### save_table TODO
+
+indexの重複はpass
+
+
+
+____________________________
+# データの可視化
+
+
+
+## plot2d.py
+
+データ選択してグラフ化するするモジュール
+
+やっていること
+
+1. パラメータを読み込む
+    `param.param()`
+2. データフレームを作成する
+    `df=rt.glob_dataframe(rt.dataglob())`
+3. df.plotでプロットする
+    `df.plot(grid=True,ylim=(-120,0),legend=False)`
+4. プロットの設定をする
+5. プロットを別ウィンドウで表示
+    `plot.show()`
+
+### plot2d TODO
+
+クラス化する
+
+* `plot2d.Plot2d.allplot()`とかで呼び出せたらな。
+* `plot2d.Plot2d.hoge()`のところをユーザーに選択させる
+* 引数はdate_range()かな
+* date_range indexを勉強しよう
+
+
+
+### allmean(df)
+dfを周波数ごとに平均化して、平均値のプロット
+
+
+
+
+
+
+
+
+## plotfit.py
+filefile_allによってcsvをインポート、pd.DataFrameとして
+dfm=df.loc[std,end]でdfを区切る
+stdはttttmmdd形式
+
+
+月ごとに集計(カウント)
+groupbyを使う
+
+</code></pre><br>
+dfm=df.loc[std:end]<br>
+key=lambda x:x.date   #日ごとに集計<br>
+dfd=dfm.groupby(key).count()<br>
+```<p></p>
+<h2 id="plotgrouppy"><a name="user-content-plotgrouppy" href="#plotgrouppy" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>plotgroup.py</h2>
+<h3 id="aggregatepath"><a name="user-content-aggregatepath" href="#aggregatepath" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>aggregate(path)</h3>
+<p>DataSource上のtxtデータから読み込んで周波数ごとに集計してpd.DataFrameで返す</p>
+<p><strong>save_table.pyでcsvを作ってあるなら、aggregate_csvから読み込むほうが早い</strong></p>
+<ul>
+<li>引数:</li>
+<li>path: Data Source(string型)</li>
+<li>戻り値:</li>
+<li>sub: (pd.DataFrame型)</li>
+</ul>
+<h3 id="aggregate_cdvcsv_fullpath-list_of_tuple"><a name="user-content-aggregate_cdvcsv_fullpath-list_of_tuple" href="#aggregate_cdvcsv_fullpath-list_of_tuple" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>aggregate_cdv(csv_fullpath, list_of_tuple)</h3>
+<p>dfを周波数ごとに集計<br>
+集計範囲はlist_of_tupleに記載<br>
+データフレームに取り出しやすいcsvデータから読み込む場合</p>
+<ul>
+<li>引数:</li>
+<li>path: Data Source</li>
+<li>list_of_tuple: 集計の日付(yyyymmddの値が二つ入ったタプル形式のリスト)</li>
+<li>戻り値:</li>
+<li>sub: 値は集計値(pd.DataFrame形式)</li>
+</ul>
+<h3 id="eachplotseries-freq_list"><a name="user-content-eachplotseries-freq_list" href="#eachplotseries-freq_list" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>eachplot(series, freq_list)</h3>
+<p>plt.subplots()を使用してline plotとmarker plotを共存させる</p>
 <ol>
-<li>パラメータを読み込む<br />
-<code>param.param()</code></li>
-<li>データフレームを作成する<br />
-<code>df=rt.glob_dataframe(rt.dataglob())</code></li>
-<li>df.plotでプロットする<br />
-<code>df.plot(grid=True,ylim=(-120,0),legend=False)</code></li>
-<li>プロットの設定をする</li>
-<li>プロットを別ウィンドウで表示<br />
-<code>plot.show()</code></li>
-</ol></article></body></html>
+<li>pd.DataFrameから切り出したpd.Seriesなどを引数にする。</li>
+<li>np.whereで特定のindexだけ値、それ以外はNanのpd.Seriesを作る。</li>
+<li>subplots()で切り出したpd.Seriesをline plot</li>
+<li>subplots()で作ったNan入りpd.Seriesをmarker plot</li>
+<li>label, title limitの設定</li>
+</ol>
+<ul>
+<li>引数:</li>
+<li>series:</li>
+<li>freq_list:注目周波数のリスト</li>
+<li>戻り値:なし</li>
+</ul>
+<hr>
+<h1 id="todo"><a name="user-content-todo" href="#todo" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>TODO</h1>
+<p>クラス化する<br>
+対話形式でjupyternotebook内でグラフを作る</p>
+<h1 id="indent-to-space"><a name="user-content-indent-to-space" href="#indent-to-space" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>indent to space</h1>
+<p>できるところまでまとめてからmasterにgit flow release<br>
+master v3.0にしてから<br>
+<code>gf hotfix start indent</code>してindent直す</p>
+<h1 id="groupby-timeframe"><a name="user-content-groupby-timeframe" href="#groupby-timeframe" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>groupby Timeframe</h1>
+<p>// * 時間軸でグループ化<br>
+// * 月ごと、週ごと、日ごと、時間ごとで集計</p>
+<h2 id="_9"><a name="user-content-_9" href="#_9" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>何に役立つか</h2>
+<p>曜日はどこが多く出ているのか</p>
+<h1 id="noise-floor"><a name="user-content-noise-floor" href="#noise-floor" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>noise floor</h1>
+<ul>
+<li>nose floorをdfに加えてプロット</li>
+<li>第2軸にline plot</li>
+</ul>
+<h2 id="_10"><a name="user-content-_10" href="#_10" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>何のため？</h2>
+<p>noise floorの影響でSN隠れていないかの確認</p>
+<h1 id="heatmap-plot"><a name="user-content-heatmap-plot" href="#heatmap-plot" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>heatmap plot</h1>
+<ul>
+<li>seaborn(sns)が良いのか？</li>
+<li>pandasだけじゃできないか？</li>
+</ul></article></body></html>
