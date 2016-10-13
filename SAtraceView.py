@@ -5,13 +5,53 @@ class plotfit v0.1
 ## SAtraceView ver0.1
 
 __USAGE__
-ipython (プロットするのでjupyter consoleの方がいい)起動
-%load SAtraceView
+
+# ipythonを起動
+
+コマンドラインで`ipython`と打つ
+> プロットするので`jupyter console`や`jupyter notebook`の方がいい
+
+
+
+# モジュールのインポート
+
+最初のセルに`%load SAtraceView`と打ち込む
+データのロードが完了すると
+ロードしたデータフレームが表示される
+
+
+# データの代入
+
+`x=Plotfit(df)`
+
+
+## 解説
+
+* データはソース内で指定したcsvから読み込まれ`df`というオブジェクトに格納されている。
+* `x`などといったオブジェクトにクラスPlotfit(* データフレーム型の引数)を代入する。
+
+
+# データの選択方法
+
+```
+dft=df.ix['20160211':'20160310',[0,4]]  # 選択したものをdftに代入する
+x=Plotfit(dft)
+```
+
+* 2016年2月11日から2016年3月10日までの行
+* 0番目、4番目の列
+* 0,4...といった列番号ではなく、列名('xxxkHz')を指定しても良い。
+> クォーテーションでくくること
+* xというオブジェクトに`dft`を使用したクラスを代入する
+
 
 __INTRODUCTION__
+
 プロットする
 
+
 __ACTION__
+
 # クラスの外側
 
 * モジュールをインポート
@@ -21,9 +61,19 @@ __ACTION__
 
 # クラス Plotfit
 
+self.df : 引数にしたデータフレーム
+self.title : データフレームの日時の最初と最後
+
+
+__UPDATE1.0__
+
+* count_agg追加
+* README追加
+
 
 __UPDATE0.1__
 First commit
+
 
 __TODO__
 None
@@ -51,49 +101,92 @@ df = rt.fitfile(file)
 print(df)
 print('\n...Loading END\n')
 
+print('''
+# データの代入
+
+`x=Plotfit(df)`
+
+
+# データの選択方法
+
+```
+dft=df.ix['20160211':'20160310',[0,4]]
+x=Plotfit(dft)
+```
+
+* 以下を選択したものをdftに代入する
+    * 2016年2月11日から2016年3月10日までの行
+    * 0番目、4番目の列
+    * 0,4...といった列番号ではなく、列名('xxxkHz')を指定しても良い。
+    > クォーテーションでくくること
+
+
+# 集計とプロット
+
+```
+x=Plotfit(df)
+x.df  # ロードしたデータフレームの表示
+x.plot_time()  # SN時間変化
+x.plot_count()  # 日でグループ化してカウント
+x.plot_count_agg()  # 日でグループ化してカウント
+                    # x.count_agg().plot.bar()同義
+x.plot_count_agg('month')  # 月でグループ化してカウント
+```
+詳細は`Plotfit??`で表示されます。
+
+
+
+
+''')
 
 class Plotfit(object):
     '''
     fittingされて出てきたCSVの解析、可視化
     集計方法はcountからのパーセンテージ
 
-    # pd.DataFrameの区切り方
-    x=Plotfit(df)
-    x.____で使う。
-    引数dfはpd.Dataframe.ixクラスを使用して、以下のように区切る
+
+    # 集計とプロット
 
     ```
-    * df=df.ix[:,:]  # dataframe全体
-    * df=df.ix[pd.Timestamp('20160101'):pd.Timestamp('20160811'),:]
-    > dataframeのインデックス2016年1月1日から2016年8月11日まで。
-    * df=df.ix[:,['a':'c']]
-    > dataframeのカラムaからcまで
-    * df=df.ix[pd.Timestamp('20160101'):,['a':'c']]
-    > dataframeのインデックスが2016年1月1日以降、カラムaからcまで
+    x=Plotfit(df)
+    x.df  # ロードしたデータフレームの表示
+    x.plot_time()  # SN時間変化
+    x.plot_count()  # 日でグループ化してカウント
+    x.plot_count_agg()  # 日でグループ化してカウント
+                        # x.count_agg().plot.bar()同義
+    x.plot_count_agg('month')  # 月でグループ化してカウント
     ```
+    詳細は`Plotfit??`で表示されます。
+
 
     __TEST__
 
-    >>>x=Plotfit(df)
+    >>>x=Plotfit(df)  # データのインスタンス化
 
-    >>>x.count()
+    >>>x.df  # ロードしたデータフレーム
 
-    >>>x.plot_count()
+    >>>x.plot_time()  # SN時間変化
+
+    >>>x.count()  # 日でグループ化
+
+    >>>x.plot_count()  # 日でグループ化したものをプロット
 
     >>>x.plot_prop()
 
-    >>>dft=df.ix[:,[1]]
+    >>>x.plot_count_agg()  # 日で
 
-    >>>x=Plotfit(dft)
+    >>>x.plot_count_agg('month')  # 月でグループ化してカウント
 
-    >>>x.plot_time();plt.show()
+    >>>dft=df.ix[:,[1]]  # データの選択
+
+    >>>x=Plotfit(dft)  # 選択されたデータをインスタンス化
 
     '''
 
     def __init__(self, df):
         '''Plotfitの引数をインスタンス化'''
         self.df = df
-        self.title = '%s ~ %s' % (self.df.index[0], self.df.index[-1])
+        self.title = '%s ~ %s' % (self.df.index[0].date, self.df.index[-1].date)
 
     def plot_time(self):
         '''SNの時間変化をプロット'''
@@ -114,26 +207,27 @@ class Plotfit(object):
 
     def plot_prop(self):  # Plotfit(df).prop.plot.bar()とほぼ同義
         '''比率を棒グラフ化'''
-        title = '%s ~ %s' % (self.df.index[0], self.df.index[-1])
-        return self.prop().plot.bar(title=title, rot=30)
+        return self.prop().plot.bar(title=self.title, rot=30)
 
-    def prop_agg(self, func='date'):
+    def count_agg(self, func='date'):
         '''
         funcに使用する関数でグループ分け
         # 使用できるもの一覧
 
-        date : 日付
-        week : 週
-        month : 月
-        hour : 時間
-        minute : 分
-        second : 秒
+        * date : 日付
+        * week : 週
+        * month : 月
+        * hour : 時間
+        * minute : 分
+        * second : 秒
+
         '''
         groupfunc = 'lambda x: x.%s' % func
         return self.df.groupby(eval(groupfunc)).count()
 
-    def plot_prop_agg(self, func='date'):
-        return self.prop_agg(func).plot.bar(title=self.title, rot=30)
+    def plot_count_agg(self, func='date'):
+        '''count_agg().plot.bar(x.title, rot=30)と同義'''
+        return self.count_agg(func).plot.bar(title=self.title, rot=30)
 
 # if __name__ == '__main__':
 #     doctest.testmod()
