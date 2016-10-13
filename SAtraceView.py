@@ -1,8 +1,6 @@
 # -*- coding: utf-8 -*-
 '''
-class plotfit v0.1
-
-## SAtraceView ver0.1
+## SAtraceView ver1.0
 
 __USAGE__
 
@@ -86,8 +84,6 @@ import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
-import doctest
-from tqdm import tqdm
 # __USER MODULES__________________________
 import read_table as rt
 import simplejson
@@ -95,8 +91,11 @@ import simplejson
 with open('parameter.json', 'r') as f:
     param = simplejson.load(f)
 # file = param['out_csv'] + 'P20160111_20160210.csv'  # テスト用
-file = param['view_out'] + 'average_SN.csv'
-print('\nLoading DataFrame takes a few minutes...\n')
+file = param['out_csv'] + 'SNallfit_allseason.csv'
+print('''
+Loading DataFrame takes a few minutes...
+Please wait.
+''')
 df = rt.fitfile(file)
 print(df)
 print('\n...Loading END\n')
@@ -186,7 +185,7 @@ class Plotfit(object):
     def __init__(self, df):
         '''Plotfitの引数をインスタンス化'''
         self.df = df
-        self.title = '%s ~ %s' % (self.df.index[0].date, self.df.index[-1].date)
+        self.title = '%s~%s'% (df.index[0].date(),df.index[-1].date())
 
     def plot_time(self):
         '''SNの時間変化をプロット'''
@@ -228,6 +227,3 @@ class Plotfit(object):
     def plot_count_agg(self, func='date'):
         '''count_agg().plot.bar(x.title, rot=30)と同義'''
         return self.count_agg(func).plot.bar(title=self.title, rot=30)
-
-# if __name__ == '__main__':
-#     doctest.testmod()
