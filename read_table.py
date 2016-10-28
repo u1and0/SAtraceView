@@ -4,14 +4,20 @@ import numpy as np
 from scipy import stats
 import glob
 from datetime import datetime
-import simplejson
-# __USER MODULES__________________________
+import json
 
 
 # __READ PARAMETER__________________________
+def load_parameter(file='parameter.json'):
+    """
+    parameter.jsonからディレクトリやファイル情報、周波数などの情報をロードしてくる。
+    """
+    with open(file, 'r') as f:
+        param = json.load(f)
+    return param
 
-with open('parameter.json') as pa:
-    param = simplejson.load(pa)
+
+param = load_parameter()
 path = param['in']
 freq_start = param['freq_start']
 freq_stop = param['freq_stop']
