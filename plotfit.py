@@ -10,9 +10,7 @@ import seaborn as sns
 
 # __USER MODULES__________________________
 import read_table as rt
-import simplejson
-with open('parameter.json', 'r') as f:
-	param = simplejson.load(f)
+param = rt.load_parameter()
 
 
 def prop_plot(df):
@@ -124,28 +122,26 @@ def plot_timepower(df):
 	plt.show()
 
 
-# __MAIN__________________________
+if __name__ == '__main__':
 
-# data source
-df = rt.fitfile(param['view_out'] + 'average_SN.csv')
+	# data source
+	df = rt.fitfile(param['csvdir'] + 'P2016_01.csv')
 
-# data slice
-start = pd.Timestamp('20160101')  # indexの選択
-end = pd.Timestamp('20160114')
-freq = param['freq_choice']  # columnsの選択
-df_slice = df.ix[start:end, freq]
-print(df_slice)
+	# data slice
+	start = pd.Timestamp('20160101')  # indexの選択
+	end = pd.Timestamp('20160114')
+	print(df)
 
-# SNの時間変化
-plot_timepower(df_slice)
+	# SNの時間変化
+	plot_timepower(df)
 
-# df = rt.fitfile_all(param['out'] + 'CSV/', 'S????_??.csv')
+	# df = rt.fitfile_all(param['out'] + 'CSV/', 'S????_??.csv')
 
 
-# 周波数ごとのカウント・比率のbar plot
-# df = rt.fitfile(param['out'] + 'CSV/' + 'SN20151211_20160110.csv')
-# propdf = propdf(df, '2015/12/11-2016/01/10')
-# print(propdf)
-# ax = plot_propdf(propdf)
-# plt.show(ax)
-# plt.savefig(param['view_out'] + 'allratio20151211_20160110.png')
+	# 周波数ごとのカウント・比率のbar plot
+	# df = rt.fitfile(param['out'] + 'CSV/' + 'SN20151211_20160110.csv')
+	# propdf = propdf(df, '2015/12/11-2016/01/10')
+	# print(propdf)
+	# ax = plot_propdf(propdf)
+	# plt.show(ax)
+	# plt.savefig(param['view_out'] + 'allratio20151211_20160110.png')
