@@ -85,58 +85,66 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 # __USER MODULES__________________________
 import read_table as rt
-import simplejson
 
-with open('parameter.json', 'r') as f:
-    param = simplejson.load(f)
-# file = param['out_csv'] + 'P20160111_20160210.csv'  # テスト用
-file = param['out_csv'] + 'SNallfit_allseason.csv'
-print('''
-Loading DataFrame takes a few minutes...
-Please wait.
-''')
-df = rt.fitfile(file)
-print(df)
-print('\n...Loading END\n')
-
-print('''
-# データの代入
-
-`x=Plotfit(df)`
+param = rt.load_parameter()
 
 
-# データの選択方法
+def load_csv_to_dataframe(file=param['csvdir'] + param['in_file']):
+    """
+    引数: 読みこむcsv
+    戻り値: csvをデータフレームとして返す
+    """
+    print('''
+    Loading DataFrame takes a few minutes...
+    Please wait.
+    ''')
 
-```
-dft=df.ix['20160211':'20160310',[0,4]]
-x=Plotfit(dft)
-```
+    df = rt.fitfile(file)
+    print(df)
 
-* 以下を選択したものをdftに代入する
-    * 2016年2月11日から2016年3月10日までの行
-    * 0番目、4番目の列
-    * 0,4...といった列番号ではなく、列名('xxxkHz')を指定しても良い。
-    > クォーテーションでくくること
+    print('\n...Loading END\n')
 
+    print('''
+    # データの代入
 
-# 集計とプロット
-
-```
-x=Plotfit(df)
-x.df  # ロードしたデータフレームの表示
-x.plot_time()  # SN時間変化
-x.plot_count()  # 日でグループ化してカウント
-x.plot_count_agg()  # 日でグループ化してカウント
-                    # x.count_agg().plot.bar()同義
-x.plot_count_agg('month')  # 月でグループ化してカウント
-```
-詳細は`Plotfit??`で表示されます。
+    `x=Plotfit(df)`
 
 
+    # データの選択方法
+
+    ```
+    dft=df.ix['20160211':'20160310',[0,4]]
+    x=Plotfit(dft)
+    ```
+
+    * 以下を選択したものをdftに代入する
+        * 2016年2月11日から2016年3月10日までの行
+        * 0番目、4番目の列
+        * 0,4...といった列番号ではなく、列名('xxxkHz')を指定しても良い。
+        > クォーテーションでくくること
 
 
-''')
+    # 集計とプロット
 
+    ```
+    x=Plotfit(df)
+    x.df  # ロードしたデータフレームの表示
+    x.plot_time()  # SN時間変化
+    x.plot_count()  # 日でグループ化してカウント
+    x.plot_count_agg()  # 日でグループ化してカウント
+                        # x.count_agg().plot.bar()同義
+    x.plot_count_agg('month')  # 月でグループ化してカウント
+    ```
+    詳細は`Plotfit??`で表示されます。
+
+
+
+
+    ''')
+    return df
+
+
+# __CLASS Plotfit__________________________
 class Plotfit(object):
     '''
     fittingされて出てきたCSVの解析、可視化
@@ -184,7 +192,7 @@ class Plotfit(object):
     def __init__(self, df):
         '''Plotfitの引数をインスタンス化'''
         self.df = df
-        self.title = '%s~%s'% (df.index[0].date(),df.index[-1].date())
+        self.title = '%s~%s' % (df.index[0].date(), df.index[-1].date())
 
     def plot_time(self):
         '''SNの時間変化をプロット'''

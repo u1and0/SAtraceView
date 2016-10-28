@@ -8,3 +8,5 @@ ipython_log*
 *ipynb*
 filelist.txt
 *.pdf
+*.zip
+

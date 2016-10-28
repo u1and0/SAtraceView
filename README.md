@@ -28,7 +28,6 @@ SAtraceで収集したデータの分析
 以下のモジュールはanacondaに標準インストールされていない。
 `conda install <モジュール名>`でインストールする。
 
-* simplejson
 * seaborn
 
 
@@ -443,9 +442,16 @@ plt.subplots()を使用してline plotとmarker plotを共存させる
 
 ____________________________
 # TODO
-クラス化する
-対話形式でjupyternotebook内でグラフを作る
 
+## Feature
+
+* all average csvも使用して各時間のスペクトラムも表示
+* ノイズフロアも解析
+
+
+## Bugs
+
+None
 
 
 # indent to space
