@@ -304,7 +304,16 @@ ____________________________
 やっていること
 
 1. パラメータを読み込む
-	`param.param()`
+
+	以下のようにすることで`param`に辞書形式で`parameter.json`の内容が入る。
+	以降`param['hoge']`として変数を扱う。
+	なお、`load_parameter()`の引数にファイルのフルパスを与えると、そのファイルをjsonとして読み込む。
+
+	```python
+		import readtable as rt
+		param = rt.load_parameter()
+	```
+
 2. データフレームを作成する
 	`df=rt.glob_dataframe(rt.dataglob())`
 3. df.plotでプロットする
