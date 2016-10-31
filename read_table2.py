@@ -74,14 +74,15 @@ def spectrum_table(regex: str) -> pd.core.frame.DataFrame:
     return df
 
 
-def power_sn_transfer(df):
+def noisefloor(df):
     """
+    1/4 medianをノイズフロアとし、各列に適用して返す
     引数:
-        df: 
+        df: 行が周波数、列が日時(データフレーム型)
     戻り値:
-        df: 
+        df: ノイズフロア(データフレーム型)
     """
-    return df
+    return df.apply(lambda x: stats.scoreatpercentile(x, 25))
 
 
 if __name__ == '__main__':
@@ -95,9 +96,14 @@ if __name__ == '__main__':
 
     """
     # TEST spectrum_table()
-    """
     regex = '20161028_18*'
     df = spectrum_table(param['in'] + regex)
     print(df)
     print('読み込んだデータのカラム\n', df.columns)
     print('読み込んだデータのインデックス\n', df.index)
+    """
+
+    regex = '20161028_18*'
+    df = spectrum_table(param['in'] + regex)
+    print(df)
+    print(noisefloor(df))
