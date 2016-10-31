@@ -26,8 +26,12 @@ freq_center = param['freq_center']
 freq_span = param['freq_span']
 num = param['number_of_rows']
 
+# __注目周波数__________________________
+country_keys = list(param['country'].keys())
+freq_list = sorted([float(i) for i in country_keys])
 
 # __MAIN FUNCTIONS__________________________
+
 
 def spectrum(fullpath: str, columns: str) -> pd.core.frame.DataFrame:
     '''
