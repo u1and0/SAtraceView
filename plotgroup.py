@@ -106,9 +106,9 @@ def eachplot(series, freq_list):
                     label=param['country'][str(freq)])   # 注目周波数plot as marker
 
 	# __MAKE LABEL, TITLE, LIMIT__________________________
-	plt.legend(bbox_to_anchor=(0.5, -0.25), loc='center',
-	           borderaxespad=0, fontsize='small', ncol=3)   # 別枠にラベルを書く
-	plt.subplots_adjust(bottom=0.25)
+	plt.legend(bbox_to_anchor=(0.5, -0.3), loc='center',
+	           borderaxespad=0, fontsize='small', ncol=4)   # 別枠にラベルを書く
+	plt.subplots_adjust(bottom=0.3)
 
 
 def plot_marker(df, datelist):

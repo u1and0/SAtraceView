@@ -29,7 +29,7 @@ num = param['number_of_rows']
 
 # __MAIN FUNCTIONS__________________________
 
-def spectrum(fullpath: str, columns: str ='Mean') -> pd.core.frame.DataFrame:
+def spectrum(fullpath: str, columns: str) -> pd.core.frame.DataFrame:
     '''
     txtデータからの読み込み
     引数:
@@ -55,7 +55,7 @@ def spectrum(fullpath: str, columns: str ='Mean') -> pd.core.frame.DataFrame:
     return se
 
 
-def spectrum_table(regex: str, columns: str ='Mean') -> pd.core.frame.DataFrame:
+def spectrum_table(regex: str, columns: str) -> pd.core.frame.DataFrame:
     """
     txtデータからの読み込み
     regexのファイル名をglobで拾って、
@@ -67,11 +67,11 @@ def spectrum_table(regex: str, columns: str ='Mean') -> pd.core.frame.DataFrame:
         df: spectrumで返されたデータフレームを横つなぎにする
     """
     print('.txt形式からのロード...少々時間がかかります。')
-    df = pd.DataFrame()
+    # df = pd.DataFrame()
     for fullpath in tqdm(glob.glob(regex)):
         se = spectrum(fullpath, columns)
-        df[se.columns] = se
-    return df
+        # df[se.columns] = se
+    return se
 
 
 def noisefloor(df, axis: int=0):
@@ -103,15 +103,26 @@ def pltmod(title, columns):
     plt.ylim(param['ylim_mean'])
 
 
-def groupmean(regex: str, func: str, columns: str) -> pd.core.frame.DataFrame:
+def groupmean(regex: str,
+              ffunc: str,
+              gfunc: str,
+              columns: str) -> pd.core.frame.DataFrame:
     """
     aggfuncでグループ化
 
     引数:
         regex:日付を表したファイル名(str型　正規表現　%Y%m%d)
-        func: 日付 -> date
-              月 -> month
-              時間 -> hour
+        ffunc: 集計の関数
+            Mean: 平均値
+            Max: 最大値
+        gfunc: groupの仕方
+            date: 日付
+            month: 月
+            hour: 時間
+        columns: .txtから読み取る行数
+            Min: 最小値
+            Mean: 平均値
+            Max: 最大値
     戻り値:
         groupmean.T
         日にちで平均化したデータフレーム
@@ -119,9 +130,12 @@ def groupmean(regex: str, func: str, columns: str) -> pd.core.frame.DataFrame:
     """
     df = spectrum_table(regex + '*', columns)  # globでファイル名マッチするものをデータフレーム化
     df -= noisefloor(df)  # powerからS/N比に変換
-    groupfunc = 'lambda x: x.%s' % func
-    groupmean = df.T.groupby(eval(groupfunc)).mean()  # 日にちで平均化したデータフレーム
-    return groupmean.T
+    groupfunc = 'lambda x: x.%s' % gfunc
+    if ffunc == 'Mean':
+        groupeddf = df.T.groupby(eval(groupfunc)).mean()  # 日にちで平均化したデータフレーム
+    elif ffunc == 'Max':
+        groupeddf = df.T.groupby(eval(groupfunc)).max()  # 日にちで平均化したデータフレーム
+    return groupeddf.T
 
 
 if __name__ == '__main__':
