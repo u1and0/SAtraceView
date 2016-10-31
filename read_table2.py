@@ -67,11 +67,11 @@ def spectrum_table(regex: str, columns: str) -> pd.core.frame.DataFrame:
         df: spectrumで返されたデータフレームを横つなぎにする
     """
     print('.txt形式からのロード...少々時間がかかります。')
-    # df = pd.DataFrame()
+    df = pd.DataFrame()
     for fullpath in tqdm(glob.glob(regex)):
         se = spectrum(fullpath, columns)
-        # df[se.columns] = se
-    return se
+        df[se.columns] = se
+    return df
 
 
 def noisefloor(df, axis: int=0):
@@ -100,7 +100,10 @@ def pltmod(title, columns):
     plt.ylabel('S/N ratio [dBm]')
     con = pd.to_datetime(title, format='%Y%m%d')
     plt.title('S/N ratio %s in 1day %s' % (columns, con.isoformat()[:10]))
-    plt.ylim(param['ylim_mean'])
+    if columns == 'Mean':
+        plt.ylim(param['ylim_mean'])
+    elif columns == 'Max':
+        plt.ylim(param['ylim_max'])
 
 
 def groupmean(regex: str,
