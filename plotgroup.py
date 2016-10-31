@@ -10,8 +10,8 @@ import seaborn as sns
 
 # __USER MODULES__________________________
 import read_table as rt
-import param
-param = param.param()
+param=rt.load_parameter()
+
 path = param['in']
 freq_start = param['freq_start']
 freq_stop = param['freq_stop']
@@ -103,7 +103,7 @@ def eachplot(series, freq_list):
                     marker='D',
                     markeredgewidth=1,
                     fillstyle='none',
-                    label=param['country'][freq])   # 注目周波数plot as marker
+                    label=param['country'][str(freq)])   # 注目周波数plot as marker
 
 	# __MAKE LABEL, TITLE, LIMIT__________________________
 	plt.legend(bbox_to_anchor=(0.5, -0.25), loc='center',
@@ -141,17 +141,17 @@ def plot_marker(df, datelist):
 		# plt.close()
 
 
-# __MAIN__________________________
-csv_fullpath = param['view_out'] + 'average_SN.csv'   # データソースを整理して収めたcsvファイルの場所(save_table参照)
-datelist = [
-	('20151111', '20151210'),
-	('20151211', '20160110'),
-	('20160111', '20160210'),
-	('20160211', '20160310'),
-	('20160311', '20160410'),
-	('20160411', '20160510'),
-	('20160511', '20160610'),
-	('20160611', '20160710'),
-	('20160711', '20160810'),
-]
-plot_marker(aggregate_csv(csv_fullpath, datelist), datelist)
+if __name__ == '__main__':
+	csv_fullpath = param['view_out'] + 'average_SN.csv'   # データソースを整理して収めたcsvファイルの場所(save_table参照)
+	datelist = [
+		('20151111', '20151210'),
+		('20151211', '20160110'),
+		('20160111', '20160210'),
+		('20160211', '20160310'),
+		('20160311', '20160410'),
+		('20160411', '20160510'),
+		('20160511', '20160610'),
+		('20160611', '20160710'),
+		('20160711', '20160810'),
+	]
+	plot_marker(aggregate_csv(csv_fullpath, datelist), datelist)
