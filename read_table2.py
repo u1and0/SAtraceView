@@ -28,10 +28,10 @@ num = param['number_of_rows']
 
 # __MAIN FUNCTIONS__________________________
 
-def spectrum(fullpath: str, columns: str ='Ave') -> pd.core.series.Series:
+def spectrum(fullpath: str, columns: str ='Ave') -> pd.core.frame.DataFrame:
     '''
     txtデータからの読み込み
-    引数: 
+    引数:
         fullpath: txtデータのフルパス(str型)
         columns: txtデータの何列目をデータとして使うか。
                  デフォルトは'Ave': 0から始まっての2行目()(str型)
@@ -55,7 +55,33 @@ def spectrum(fullpath: str, columns: str ='Ave') -> pd.core.series.Series:
     return se
 
 
+def spectrum_table(regex: str) -> pd.core.frame.DataFrame:
+    """
+    regexのファイル名をglobで拾って、横にマージして一つのデータフレームにして返す
+    引数: regex: globで拾う正規表現
+    戻り値: df: spectrumで返されたデータフレームを横つなぎにする
+    """
+    df = pd.DataFrame()
+    for fullpath in glob.iglob(regex):
+        se = spectrum(fullpath)
+        df[se.columns] = se
+    return df
+
+
 if __name__ == '__main__':
+
+    """
+    # TEST spectrum()
     regex = '20161028_18*'
     for fullpath in glob.iglob(param['in'] + regex):
         print(spectrum(fullpath))
+    """
+
+    """
+    # TEST spectrum_table()
+    """
+    regex = '20161028_18*'
+    df = spectrum_table(param['in'] + regex)
+    print(df)
+    print('読み込んだデータのカラム\n', df.columns)
+    print('読み込んだデータのインデックス\n', df.index)
