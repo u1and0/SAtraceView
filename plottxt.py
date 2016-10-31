@@ -1,3 +1,10 @@
+"""
+.txtから読み込み
+平均化、最大値だけ取得など
+pd.DataFrame.groupbyを使用してグラフ化。
+"""
+
+
 # __BUILT-IN MODULES_________________________
 import pandas as pd
 import numpy as np
@@ -178,4 +185,15 @@ if __name__ == '__main__':
     df = spectrum_table(param['in'] + regex)
     df -= noisefloor(df)
     print(df.T)
+    """
+
+
+if __name__ == '__main__':
+    """
+    # TEST
+    regex = '20161030'
+    df = groupmean(param['in'] + regex, ffunc='Max', gfunc='date', columns='Mean')
+    eachplot(df.ix[:, 0], freq_list)
+    pltmod(regex, 'Max')
+    plt.show()
     """
