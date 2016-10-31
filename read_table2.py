@@ -39,7 +39,8 @@ def spectrum(fullpath: str, columns: str ='Ave') -> pd.core.frame.DataFrame:
         se: txtのうちの１列(pandasシリーズ型)
     '''
     use = {'Min': 1, 'Ave': 2, 'Max': 3}  # .txtの何列目を使うか
-    columns_name = pd.to_datetime(fullpath[-19:-4], format='%Y%m%d_%H%M%S')
+    columns_name = pd.to_datetime(fullpath[-19:-4],
+                                  format='%Y%m%d_%H%M%S')
     se = pd.read_table(fullpath,
                        names=[columns_name],
                        sep='\s+',
@@ -57,14 +58,29 @@ def spectrum(fullpath: str, columns: str ='Ave') -> pd.core.frame.DataFrame:
 
 def spectrum_table(regex: str) -> pd.core.frame.DataFrame:
     """
-    regexのファイル名をglobで拾って、横にマージして一つのデータフレームにして返す
-    引数: regex: globで拾う正規表現
-    戻り値: df: spectrumで返されたデータフレームを横つなぎにする
+    txtデータからの読み込み
+    regexのファイル名をglobで拾って、
+    横にマージして一つのデータフレームにして返す
+
+    引数:
+        regex: globで拾う正規表現
+    戻り値:
+        df: spectrumで返されたデータフレームを横つなぎにする
     """
     df = pd.DataFrame()
     for fullpath in glob.iglob(regex):
         se = spectrum(fullpath)
         df[se.columns] = se
+    return df
+
+
+def power_sn_transfer(df):
+    """
+    引数:
+        df: 
+    戻り値:
+        df: 
+    """
     return df
 
 
