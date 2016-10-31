@@ -187,8 +187,6 @@ if __name__ == '__main__':
     print(df.T)
     """
 
-
-if __name__ == '__main__':
     """
     # TEST
     regex = '20161030'
