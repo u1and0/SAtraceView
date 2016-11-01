@@ -374,9 +374,9 @@ dfd=dfm.groupby(key).count()
 
 
 
-## plotgroup.py
+# plotgroup.py
 
-### aggregate(path)
+## aggregate(path)
 
 DataSource上のtxtデータから読み込んで周波数ごとに集計してpd.DataFrameで返す
 
@@ -395,7 +395,7 @@ DataSource上のtxtデータから読み込んで周波数ごとに集計してp
 
 
 
-### aggregate_cdv(csv_fullpath, list_of_tuple)
+## aggregate_cdv(csv_fullpath, list_of_tuple)
 
 dfを周波数ごとに集計
 集計範囲はlist_of_tupleに記載
@@ -415,7 +415,7 @@ dfを周波数ごとに集計
 
 
 
-### eachplot(series, freq_list)
+## eachplot(series, freq_list)
 
 plt.subplots()を使用してline plotとmarker plotを共存させる
 
@@ -439,6 +439,151 @@ plt.subplots()を使用してline plotとmarker plotを共存させる
 
 
 
+
+
+
+
+____________________________
+
+# plottxt.py
+
+.txtから読み込み
+平均化、最大値だけ取得など
+pd.DataFrame.groupbyを使用してグラフ化。
+
+## load_parameter(file='parameter.json'):
+
+parameter.jsonからディレクトリやファイル情報、周波数などの情報をロードしてくる。
+
+
+
+
+
+## spectrum(fullpath: str, columns: str) -> pd.core.frame.DataFrame:
+
+txtデータからの読み込み
+引数:
+    fullpath: txtデータのフルパス(str型)
+    columns: txtデータの何列目をデータとして使うか。
+             デフォルトは'Mean': 0から始まっての2行目()(str型)
+戻り値:
+    se: txtのうちの１列(pandasシリーズ型)
+
+
+
+## spectrum_table(regex: str, columns: str) -> pd.core.frame.DataFrame:
+
+txtデータからの読み込み
+regexのファイル名をglobで拾って、
+横にマージして一つのデータフレームにして返す
+
+引数:
+    regex: globで拾う正規表現
+戻り値:
+    df: spectrumで返されたデータフレームを横つなぎにする
+
+
+
+
+
+## noisefloor(df, axis: int=0):
+
+1/4 medianをノイズフロアとし、各列に適用して返す
+引数:
+    df: 行が周波数、列が日時(データフレーム型)
+    axis: 0 or 1.
+        0: 列に適用(デフォルト)
+        1: 行に適用
+戻り値:
+    df: ノイズフロア(データフレーム型)
+
+
+
+
+
+
+
+## pltmod(title, columns):
+
+plotの修飾
+
+* ラベル名
+* 凡例なし
+* タイトル名
+* 縦軸の最大/最小値(横軸はロードするときに決まってる)
+
+plt.ylabe
+
+
+
+
+
+
+
+## groupmean(regex: str, ffunc: str, gfunc: str, columns: str) -> pd.core.frame.DataFrame:
+aggfuncでグループ化
+
+引数:
+    regex:日付を表したファイル名(str型　正規表現　%Y%m%d)
+    ffunc: 集計の関数
+        Mean: 平均値
+        Max: 最大値
+    gfunc: groupの仕方
+        date: 日付
+        month: 月
+        hour: 時間
+    columns: .txtから読み取る行数
+        Min: 最小値
+        Mean: 平均値
+        Max: 最大値
+戻り値:
+    groupmean.T
+    日にちで平均化したデータフレーム
+    (データフレーム型)
+
+
+
+
+
+
+
+
+
+
+
+# TEST plottxt.py
+
+## TEST spectrum()
+regex = '20161028_18*'
+for fullpath in glob.iglob(param['in'] + regex):
+    print(spectrum(fullpath))
+
+## TEST spectrum_table()
+regex = '20161028_18*'
+df = spectrum_table(param['in'] + regex)
+print(df)
+print('読み込んだデータのカラム\n', df.columns)
+print('読み込んだデータのインデックス\n', df.index)
+
+## TEST spectrum_table()
+regex = '20161028_18*'
+df = spectrum_table(param['in'] + regex)
+print(df)
+print(noisefloor(df))
+print(noisefloor(df, 1))
+
+## TEST spectrum_table()
+regex = '20161028_18*'
+df = spectrum_table(param['in'] + regex)
+df -= noisefloor(df)
+print(df.T)
+
+## TEST groupmean()
+regex = '20161030'
+df = groupmean(param['in'] + regex, ffunc='Max', gfunc='date', columns='Mean')
+eachplot(df.ix[:, 0], freq_list)
+pltmod(regex, 'Max')
+plt.show()
 
 
 
@@ -501,3 +646,4 @@ noise floorの影響でSN隠れていないかの確認
 # heatmap plot
 * seaborn(sns)が良いのか？
 * pandasだけじゃできないか？
+

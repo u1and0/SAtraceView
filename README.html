@@ -1,6 +1,4 @@
-<!DOCTYPE html>
-<html><head>
-<meta http-equiv="content-type" content="text/html; charset=UTF-8"><meta charset="utf-8"><style>body {
+<!DOCTYPE html><html><head><meta charset="utf-8"><style>body {
   width: 45em;
   border: 1px solid #ddd;
   outline: 1300px solid #fff;
@@ -1017,10 +1015,10 @@ body .markdown-body
   }
 }
 </style><title>README</title></head><body><article class="markdown-body"><h1 id="satraceview"><a name="user-content-satraceview" href="#satraceview" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>SAtraceView</h1>
-<p>SAtraceで収集したデータの分析<br>
+<p>SAtraceで収集したデータの分析<br />
 収集したデータを可視化し、分析を容易にします。</p>
 <h2 id="_1"><a name="user-content-_1" href="#_1" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>使い方</h2>
-<p>メインとなるファイルはSAtraceView.pyのPlotfitクラス。<br>
+<p>メインとなるファイルはSAtraceView.pyのPlotfitクラス。<br />
 これをipynb形式のファイル(SAtraceView.ipynb)で進めていく。</p>
 <ul>
 <li>起動方法は「バッチを使用する」か「コマンドを打つ」<ul>
@@ -1040,11 +1038,10 @@ body .markdown-body
 </li>
 <li>ipynbファイルに従い、Shift+Enterで進めていく</li>
 </ul>
-<h3 id="importerror"><a name="user-content-importerror" href="#importerror" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a><layer class="searchwp-term searchwp-highlight-searchwp-highlighting" highlight="term-2">ImportError</layer>が生じるとき、必要なモジュールをインポートする</h3>
-<p>以下のモジュールはanacondaに標準インストールされていない。<br>
+<h3 id="importerror"><a name="user-content-importerror" href="#importerror" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>ImportErrorが生じるとき、必要なモジュールをインポートする</h3>
+<p>以下のモジュールはanacondaに標準インストールされていない。<br />
 <code>conda install &lt;モジュール名&gt;</code>でインストールする。</p>
 <ul>
-<li>simplejson</li>
 <li>seaborn</li>
 </ul>
 <h2 id="satraceview-ver10"><a name="user-content-satraceview-ver10" href="#satraceview-ver10" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>SAtraceView ver1.0</h2>
@@ -1052,8 +1049,8 @@ body .markdown-body
 <h3 id="jupyter-notebook"><a name="user-content-jupyter-notebook" href="#jupyter-notebook" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>jupyter notebookを起動</h3>
 <p>cmdなどで<code>`jupyter notebook SAtraceView.ipynb</code>と打つ</p>
 <h3 id="_2"><a name="user-content-_2" href="#_2" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>モジュールのインポート</h3>
-<p>最初のセルに<code>%load SAtraceView</code>と打ち込む<br>
-データのロードが完了すると<br>
+<p>最初のセルに<code>%load SAtraceView</code>と打ち込む<br />
+データのロードが完了すると<br />
 ロードしたデータフレームが表示される</p>
 <h3 id="_3"><a name="user-content-_3" href="#_3" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>データの代入</h3>
 <p><code>x=Plotfit(df)</code></p>
@@ -1070,7 +1067,7 @@ x=Plotfit(dft)
 <ul>
 <li>2016年2月11日から2016年3月10日までの行</li>
 <li>0番目、4番目の列</li>
-<li>0,4…といった列番号ではなく、列名(‘xxxkHz’)を指定しても良い。<blockquote>
+<li>0,4&hellip;といった列番号ではなく、列名(&lsquo;xxxkHz&rsquo;)を指定しても良い。<blockquote>
 <p>クォーテーションでくくること</p>
 </blockquote>
 </li>
@@ -1082,21 +1079,21 @@ x=Plotfit(dft)
 <h3 id="_6"><a name="user-content-_6" href="#_6" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>クラスの外側</h3>
 <ul>
 <li>モジュールをインポート</li>
-<li>パラメータをロード(param=…)</li>
-<li>使用するファイルの指定(file = …)</li>
-<li>データフレームをロード(df=…)</li>
+<li>パラメータをロード(param=&hellip;)</li>
+<li>使用するファイルの指定(file = &hellip;)</li>
+<li>データフレームをロード(df=&hellip;)</li>
 </ul>
 <h3 id="plotfit"><a name="user-content-plotfit" href="#plotfit" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>クラス Plotfit</h3>
-<p>self.df : 引数にしたデータフレーム<br>
+<p>self.df : 引数にしたデータフレーム<br />
 self.title : データフレームの日時の最初と最後</p>
 <p><strong>UPDATE1.0</strong></p>
 <ul>
 <li>count_agg追加</li>
 <li>README追加</li>
 </ul>
-<p><strong>UPDATE0.1</strong><br>
+<p><strong>UPDATE0.1</strong><br />
 First commit</p>
-<p><strong>TODO</strong><br>
+<p><strong>TODO</strong><br />
 None</p>
 <h1 id="_7"><a name="user-content-_7" href="#_7" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>データ形式</h1>
 <ul>
@@ -1120,18 +1117,18 @@ None</p>
 </ul>
 </li>
 </ul>
-<p>```ファイルの内容<br>
-&lt;ヘッダー&gt;<br>
-1       3.72665317e-06   3.91752688e-06   4.11776507e-06 <br>
-2    ...............<br>
-3<br>
-4<br>
-.<br>
-.<br>
-.<br>
-1001.......................<br>
-&lt;フッター&gt;<br>
-</p><pre><code>
+<p>```ファイルの内容<br />
+&lt;ヘッダー&gt;<br />
+1       3.72665317e-06   3.91752688e-06   4.11776507e-06 <br />
+2    ...............<br />
+3<br />
+4<br />
+.<br />
+.<br />
+.<br />
+1001.......................<br />
+&lt;フッター&gt;<br />
+<pre><code>
 
 
 
@@ -1173,9 +1170,9 @@ ____________________________
 
 * 戻り値：
     * df:allfilesから取得した(pandas.DataFrame形式)
-</code></pre><p></p>
-<p>データフレームを返す。<br>
-dataglob()によってglobするファイル名をユーザーに入力を施す。<br>
+</code></pre></p>
+<p>データフレームを返す。<br />
+dataglob()によってglobするファイル名をユーザーに入力を施す。<br />
 入力する値は正規表現で入力。</p>
 <p>例えば</p>
 <pre><code>2016*   #2016年のデータ
@@ -1190,10 +1187,10 @@ dataglob()によってglobするファイル名をユーザーに入力を施す
 <p>fitされた1ファイルをデータフレームとして出力</p>
 <h3 id="fitfile_allpathregex"><a name="user-content-fitfile_allpathregex" href="#fitfile_allpathregex" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>fitfile_all(path,regex)</h3>
 <p>fitされたすべてのファイル(dataglob()で取得)を行方向に追加してデータフレームを返す</p>
-<p>引数:<br>
-    path:ファイルの詰まったパス<br>
+<p>引数:<br />
+    path:ファイルの詰まったパス<br />
     regex:ファイル名(正規表現)</p>
-<p>戻り値:<br>
+<p>戻り値:<br />
     df:path+regexで指定したすべてのファイルを行方向に連結したデータフレーム(pd.DataFrame形式)</p>
 <h2 id="todo-read_table"><a name="user-content-todo-read_table" href="#todo-read_table" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>TODO read_table</h2>
 <ul>
@@ -1207,15 +1204,15 @@ dataglob()によってglobするファイル名をユーザーに入力を施す
 </ul>
 <h1 id="_8"><a name="user-content-_8" href="#_8" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>データの書き込み</h1>
 <h2 id="save_table"><a name="user-content-save_table" href="#save_table" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>save_table</h2>
-<p>pd.DataFrameをcsvで保存する<br>
-データはまだ収集され続けるので、addできる形にする<br>
+<p>pd.DataFrameをcsvで保存する<br />
+データはまだ収集され続けるので、addできる形にする<br />
 以下のような形式のCSV</p>
-<p>```dataframe.csv<br>
-2016-01-01 00:00:00,2016-01-01 00:05:00,2016-01-01 00:10:00,2016-01-01 00:15:00,<br>
-freq1,435  354,634,456,<br>
-freq2,465  283,665,488,<br>
+<p>```dataframe.csv<br />
+2016-01-01 00:00:00,2016-01-01 00:05:00,2016-01-01 00:10:00,2016-01-01 00:15:00,<br />
+freq1,435  354,634,456,<br />
+freq2,465  283,665,488,<br />
 freq3,468  243,668,491,</p>
-<p></p><pre><code>
+<p><pre><code>
 
 
 read_frame:以前に作られたcsvファイルから読み込むcsv
@@ -1240,7 +1237,16 @@ ____________________________
 やっていること
 
 1. パラメータを読み込む
-    `param.param()`
+
+    以下のようにすることで`param`に辞書形式で`parameter.json`の内容が入る。
+    以降`param['hoge']`として変数を扱う。
+    なお、`load_parameter()`の引数にファイルのフルパスを与えると、そのファイルをjsonとして読み込む。
+
+    ```python
+        import readtable as rt
+        param = rt.load_parameter()
+    ```
+
 2. データフレームを作成する
     `df=rt.glob_dataframe(rt.dataglob())`
 3. df.plotでプロットする
@@ -1279,13 +1285,13 @@ stdはttttmmdd形式
 月ごとに集計(カウント)
 groupbyを使う
 
-</code></pre><br>
-dfm=df.loc[std:end]<br>
-key=lambda x:x.date   #日ごとに集計<br>
-dfd=dfm.groupby(key).count()<br>
-```<p></p>
-<h2 id="plotgrouppy"><a name="user-content-plotgrouppy" href="#plotgrouppy" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>plotgroup.py</h2>
-<h3 id="aggregatepath"><a name="user-content-aggregatepath" href="#aggregatepath" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>aggregate(path)</h3>
+</code></pre><br />
+dfm=df.loc[std:end]<br />
+key=lambda x:x.date   #日ごとに集計<br />
+dfd=dfm.groupby(key).count()<br />
+```</p>
+<h1 id="plotgrouppy"><a name="user-content-plotgrouppy" href="#plotgrouppy" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>plotgroup.py</h1>
+<h2 id="aggregatepath"><a name="user-content-aggregatepath" href="#aggregatepath" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>aggregate(path)</h2>
 <p>DataSource上のtxtデータから読み込んで周波数ごとに集計してpd.DataFrameで返す</p>
 <p><strong>save_table.pyでcsvを作ってあるなら、aggregate_csvから読み込むほうが早い</strong></p>
 <ul>
@@ -1294,9 +1300,9 @@ dfd=dfm.groupby(key).count()<br>
 <li>戻り値:</li>
 <li>sub: (pd.DataFrame型)</li>
 </ul>
-<h3 id="aggregate_cdvcsv_fullpath-list_of_tuple"><a name="user-content-aggregate_cdvcsv_fullpath-list_of_tuple" href="#aggregate_cdvcsv_fullpath-list_of_tuple" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>aggregate_cdv(csv_fullpath, list_of_tuple)</h3>
-<p>dfを周波数ごとに集計<br>
-集計範囲はlist_of_tupleに記載<br>
+<h2 id="aggregate_cdvcsv_fullpath-list_of_tuple"><a name="user-content-aggregate_cdvcsv_fullpath-list_of_tuple" href="#aggregate_cdvcsv_fullpath-list_of_tuple" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>aggregate_cdv(csv_fullpath, list_of_tuple)</h2>
+<p>dfを周波数ごとに集計<br />
+集計範囲はlist_of_tupleに記載<br />
 データフレームに取り出しやすいcsvデータから読み込む場合</p>
 <ul>
 <li>引数:</li>
@@ -1305,7 +1311,7 @@ dfd=dfm.groupby(key).count()<br>
 <li>戻り値:</li>
 <li>sub: 値は集計値(pd.DataFrame形式)</li>
 </ul>
-<h3 id="eachplotseries-freq_list"><a name="user-content-eachplotseries-freq_list" href="#eachplotseries-freq_list" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>eachplot(series, freq_list)</h3>
+<h2 id="eachplotseries-freq_list"><a name="user-content-eachplotseries-freq_list" href="#eachplotseries-freq_list" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>eachplot(series, freq_list)</h2>
 <p>plt.subplots()を使用してline plotとmarker plotを共存させる</p>
 <ol>
 <li>pd.DataFrameから切り出したpd.Seriesなどを引数にする。</li>
@@ -1320,16 +1326,109 @@ dfd=dfm.groupby(key).count()<br>
 <li>freq_list:注目周波数のリスト</li>
 <li>戻り値:なし</li>
 </ul>
-<hr>
+<hr />
+<h1 id="plottxtpy"><a name="user-content-plottxtpy" href="#plottxtpy" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>plottxt.py</h1>
+<p>.txtから読み込み<br />
+平均化、最大値だけ取得など<br />
+pd.DataFrame.groupbyを使用してグラフ化。</p>
+<h2 id="load_parameterfileparameterjson"><a name="user-content-load_parameterfileparameterjson" href="#load_parameterfileparameterjson" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>load_parameter(file=&rsquo;parameter.json&rsquo;):</h2>
+<p>parameter.jsonからディレクトリやファイル情報、周波数などの情報をロードしてくる。</p>
+<h2 id="spectrumfullpath-str-columns-str-pdcoreframedataframe"><a name="user-content-spectrumfullpath-str-columns-str-pdcoreframedataframe" href="#spectrumfullpath-str-columns-str-pdcoreframedataframe" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>spectrum(fullpath: str, columns: str) -&gt; pd.core.frame.DataFrame:</h2>
+<p>txtデータからの読み込み<br />
+引数:<br />
+    fullpath: txtデータのフルパス(str型)<br />
+    columns: txtデータの何列目をデータとして使うか。<br />
+             デフォルトは&rsquo;Mean&rsquo;: 0から始まっての2行目()(str型)<br />
+戻り値:<br />
+    se: txtのうちの１列(pandasシリーズ型)</p>
+<h2 id="spectrum_tableregex-str-columns-str-pdcoreframedataframe"><a name="user-content-spectrum_tableregex-str-columns-str-pdcoreframedataframe" href="#spectrum_tableregex-str-columns-str-pdcoreframedataframe" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>spectrum_table(regex: str, columns: str) -&gt; pd.core.frame.DataFrame:</h2>
+<p>txtデータからの読み込み<br />
+regexのファイル名をglobで拾って、<br />
+横にマージして一つのデータフレームにして返す</p>
+<p>引数:<br />
+    regex: globで拾う正規表現<br />
+戻り値:<br />
+    df: spectrumで返されたデータフレームを横つなぎにする</p>
+<h2 id="noisefloordf-axis-int0"><a name="user-content-noisefloordf-axis-int0" href="#noisefloordf-axis-int0" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>noisefloor(df, axis: int=0):</h2>
+<p>1/4 medianをノイズフロアとし、各列に適用して返す<br />
+引数:<br />
+    df: 行が周波数、列が日時(データフレーム型)<br />
+    axis: 0 or 1.<br />
+        0: 列に適用(デフォルト)<br />
+        1: 行に適用<br />
+戻り値:<br />
+    df: ノイズフロア(データフレーム型)</p>
+<h2 id="pltmodtitle-columns"><a name="user-content-pltmodtitle-columns" href="#pltmodtitle-columns" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>pltmod(title, columns):</h2>
+<p>plotの修飾</p>
+<ul>
+<li>ラベル名</li>
+<li>凡例なし</li>
+<li>タイトル名</li>
+<li>縦軸の最大/最小値(横軸はロードするときに決まってる)</li>
+</ul>
+<p>plt.ylabe</p>
+<h2 id="groupmeanregex-str-ffunc-str-gfunc-str-columns-str-pdcoreframedataframe"><a name="user-content-groupmeanregex-str-ffunc-str-gfunc-str-columns-str-pdcoreframedataframe" href="#groupmeanregex-str-ffunc-str-gfunc-str-columns-str-pdcoreframedataframe" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>groupmean(regex: str, ffunc: str, gfunc: str, columns: str) -&gt; pd.core.frame.DataFrame:</h2>
+<p>aggfuncでグループ化</p>
+<p>引数:<br />
+    regex:日付を表したファイル名(str型　正規表現　%Y%m%d)<br />
+    ffunc: 集計の関数<br />
+        Mean: 平均値<br />
+        Max: 最大値<br />
+    gfunc: groupの仕方<br />
+        date: 日付<br />
+        month: 月<br />
+        hour: 時間<br />
+    columns: .txtから読み取る行数<br />
+        Min: 最小値<br />
+        Mean: 平均値<br />
+        Max: 最大値<br />
+戻り値:<br />
+    groupmean.T<br />
+    日にちで平均化したデータフレーム<br />
+    (データフレーム型)</p>
+<h1 id="test-plottxtpy"><a name="user-content-test-plottxtpy" href="#test-plottxtpy" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>TEST plottxt.py</h1>
+<h2 id="test-spectrum"><a name="user-content-test-spectrum" href="#test-spectrum" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>TEST spectrum()</h2>
+<p>regex = &lsquo;20161028_18*&rsquo;<br />
+for fullpath in glob.iglob(param[&lsquo;in&rsquo;] + regex):<br />
+    print(spectrum(fullpath))</p>
+<h2 id="test-spectrum_table"><a name="user-content-test-spectrum_table" href="#test-spectrum_table" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>TEST spectrum_table()</h2>
+<p>regex = &lsquo;20161028_18*&rsquo;<br />
+df = spectrum_table(param[&lsquo;in&rsquo;] + regex)<br />
+print(df)<br />
+print(&lsquo;読み込んだデータのカラム\n&rsquo;, df.columns)<br />
+print(&lsquo;読み込んだデータのインデックス\n&rsquo;, df.index)</p>
+<h2 id="test-spectrum_table_1"><a name="user-content-test-spectrum_table_1" href="#test-spectrum_table_1" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>TEST spectrum_table()</h2>
+<p>regex = &lsquo;20161028_18*&rsquo;<br />
+df = spectrum_table(param[&lsquo;in&rsquo;] + regex)<br />
+print(df)<br />
+print(noisefloor(df))<br />
+print(noisefloor(df, 1))</p>
+<h2 id="test-spectrum_table_2"><a name="user-content-test-spectrum_table_2" href="#test-spectrum_table_2" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>TEST spectrum_table()</h2>
+<p>regex = &lsquo;20161028_18*&rsquo;<br />
+df = spectrum_table(param[&lsquo;in&rsquo;] + regex)<br />
+df -= noisefloor(df)<br />
+print(df.T)</p>
+<h2 id="test-groupmean"><a name="user-content-test-groupmean" href="#test-groupmean" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>TEST groupmean()</h2>
+<p>regex = &lsquo;20161030&rsquo;<br />
+df = groupmean(param[&lsquo;in&rsquo;] + regex, ffunc=&rsquo;Max&rsquo;, gfunc=&rsquo;date&rsquo;, columns=&rsquo;Mean&rsquo;)<br />
+eachplot(df.ix[:, 0], freq_list)<br />
+pltmod(regex, &lsquo;Max&rsquo;)<br />
+plt.show()</p>
+<hr />
 <h1 id="todo"><a name="user-content-todo" href="#todo" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>TODO</h1>
-<p>クラス化する<br>
-対話形式でjupyternotebook内でグラフを作る</p>
+<h2 id="feature"><a name="user-content-feature" href="#feature" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>Feature</h2>
+<ul>
+<li>all average csvも使用して各時間のスペクトラムも表示</li>
+<li>ノイズフロアも解析</li>
+</ul>
+<h2 id="bugs"><a name="user-content-bugs" href="#bugs" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>Bugs</h2>
+<p>None</p>
 <h1 id="indent-to-space"><a name="user-content-indent-to-space" href="#indent-to-space" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>indent to space</h1>
-<p>できるところまでまとめてからmasterにgit flow release<br>
-master v3.0にしてから<br>
+<p>できるところまでまとめてからmasterにgit flow release<br />
+master v3.0にしてから<br />
 <code>gf hotfix start indent</code>してindent直す</p>
 <h1 id="groupby-timeframe"><a name="user-content-groupby-timeframe" href="#groupby-timeframe" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>groupby Timeframe</h1>
-<p>// * 時間軸でグループ化<br>
+<p>// * 時間軸でグループ化<br />
 // * 月ごと、週ごと、日ごと、時間ごとで集計</p>
 <h2 id="_9"><a name="user-content-_9" href="#_9" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>何に役立つか</h2>
 <p>曜日はどこが多く出ているのか</p>
