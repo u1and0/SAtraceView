@@ -103,7 +103,7 @@ def spectrum_regex(regex: str, columns: str='Mean') -> pd.core.frame.DataFrame:
     return df
 
 
-def noisefloor(df, axis: int=0):
+def noisefloor(df, axis: int=0, percent=25):
     """
     1/4 medianをノイズフロアとし、各列に適用して返す
     引数:
@@ -114,7 +114,7 @@ def noisefloor(df, axis: int=0):
     戻り値:
         df: ノイズフロア(データフレーム型)
     """
-    return df.apply(lambda x: stats.scoreatpercentile(x, 25), axis)
+    return df.apply(lambda x: stats.scoreatpercentile(x, percent), axis)
 
 
 def pltmod(title, columns):

@@ -1,8 +1,14 @@
 
 # coding: utf-8
 
-# In[1]:
+# In[ ]:
 
+
+
+
+# In[26]:
+
+get_ipython().magic('matplotlib inline')
 import plottxt as pt
 
 
@@ -16,6 +22,15 @@ path = pt.param['in']; path
 file = '20151125_004904.txt'
 
 
+# In[20]:
+
+pt.spectrum(path + file).plot()
+
+
+# # 複数ファイルの処理
+# ファイルを()の中にくくって複数指定する。
+# 
+
 # In[19]:
 
 files = ('20151125_002404.txt',
@@ -23,10 +38,8 @@ files = ('20151125_002404.txt',
         '20161013_091345.txt')
 
 
-# In[20]:
-
-pt.spectrum(path + file).plot()
-
+# pythonの内包表記使ってpathを足したフルパスのリストを作成し、
+# それを`spectrum_many`へ渡す。
 
 # In[21]:
 

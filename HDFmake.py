@@ -20,24 +20,26 @@ pi = pd.read_csv(rt.param['view_out']+'average_SN.csv',
 pi
 
 
-# In[5]:
+# In[9]:
 
-pi.to_pickle(rt.param['view_out']+'average_SN.pkl')
-
-
-# In[6]:
-
-pkl = pd.read_pickle(rt.param['view_out']+'average_SN.dump');pkl
+picklefile = 'average_SN.pkl'
+pi.to_pickle(rt.param['view_out']+picklefile)
 
 
-# In[ ]:
+# In[10]:
 
-pi.to_hdf(rt.param['view_out']+'average_SN.h5', 'mean')
+pkl = pd.read_pickle(rt.param['view_out'] + picklefile);pkl
 
 
-# In[ ]:
+# In[7]:
 
-hdf = pd.read_hdf(rt.param['view_out']+'average_SN.h5'); hdf
+hdffile = 'average_SN.h5'
+pi.to_hdf(rt.param['view_out']+hdffile, 'mean')
+
+
+# In[8]:
+
+hdf = pd.read_hdf(rt.param['view_out']+hdffile); hdf
 
 
 # In[ ]:
