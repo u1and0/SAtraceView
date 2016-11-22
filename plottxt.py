@@ -144,7 +144,8 @@ def groupmean(regex: str,
         日にちで平均化したデータフレーム
         (データフレーム型)
     """
-    df = spectrum_table(regex + '*', columns)  # globでファイル名マッチするものをデータフレーム化
+    gl = glob.glob(regex + '*')
+    df = spectrum_many(gl, columns)  # globでファイル名マッチするものをデータフレーム化
     df -= noisefloor(df)  # powerからS/N比に変換
     groupfunc = 'lambda x: x.%s' % gfunc
     if ffunc == 'Mean':
@@ -158,7 +159,7 @@ def groupmean(regex: str,
 # メソッドをpd.DataFrame, pd.Seriesに追加
 # -----------------------------------------
 _cs = 'pd.DataFrame', 'pd.Series'
-_flist = 'noisefloor', 
+_flist = 'noisefloor',
 for _c in _cs:
     for _f in _flist:
         exec('%s.%s=%s' % (_c, _f, _f))
@@ -174,30 +175,15 @@ if __name__ == '__main__':
     """
 
     """
-    # TEST spectrum_table()
-    regex = '20161028_18*'
-    df = spectrum_table(param['in'] + regex)
-    print(df)
-    print('読み込んだデータのカラム\n', df.columns)
-    print('読み込んだデータのインデックス\n', df.index)
+    # TEST spectrum_many()
+    regex = param['in'] + '20161028_18*'
+    gl = glob.glob(regex)
+    df = spectrum_many(gl)
+    print('power', df)
+    df -= df.noisefloor()
+    print('sn', df)
     """
 
-    """
-    # TEST spectrum_table()
-    regex = '20161028_18*'
-    df = spectrum_table(param['in'] + regex)
-    print(df)
-    print(noisefloor(df))
-    print(noisefloor(df, 1))
-    """
-
-    """
-    # TEST spectrum_table()
-    regex = '20161028_18*'
-    df = spectrum_table(param['in'] + regex)
-    df -= noisefloor(df)
-    print(df.T)
-    """
 
     """
     # TEST groupmean()
