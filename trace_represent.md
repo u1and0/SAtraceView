@@ -349,7 +349,7 @@ pt.spectrum(path + file).plot()
 
 
 
-    <matplotlib.axes._subplots.AxesSubplot at 0xb75b630>
+    <matplotlib.axes._subplots.AxesSubplot at 0xbb5f518>
 
 
 
@@ -378,7 +378,7 @@ pt.spectrum(path + file, columns='mIn').plot()
 
 
 
-    <matplotlib.axes._subplots.AxesSubplot at 0xc63b7f0>
+    <matplotlib.axes._subplots.AxesSubplot at 0xc4a3710>
 
 
 
@@ -413,15 +413,21 @@ df = pt.spectrum_many([path + i for i in files])
 df.plot()
 ```
 
+    .txt形式からのロード...少々時間がかかります。
+    
+
+    100%|███████████████████████████████████████████████████████████████████████████| 3/3 [00:00<00:00, 68.16it/s]
+    
 
 
 
-    <matplotlib.axes._subplots.AxesSubplot at 0xc16bc50>
+
+    <matplotlib.axes._subplots.AxesSubplot at 0xbd19d30>
 
 
 
 
-![png](trace_represent_files/trace_represent_21_1.png)
+![png](trace_represent_files/trace_represent_21_3.png)
 
 
 ## ノイズフロア
@@ -454,13 +460,23 @@ sn.plot()
 
 
 
-    <matplotlib.axes._subplots.AxesSubplot at 0xc086a90>
+    <matplotlib.axes._subplots.AxesSubplot at 0xc5b1b38>
 
 
 
 
 ![png](trace_represent_files/trace_represent_25_1.png)
 
+
+上の表記は
+
+```python
+df -= df.noisefloor()
+```
+
+としてもdfからノイズフロアを引き算できる。
+
+そのときプロットするときは`df.plot()`とする。
 
 ## 最大値だけプロット
 SN比のデータ集合である`sn`から最大の値だけを抜き出すとき、
@@ -469,19 +485,25 @@ SN比のデータ集合である`sn`から最大の値だけを抜き出すと�
 
 
 ```python
-sn.max(axis=1).plot()
+sn.max(axis=1).plot(title='Max Value')
+plt.xlabel('Frequency [kHz]')
+plt.ylabel('S/N [dB]')
 ```
 
 
 
 
-    <matplotlib.axes._subplots.AxesSubplot at 0xc9ca940>
+    <matplotlib.text.Text at 0xe37a240>
 
 
 
 
-![png](trace_represent_files/trace_represent_27_1.png)
+![png](trace_represent_files/trace_represent_28_1.png)
 
+
+plotメソッドの中にtitleというオプションがあるので、グラフの上にタイトルを書くことができる。
+
+ラベルを書くにはmatplotlib.pyplotのメソッドでxlabel, ylabelがあるので、そこでラベルを指定できる。
 
 # さらに複数のファイルを処理
 人力で打ち込める数はその人の努力しだいだが、せいぜい10個程度のコピペで飽きる。
@@ -536,25 +558,65 @@ glob.glob(path+'20160112_05*')  # 2016年1月12日5時台のファイル名を�
 
 
 
-このリストを
+globで作ったリストをそのまま`spectrum_many`へ突っ込めばすべてを重ねたグラフが出来上がる。
 
 
 ```python
-pt.spectrum_many(glob.glob(path+'20160112_05*')).plot(legend=False)
+gdf = pt.spectrum_many(glob.glob(path+'20160112_05*'))
+gdf.plot(legend=False)
+```
+
+    .txt形式からのロード...少々時間がかかります。
+    
+
+    100%|█████████████████████████████████████████████████████████████████████████| 12/12 [00:00<00:00, 50.00it/s]
+    
+
+
+
+
+    <matplotlib.axes._subplots.AxesSubplot at 0xc511358>
+
+
+
+
+![png](trace_represent_files/trace_represent_35_3.png)
+
+
+`plot`メソッドのオプションで`legend=False`を指定すると凡例が消える。
+
+
+```python
+gdf -= gdf.noisefloor()  # ノイズフロアを引き算
+gdf.max(axis=1).plot(legend=False, title='Max')  #%%! 各周波数ごとの最大値を出してプロット
+plt.xlabel('Frequency [kHz]')
+plt.ylabel('S/N [dB]')
 ```
 
 
 
 
-    <matplotlib.axes._subplots.AxesSubplot at 0xf434748>
+    <matplotlib.text.Text at 0x10471748>
 
 
 
 
-![png](trace_represent_files/trace_represent_33_1.png)
+![png](trace_represent_files/trace_represent_37_1.png)
 
 
+# グラフのタイトルに日本語を使いたいとき
+IPAフォント等をPCにインストールして、matplotlibの設定を変える必要があります。
 
-```python
+[独立行政法人　情報処理推進機構](http://ipafont.ipa.go.jp/old/ipafont/download.html)
+から
 
-```
+    TTFファイル
+
+    4書体パック(Ver.003.03)
+    IPAfont00303.zip(19.1 MB)
+
+でダウンロード。解凍して右クリックからインストール。
+
+以下のサイトなどを参考にしてmatplotlibの設定。
+
+[matplotlib, seabornの日本語表示](http://qiita.com/u1and0/items/3b4d0f3e5514c9893d89)
