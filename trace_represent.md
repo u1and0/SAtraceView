@@ -367,7 +367,7 @@ pt.spectrum(path + file).plot()
 
 引数`columns`に`max`, `min`を打つと、txtファイルのMax値, Min値に切り替え可能。
 
-(以降は使わないけど、オプションとしてあることを示しておきます。)
+(以降は使わないけど、オプションとしてあることを示しておきます。大文字小文字無視)
 
 
 ```python
@@ -483,4 +483,78 @@ sn.max(axis=1).plot()
 ![png](trace_represent_files/trace_represent_27_1.png)
 
 
+# さらに複数のファイルを処理
+人力で打ち込める数はその人の努力しだいだが、せいぜい10個程度のコピペで飽きる。
 
+そこで正規表現によるファイルの検索も`plottxt.py`は実装している。
+
+## ファイル名一覧の表示
+globモジュールを使用することで、正規表現によるファイルの取得が可能
+
+
+```python
+import glob
+glob.glob(path + '*')[:10]  # すべてのファイルを取得。最初の10個だけ表示
+```
+
+
+
+
+    ['//sampanet.gr.jp/DFS/ShareUsers/UserTokki/Common/VLFtrace/Common/VLFtrace/data4/trace\\20151111_124523.txt',
+     '//sampanet.gr.jp/DFS/ShareUsers/UserTokki/Common/VLFtrace/Common/VLFtrace/data4/trace\\20151111_125023.txt',
+     '//sampanet.gr.jp/DFS/ShareUsers/UserTokki/Common/VLFtrace/Common/VLFtrace/data4/trace\\20151111_125523.txt',
+     '//sampanet.gr.jp/DFS/ShareUsers/UserTokki/Common/VLFtrace/Common/VLFtrace/data4/trace\\20151111_130023.txt',
+     '//sampanet.gr.jp/DFS/ShareUsers/UserTokki/Common/VLFtrace/Common/VLFtrace/data4/trace\\20151111_130738.txt',
+     '//sampanet.gr.jp/DFS/ShareUsers/UserTokki/Common/VLFtrace/Common/VLFtrace/data4/trace\\20151111_131329.txt',
+     '//sampanet.gr.jp/DFS/ShareUsers/UserTokki/Common/VLFtrace/Common/VLFtrace/data4/trace\\20151111_131829.txt',
+     '//sampanet.gr.jp/DFS/ShareUsers/UserTokki/Common/VLFtrace/Common/VLFtrace/data4/trace\\20151111_132329.txt',
+     '//sampanet.gr.jp/DFS/ShareUsers/UserTokki/Common/VLFtrace/Common/VLFtrace/data4/trace\\20151111_132829.txt',
+     '//sampanet.gr.jp/DFS/ShareUsers/UserTokki/Common/VLFtrace/Common/VLFtrace/data4/trace\\20151111_133329.txt']
+
+
+
+
+```python
+glob.glob(path+'20160112_05*')  # 2016年1月12日5時台のファイル名を取得
+```
+
+
+
+
+    ['//sampanet.gr.jp/DFS/ShareUsers/UserTokki/Common/VLFtrace/Common/VLFtrace/data4/trace\\20160112_050245.txt',
+     '//sampanet.gr.jp/DFS/ShareUsers/UserTokki/Common/VLFtrace/Common/VLFtrace/data4/trace\\20160112_050743.txt',
+     '//sampanet.gr.jp/DFS/ShareUsers/UserTokki/Common/VLFtrace/Common/VLFtrace/data4/trace\\20160112_051243.txt',
+     '//sampanet.gr.jp/DFS/ShareUsers/UserTokki/Common/VLFtrace/Common/VLFtrace/data4/trace\\20160112_051747.txt',
+     '//sampanet.gr.jp/DFS/ShareUsers/UserTokki/Common/VLFtrace/Common/VLFtrace/data4/trace\\20160112_052245.txt',
+     '//sampanet.gr.jp/DFS/ShareUsers/UserTokki/Common/VLFtrace/Common/VLFtrace/data4/trace\\20160112_052747.txt',
+     '//sampanet.gr.jp/DFS/ShareUsers/UserTokki/Common/VLFtrace/Common/VLFtrace/data4/trace\\20160112_053247.txt',
+     '//sampanet.gr.jp/DFS/ShareUsers/UserTokki/Common/VLFtrace/Common/VLFtrace/data4/trace\\20160112_053743.txt',
+     '//sampanet.gr.jp/DFS/ShareUsers/UserTokki/Common/VLFtrace/Common/VLFtrace/data4/trace\\20160112_054241.txt',
+     '//sampanet.gr.jp/DFS/ShareUsers/UserTokki/Common/VLFtrace/Common/VLFtrace/data4/trace\\20160112_054745.txt',
+     '//sampanet.gr.jp/DFS/ShareUsers/UserTokki/Common/VLFtrace/Common/VLFtrace/data4/trace\\20160112_055243.txt',
+     '//sampanet.gr.jp/DFS/ShareUsers/UserTokki/Common/VLFtrace/Common/VLFtrace/data4/trace\\20160112_055741.txt']
+
+
+
+このリストを
+
+
+```python
+pt.spectrum_many(glob.glob(path+'20160112_05*')).plot(legend=False)
+```
+
+
+
+
+    <matplotlib.axes._subplots.AxesSubplot at 0xf434748>
+
+
+
+
+![png](trace_represent_files/trace_represent_33_1.png)
+
+
+
+```python
+
+```

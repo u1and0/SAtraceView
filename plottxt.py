@@ -66,38 +66,22 @@ def spectrum(fullpath: str, columns: str='Mean') -> pd.core.frame.DataFrame:
     return se
 
 
-def spectrum_many(listedfiles: str, columns: str='Mean') -> pd.core.frame.DataFrame:
+def spectrum_many(listedfiles: list, columns: str='Mean') -> pd.core.frame.DataFrame:
     """
     txtデータからの読み込み
     regexのファイル名をglobで拾って、
     横にマージして一つのデータフレームにして返す
 
     引数:
-        regex: globで拾う正規表現
-    戻り値:
-        df: spectrumで返されたデータフレームを横つなぎにする
-    """
-    df = pd.DataFrame()
-    for fullpath in listedfiles:
-        se = spectrum(fullpath, columns)
-        df[se.columns] = se
-    return df
-
-
-def spectrum_regex(regex: str, columns: str='Mean') -> pd.core.frame.DataFrame:
-    """
-    txtデータからの読み込み
-    regexのファイル名をglobで拾って、
-    横にマージして一つのデータフレームにして返す
-
-    引数:
-        regex: globで拾う正規表現
+        listtedfiles: リストで包まれたファイルのフルパス
+        columns: txtデータの何列目をデータとして使うか。
+                 デフォルトは'Mean': 0から始まっての2行目()(str型)
     戻り値:
         df: spectrumで返されたデータフレームを横つなぎにする
     """
     print('.txt形式からのロード...少々時間がかかります。')
     df = pd.DataFrame()
-    for fullpath in tqdm(glob.glob(regex)):
+    for fullpath in tqdm(listedfiles):
         se = spectrum(fullpath, columns)
         df[se.columns] = se
     return df
