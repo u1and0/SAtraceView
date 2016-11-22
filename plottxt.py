@@ -40,7 +40,7 @@ freq_list = sorted([float(i) for i in country_keys])
 # __MAIN FUNCTIONS__________________________
 
 
-def spectrum(fullpath: str, columns: str) -> pd.core.frame.DataFrame:
+def spectrum(fullpath: str, columns: str='Mean') -> pd.core.frame.DataFrame:
     '''
     txtデータからの読み込み
     引数:
@@ -50,7 +50,7 @@ def spectrum(fullpath: str, columns: str) -> pd.core.frame.DataFrame:
     戻り値:
         se: txtのうちの１列(pandasシリーズ型)
     '''
-    use = {'Min': 1, 'Mean': 2, 'Max': 3}  # .txtの何列目を使うか
+    use = {'MIN': 1, 'MEAN': 2, 'MAX': 3}  # .txtの何列目を使うか
     columns_name = pd.to_datetime(fullpath[-19:-4],
                                   format='%Y%m%d_%H%M%S')
     se = pd.read_table(fullpath,
@@ -58,7 +58,7 @@ def spectrum(fullpath: str, columns: str) -> pd.core.frame.DataFrame:
                        sep='\s+',
                        header=0,
                        skipfooter=1,
-                       usecols=[use[columns]],
+                       usecols=[use[columns.upper()]],
                        engine='python')
     index_start = freq_center - freq_span / 2
     index_end = freq_center + freq_span / 2
@@ -66,7 +66,25 @@ def spectrum(fullpath: str, columns: str) -> pd.core.frame.DataFrame:
     return se
 
 
-def spectrum_table(regex: str, columns: str) -> pd.core.frame.DataFrame:
+def spectrum_many(listedfiles: str, columns: str='Mean') -> pd.core.frame.DataFrame:
+    """
+    txtデータからの読み込み
+    regexのファイル名をglobで拾って、
+    横にマージして一つのデータフレームにして返す
+
+    引数:
+        regex: globで拾う正規表現
+    戻り値:
+        df: spectrumで返されたデータフレームを横つなぎにする
+    """
+    df = pd.DataFrame()
+    for fullpath in listedfiles:
+        se = spectrum(fullpath, columns)
+        df[se.columns] = se
+    return df
+
+
+def spectrum_regex(regex: str, columns: str='Mean') -> pd.core.frame.DataFrame:
     """
     txtデータからの読み込み
     regexのファイル名をglobで拾って、
@@ -120,7 +138,7 @@ def pltmod(title, columns):
 def groupmean(regex: str,
               ffunc: str,
               gfunc: str,
-              columns: str) -> pd.core.frame.DataFrame:
+              columns: str='Mean') -> pd.core.frame.DataFrame:
     """
     aggfuncでグループ化
 
@@ -150,6 +168,16 @@ def groupmean(regex: str,
     elif ffunc == 'Max':
         groupeddf = df.T.groupby(eval(groupfunc)).max()  # 日にちで平均化したデータフレーム
     return groupeddf.T
+
+
+# -----------------------------------------
+# メソッドをpd.DataFrame, pd.Seriesに追加
+# -----------------------------------------
+_cs = 'pd.DataFrame', 'pd.Series'
+_flist = 'noisefloor', 
+for _c in _cs:
+    for _f in _flist:
+        exec('%s.%s=%s' % (_c, _f, _f))
 
 
 if __name__ == '__main__':
